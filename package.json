@@ -1,0 +1,23 @@
+{
+  "name": "appliances-and-electronics-store",
+  "version": "1.0.0",
+  "description": "The repository for a thesis project at Hexlet College. The project is a websie for an online store of appliances and electronics.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BOMBYASCHER/appliances-and-electronics-store.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BOMBYASCHER/appliances-and-electronics-store/issues"
+  },
+  "homepage": "https://github.com/BOMBYASCHER/appliances-and-electronics-store#readme",
+  "dependencies": {
+    "jest": "^29.7.0",
+    "react": "^19.0.0"
+  }
+}
