@@ -1,3 +1,7 @@
+.gradle
+build
+.idea
+
 ### IntelliJ IDEA ###
 /.idea/
 .idea/modules.xml
