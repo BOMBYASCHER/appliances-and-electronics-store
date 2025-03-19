@@ -20,6 +20,11 @@ dependencies {
 
     implementation("org.springframework.boot:spring-boot-starter-web")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+    runtimeOnly("com.h2database:h2")
+    runtimeOnly("org.postgresql:postgresql")
+
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 }
 
 testing {
@@ -42,4 +47,8 @@ java {
 application {
     // Define the main class for the application.
     mainClass.set("io.hexlet.App")
+}
+
+tasks.bootRun {
+    systemProperties(System.getProperties().mapKeys { it.key.toString() })
 }
