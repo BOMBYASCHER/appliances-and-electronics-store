@@ -10,8 +10,6 @@ jobs:
         with:
           java-version: '21'
           distribution: 'oracle'
-      - name: Change directory to 'server'
-        run: cd server
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
       - name: Linting Main
@@ -27,8 +25,6 @@ jobs:
         with:
           java-version: '21'
           distribution: 'oracle'
-      - name: Change directory to 'server'
-        run: cd server
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
       - name: Testing
@@ -42,3 +38,6 @@ jobs:
           debug: true
           coverageCommand: ./gradlew jacocoTestReport
           coverageLocations: ${{github.workspace}}/server/build/reports/jacoco/test/jacocoTestReport.xml:jacoco
+defaults:
+  run:
+    working-directory: ./server
