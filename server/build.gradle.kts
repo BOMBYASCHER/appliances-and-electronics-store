@@ -56,3 +56,9 @@ application {
 tasks.bootRun {
     systemProperties(System.getProperties().mapKeys { it.key.toString() })
 }
+
+tasks.jacocoTestReport {
+    reports {
+        xml.required = true
+    }
+}
