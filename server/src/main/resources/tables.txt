@@ -1,0 +1,66 @@
+CREATE TABLE carts (
+  id SERIAL PRIMARY KEY,
+);
+
+CREATE TABLE cart_products (
+  cart_id INTEGER REFERENCES carts(id),
+  product_id INTEGER
+);
+
+CREATE TABLE favorites (
+  id SERIAL PRIMARY KEY,
+);
+
+CREATE TABLE favorite_products (
+  favorite_id INTEGER REFERENCES favorites(id),
+  product_id INTEGER
+);
+
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY,
+  phone VARCHAR(16),
+  favorites_id INTEGER REFERENCES favorites(id),
+  cart_id INTEGER REFERENCES carts(id)
+);
+
+CREATE TABLE products (
+  id SERIAL PRIMARY KEY,
+  title VARCHAR(128),
+  description TEXT,
+  price INTEGER,
+  image TEXT,
+  category VARCHAR(64),
+  brand VARCHAR(128),
+  color VARCHAR(64),
+  release_date DATE
+);
+
+CREATE TABLE returns (
+  id SERIAL PRIMARY KEY,
+  purchase_id INTEGER,
+  reason VARCHAR(128),
+  photo TEXT,
+  user_id INTEGER REFERENCES users(id),
+  date TIMESTAMP
+);
+
+CREATE TABLE purchases (
+  id SERIAL PRIMARY KEY,
+  product_id INTEGER REFERENCES products(id),
+  product_price INTEGER,
+  product_title TEXT,
+  product_image TEXT,
+  quantity INTEGER,
+  user_id INTEGER REFERENCES users(id),
+  date TIMESTAMP
+);
+
+CREATE TABLE orders (
+  id SERIAL PRIMARY KEY,
+  date TIMESTAMP,
+  purchase_ids INTEGER[],
+  total_amount INTEGER,
+  title TEXT,
+  status VARCHAR(128),
+  user_id INTEGER REFERENCES users(id)
+);
