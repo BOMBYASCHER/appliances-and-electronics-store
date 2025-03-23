@@ -15,19 +15,20 @@ repositories {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter")
-
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-web")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+    annotationProcessor("org.projectlombok:lombok")
+    compileOnly("org.projectlombok:lombok")
 
     runtimeOnly("com.h2database:h2")
     runtimeOnly("org.postgresql:postgresql")
 
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-
-    compileOnly("org.projectlombok:lombok")
-    annotationProcessor("org.projectlombok:lombok")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.springframework.boot:spring-boot-testcontainers")
+    testImplementation("org.testcontainers:postgresql")
+    testImplementation("net.javacrumbs.json-unit:json-unit-assertj:4.1.0")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
 testing {
