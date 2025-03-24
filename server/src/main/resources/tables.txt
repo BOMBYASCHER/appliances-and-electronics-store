@@ -64,3 +64,19 @@ CREATE TABLE orders (
   status VARCHAR(128),
   user_id INTEGER REFERENCES users(id)
 );
+
+
+INSERT INTO products (title, description, price, image, category, brand, color, release_date)
+VALUES ('Smartphone X', 'Latest model with advanced features', 999, 'smartphone_x.jpg', 'Electronics', 'BrandA', 'Black', '2023-10-01');
+
+INSERT INTO products (title, description, price, image, category, brand, color, release_date)
+VALUES ('Laptop Pro', 'High-performance laptop for professionals', 1500, 'laptop_pro.jpg', 'Electronics', 'BrandB', 'Silver', '2023-09-15');
+
+INSERT INTO products (title, description, price, image, category, brand, color, release_date)
+VALUES ('Running Shoes', 'Comfortable shoes for long runs', 120, 'running_shoes.jpg', 'Sport', 'BrandC', 'Blue', '2023-08-20');
+
+INSERT INTO products (title, description, price, image, category, brand, color, release_date)
+VALUES ('Wireless Headphones', 'Noise-cancelling headphones with great sound', 200, 'headphones.jpg', 'Electronics', 'BrandD', 'White', '2023-07-10');
+
+INSERT INTO products (title, description, price, image, category, brand, color, release_date)
+VALUES ('Coffee Maker', 'Automatic coffee maker with timer', 80, 'coffee_maker.jpg', 'Home Appliances', 'BrandE', 'Red', '2021-06-05');
