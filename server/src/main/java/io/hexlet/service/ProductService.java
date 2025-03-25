@@ -8,7 +8,9 @@ import io.hexlet.repository.ProductRepository;
 import io.hexlet.specification.ProductSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -34,5 +36,15 @@ public class ProductService {
                     return dto;
                 })
                 .toList();
+    }
+
+    public ProductDTO getProductById(Integer productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Product not found with id: " + productId)
+                );
+
+        return productMapper.map(product);
     }
 }

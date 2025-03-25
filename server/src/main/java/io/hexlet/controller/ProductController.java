@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,8 +20,14 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("/products")
-    public ResponseEntity<List<ProductDTO>> getProducts(@ModelAttribute ProductParamsDTO params) {
+    public ResponseEntity<List<ProductDTO>> index(@ModelAttribute ProductParamsDTO params) {
         List<ProductDTO> products = productService.getAll(params);
         return ResponseEntity.ok(products);
+    }
+
+    @GetMapping("/products/{id}")
+    public ResponseEntity<ProductDTO> show(@PathVariable Integer id) {
+        ProductDTO product = productService.getProductById(id);
+        return ResponseEntity.ok(product);
     }
 }
