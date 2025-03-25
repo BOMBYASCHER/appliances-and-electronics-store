@@ -1,7 +1,5 @@
 package io.hexlet.model;
 
-import static jakarta.persistence.GenerationType.IDENTITY;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,12 +12,14 @@ import lombok.Setter;
 
 import java.sql.Date;
 
+import static jakarta.persistence.GenerationType.IDENTITY;
+
 @Setter
 @Getter
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "product")
+@Table(name = "products")
 public class Product {
 
     @Id
@@ -38,21 +38,15 @@ public class Product {
     @Column(name = "image")
     private String image;
 
-    @Column(name = "brand")
-    private String brand;
-
     @Column(name = "category")
     private String category;
+
+    @Column(name = "brand")
+    private String brand;
 
     @Column(name = "color")
     private String color;
 
     @Column(name = "release_date")
     private Date releaseDate;
-
-    @Column(name = "is_favorite")
-    private Boolean isFavorite;
-
-    @Column(name = "is_in_сart")
-    private Boolean isInCart;
 }
