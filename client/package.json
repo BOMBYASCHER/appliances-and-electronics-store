@@ -9,7 +9,8 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "coverage": "jest --coverage"
+    "coverage": "jest --coverage",
+    "test": "jest test --coverage=false"
   },
   "repository": {
     "type": "git",
