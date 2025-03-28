@@ -1,5 +1,7 @@
 package io.hexlet.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -29,7 +31,7 @@ public class Product {
     @Column(name = "title")
     private String title;
 
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
     @Column(name = "price")
@@ -48,5 +50,7 @@ public class Product {
     private String color;
 
     @Column(name = "release_date")
+    @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonProperty("releaseDate")
     private Date releaseDate;
 }
