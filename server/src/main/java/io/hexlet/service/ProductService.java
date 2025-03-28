@@ -58,9 +58,11 @@ public class ProductService {
 
     @PostConstruct
     public void initProducts() throws IOException {
-        InputStream inputStream = getClass().getResourceAsStream("/products.json");
-        List<Product> products = objectMapper.readValue(inputStream, new TypeReference<>() {});
+        if (productRepository.count() == 0) {
+            InputStream inputStream = getClass().getResourceAsStream("/products.json");
+            List<Product> products = objectMapper.readValue(inputStream, new TypeReference<>() {});
 
-        productRepository.saveAll(products);
+            productRepository.saveAll(products);
+        }
     }
 }
