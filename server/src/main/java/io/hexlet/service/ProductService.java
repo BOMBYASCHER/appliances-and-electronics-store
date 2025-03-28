@@ -60,7 +60,8 @@ public class ProductService {
     public void initProducts() throws IOException {
         if (productRepository.count() == 0) {
             InputStream inputStream = getClass().getResourceAsStream("/products.json");
-            List<Product> products = objectMapper.readValue(inputStream, new TypeReference<>() {});
+            List<Product> products = objectMapper.readValue(inputStream, new TypeReference<>() {
+            });
 
             productRepository.saveAll(products);
         }
