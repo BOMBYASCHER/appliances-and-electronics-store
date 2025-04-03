@@ -15,6 +15,6 @@ public class ProductDTO {
     private String category;
     private String color;
     private String releaseDate;
-    private Boolean isFavorite;
-    private Boolean isInCart;
+    private Boolean isFavorite = false;
+    private Boolean isInCart = false;
 }
