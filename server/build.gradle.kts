@@ -34,6 +34,9 @@ dependencies {
     testImplementation("org.testcontainers:postgresql")
     testImplementation("net.javacrumbs.json-unit:json-unit-assertj:4.1.0")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+    implementation("net.datafaker:datafaker:2.0.1")
+    implementation("org.instancio:instancio-junit:3.3.0")
 }
 
 testing {
