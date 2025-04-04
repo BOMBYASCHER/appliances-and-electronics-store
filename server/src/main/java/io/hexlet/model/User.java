@@ -29,6 +29,9 @@ public class User {
     @Column(name = "phone")
     private String phone;
 
+    @Column(name = "password")
+    private String password;
+
     @OneToOne
     @JoinColumn(name = "favorites_id")
     private Favorite favorites;

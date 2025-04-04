@@ -19,6 +19,7 @@ CREATE TABLE favorite_products (
 CREATE TABLE users (
   id SERIAL PRIMARY KEY,
   phone VARCHAR(16),
+  password VARCHAR(255),
   favorites_id INTEGER REFERENCES favorites(id),
   cart_id INTEGER REFERENCES carts(id)
 );
