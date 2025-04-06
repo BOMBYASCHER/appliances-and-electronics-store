@@ -12,4 +12,5 @@ public class FavoriteDTO {
     private String description;
     private Integer price;
     private String image;
+    private boolean isInCart = false;
 }
