@@ -2,6 +2,8 @@ package io.hexlet.service;
 
 import io.hexlet.dto.RegistrationDTO;
 import io.hexlet.mapper.UserMapper;
+import io.hexlet.model.Cart;
+import io.hexlet.model.Favorite;
 import io.hexlet.model.User;
 import io.hexlet.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 
 @Service
 public class AuthService {
@@ -32,6 +36,14 @@ public class AuthService {
     public User register(RegistrationDTO registrationDTO) {
         User user = userMapper.toEntity(registrationDTO);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        Cart cart = new Cart();
+        cart.setProductIds(new ArrayList<>());
+        user.setCart(cart);
+
+        Favorite favorite = new Favorite();
+        favorite.setProductIds(new ArrayList<>());
+        user.setFavorites(favorite);
 
         return userRepository.save(user);
     }
