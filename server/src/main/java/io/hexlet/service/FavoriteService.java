@@ -15,6 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FavoriteService {
@@ -63,6 +64,22 @@ public class FavoriteService {
             favorite.getProductIds().add(productId);
             userRepository.save(user);
         }
+    }
+
+    public void deleteFavoriteItemById(Integer userId, Integer productId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User Not Found"));
+
+        Favorite favorite = Optional.ofNullable(user.getFavorites())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Favorites not found"));
+
+        if (!favorite.getProductIds().contains(productId)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "Product with id " + productId + " not found in favorites");
+        }
+
+        favorite.getProductIds().removeIf(id -> id.equals(productId));
+        userRepository.save(user);
     }
 
     private boolean isProductInCart(User user, Integer productId) {
