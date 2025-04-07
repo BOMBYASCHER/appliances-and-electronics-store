@@ -33,9 +33,10 @@ public class ProductService {
     @Autowired
     private ObjectMapper objectMapper;
 
-    public List<ProductDTO> getAll(ProductParamsDTO params) {
+    public List<ProductDTO> getAllProducts(ProductParamsDTO params) {
         Specification<Product> specification = productSpecification.build(params);
         List<Product> products = productRepository.findAll(specification);
+
         return products.stream()
                 .map(product -> {
                     ProductDTO dto = productMapper.map(product);

@@ -21,7 +21,7 @@ public class ProductController {
 
     @GetMapping("/products")
     public ResponseEntity<List<ProductDTO>> index(@ModelAttribute ProductParamsDTO params) {
-        List<ProductDTO> products = productService.getAll(params);
+        List<ProductDTO> products = productService.getAllProducts(params);
         return ResponseEntity.ok(products);
     }
 
