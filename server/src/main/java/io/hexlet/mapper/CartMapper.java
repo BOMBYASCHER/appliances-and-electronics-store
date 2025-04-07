@@ -1,17 +1,17 @@
 package io.hexlet.mapper;
 
+import io.hexlet.dto.CartDTO;
 import io.hexlet.dto.CartItemDTO;
 import io.hexlet.model.Product;
-import io.hexlet.dto.CartDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.ReportingPolicy;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 @Mapper(
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
@@ -27,22 +27,22 @@ public abstract class CartMapper {
     @Mapping(target = "quantity", ignore = true)
     public abstract CartItemDTO map(Product model);
 
-    public CartDTO toCartDto(List<Product> products, Map<Integer, Long> quantities) {
-        CartDTO cartDTO = new CartDTO();
-        List<CartItemDTO> items = new ArrayList<>();
-        int totalAmount = 0;
+    @Mapping(target = "id", source = "product.id")
+    @Mapping(target = "productId", source = "product.id")
+    @Mapping(target = "title", source = "product.title")
+    @Mapping(target = "price", source = "product.price")
+    @Mapping(target = "image", source = "product.image")
+    @Mapping(target = "quantity", source = "quantity")
+    public abstract CartItemDTO toCartItemDto(@MappingTarget CartItemDTO dto, Product product, Integer quantity);
 
-        for (Product product : products) {
-            CartItemDTO item = map(product);
-            long quantity = quantities.get(product.getId());
-            item.setQuantity((int) quantity);
-            items.add(item);
+    public CartDTO toCartDto(Integer totalAmount, List<CartItemDTO> items) {
+        CartDTO dto = new CartDTO();
+        dto.setTotalAmount(totalAmount);
+        dto.setElements(items);
+        return dto;
+    }
 
-            totalAmount += (int) (product.getPrice() * quantity);
-        }
-
-        cartDTO.setElements(items);
-        cartDTO.setTotalAmount(totalAmount);
-        return cartDTO;
+    public CartDTO emptyCart() {
+        return toCartDto(0, Collections.emptyList());
     }
 }
