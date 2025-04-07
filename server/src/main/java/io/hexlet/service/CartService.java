@@ -73,4 +73,24 @@ public class CartService {
 
         return cartMapper.toCartDto(totalAmount, items);
     }
+
+    public void clearCart(Integer userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User Not Found"));
+
+        Cart cart = user.getCart();
+
+        cart.getProductIds().clear();
+        userRepository.save(user);
+    }
+
+    public void deleteProductById(Integer userId, Integer productId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User Not Found"));
+
+        Cart cart = user.getCart();
+
+        cart.getProductIds().removeIf(id -> id.equals(productId));
+        userRepository.save(user);
+    }
 }
