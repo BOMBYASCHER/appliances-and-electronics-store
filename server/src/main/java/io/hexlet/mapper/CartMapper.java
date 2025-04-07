@@ -19,14 +19,6 @@ import java.util.List;
         unmappedTargetPolicy = ReportingPolicy.IGNORE
 )
 public abstract class CartMapper {
-    @Mapping(target = "id", source = "id")
-    @Mapping(target = "productId", source = "id")
-    @Mapping(target = "title", source = "title")
-    @Mapping(target = "price", source = "price")
-    @Mapping(target = "image", source = "image")
-    @Mapping(target = "quantity", ignore = true)
-    public abstract CartItemDTO map(Product model);
-
     @Mapping(target = "id", source = "product.id")
     @Mapping(target = "productId", source = "product.id")
     @Mapping(target = "title", source = "product.title")

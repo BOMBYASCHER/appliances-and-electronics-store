@@ -34,7 +34,7 @@ public class AuthService {
     private PasswordEncoder passwordEncoder;
 
     public User register(RegistrationDTO registrationDTO) {
-        User user = userMapper.toEntity(registrationDTO);
+        User user = userMapper.map(registrationDTO);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         Cart cart = new Cart();

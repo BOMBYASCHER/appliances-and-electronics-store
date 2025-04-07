@@ -13,5 +13,5 @@ import org.mapstruct.ReportingPolicy;
         unmappedTargetPolicy = ReportingPolicy.IGNORE
 )
 public abstract class UserMapper {
-    public abstract User toEntity(RegistrationDTO registrationDTO);
+    public abstract User map(RegistrationDTO registrationDTO);
 }
