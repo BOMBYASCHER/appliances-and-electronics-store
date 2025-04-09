@@ -1,5 +1,6 @@
 package io.hexlet.service;
 
+import io.hexlet.dto.OrderDTO;
 import io.hexlet.dto.OrderItemRequestDTO;
 import io.hexlet.mapper.OrderMapper;
 import io.hexlet.model.Order;
@@ -13,7 +14,6 @@ import io.hexlet.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +36,21 @@ public class OrderService {
 
     @Autowired
     private OrderMapper orderMapper;
+
+
+    public List<OrderDTO> getUserOrders(Integer userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User Not Found"));
+
+        List<Order> orders = orderRepository.findByUser(user);
+
+        return orders.stream()
+                .map(order -> {
+                    List<Purchase> purchases = purchaseRepository.findAllById(order.getPurchaseIds());
+                    return orderMapper.toOrderDTOWithPurchases(order, purchases);
+                })
+                .collect(Collectors.toList());
+    }
 
     public void createOrder(Integer userId, List<OrderItemRequestDTO> orderItems) {
         User user = userRepository.findById(userId)
