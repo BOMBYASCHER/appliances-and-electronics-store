@@ -1,6 +1,8 @@
 package io.hexlet.model;
 
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -13,6 +15,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -31,8 +34,10 @@ public class Order {
     @Column(name = "date")
     private Timestamp date;
 
-    @Column(name = "purchase_ids")
-    private Integer purchaseIds;
+    @ElementCollection
+    @CollectionTable(name = "order_purchases", joinColumns = @JoinColumn(name = "order_id"))
+    @Column(name = "purchase_id")
+    private List<Integer> purchaseIds;
 
     @Column(name = "total_amount")
     private Integer totalAmount;
