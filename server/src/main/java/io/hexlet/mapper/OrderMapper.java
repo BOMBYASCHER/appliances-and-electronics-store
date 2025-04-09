@@ -1,6 +1,8 @@
 package io.hexlet.mapper;
 
+import io.hexlet.dto.OrderDTO;
 import io.hexlet.dto.OrderItemRequestDTO;
+import io.hexlet.dto.PurchaseDTO;
 import io.hexlet.model.Order;
 import io.hexlet.model.Product;
 import io.hexlet.model.Purchase;
@@ -12,6 +14,7 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.ReportingPolicy;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Mapper(
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
@@ -29,6 +32,24 @@ public abstract class OrderMapper {
     @Mapping(target = "user", source = "user")
     @Mapping(target = "date", expression = "java(null)")
     public abstract Purchase toPurchase(OrderItemRequestDTO item, Product product, User user);
+
+    @Mapping(target = "purchases", ignore = true)
+    public abstract OrderDTO toOrderDTO(Order order);
+
+    @Mapping(target = "productId", source = "product.id")
+    @Mapping(target = "title", source = "productTitle")
+    @Mapping(target = "price", source = "productPrice")
+    @Mapping(target = "image", source = "productImage")
+    public abstract PurchaseDTO toPurchaseDTO(Purchase purchase);
+
+    public OrderDTO toOrderDTOWithPurchases(Order order, List<Purchase> purchases) {
+        OrderDTO orderDTO = toOrderDTO(order);
+        List<PurchaseDTO> purchaseDTOs = purchases.stream()
+                .map(this::toPurchaseDTO)
+                .collect(Collectors.toList());
+        orderDTO.setPurchases(purchaseDTOs);
+        return orderDTO;
+    }
 
     public Order toOrder(List<Integer> purchaseIds, int totalAmount, User user) {
         Order order = new Order();
