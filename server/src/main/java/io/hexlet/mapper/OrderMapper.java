@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 )
 public abstract class OrderMapper {
 
+    @Mapping(target = "order", ignore = true)
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "product", source = "product")
     @Mapping(target = "productPrice", source = "product.price")
