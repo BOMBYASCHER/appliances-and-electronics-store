@@ -48,6 +48,10 @@ public class Purchase {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private Order order;
+
     @Column(name = "date")
     private LocalDateTime date;
 }
