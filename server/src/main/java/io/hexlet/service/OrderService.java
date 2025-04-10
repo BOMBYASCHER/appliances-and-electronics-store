@@ -56,6 +56,14 @@ public class OrderService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("User Not Found"));
 
+        Order order = new Order();
+        order.setUser(user);
+        order.setStatus("Оформлен");
+        order.setDate(null);
+        order.setTitle("Order #");
+
+        order = orderRepository.save(order);
+
         List<Purchase> purchases = new ArrayList<>();
         int totalAmount = 0;
 
@@ -64,16 +72,17 @@ public class OrderService {
                     .orElseThrow(() -> new EntityNotFoundException("Product not found"));
 
             Purchase purchase = orderMapper.toPurchase(item, product, user);
+            purchase.setOrder(order);
             purchases.add(purchase);
             totalAmount += product.getPrice() * item.getQuantity();
         }
 
         List<Purchase> savedPurchases = purchaseRepository.saveAll(purchases);
-        List<Integer> purchaseIds = savedPurchases.stream()
-                .map(Purchase::getId)
-                .toList();
 
-        Order order = orderMapper.toOrder(purchaseIds, totalAmount, user);
+        order.setTotalAmount(totalAmount);
+        order.setPurchaseIds(savedPurchases.stream()
+                .map(Purchase::getId)
+                .collect(Collectors.toList()));
 
         orderRepository.save(order);
     }
