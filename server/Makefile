@@ -9,3 +9,9 @@ run-prod:
 
 lint:
 	./gradlew checkstyleMain
+
+test:
+	./gradlew test
+
+report:
+	./gradlew jacocoTestReport

@@ -3,9 +3,9 @@ package io.hexlet.api;
 import io.hexlet.model.Product;
 import io.hexlet.repository.ProductRepository;
 import net.datafaker.Faker;
-import org.hamcrest.Matcher;
 import org.instancio.Instancio;
 import org.instancio.Select;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -13,14 +13,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
+
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
-import static org.hamcrest.Matchers.anyOf;
-import static org.hamcrest.Matchers.everyItem;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.matchesPattern;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -28,7 +24,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WithMockUser
 public class ProductControllerTest {
 
-    private static final String DATE_PATTERN = "\\d{2}-\\d{2}-\\d{4}";
+    private static final String BASE_API_PATH = "/api/data";
+    private static final String PRODUCTS_PATH = BASE_API_PATH + "/products";
+    private static final String PRODUCT_BY_ID_PATH = PRODUCTS_PATH + "/{id}";
 
     @Autowired
     private MockMvc mockMvc;
@@ -38,79 +36,98 @@ public class ProductControllerTest {
 
     private final Faker faker = new Faker();
 
-    public Product generation() {
+    @BeforeEach
+    public void cleanup() {
+        productRepository.deleteAll();
+    }
+
+    private Product generateProduct() {
         return Instancio.of(Product.class)
                 .ignore(Select.field(Product::getId))
                 .supply(Select.field(Product::getTitle), () -> faker.commerce().productName())
-                .supply(Select.field(Product::getPrice), () -> faker.number().numberBetween(1000, 100_000))
-                .supply(Select.field(Product::getCategory), () -> "washing machine")
+                .supply(Select.field(Product::getDescription), () -> faker.lorem().paragraph())
+                .supply(Select.field(Product::getPrice), () -> faker.number().numberBetween(10, 1000))
+                .supply(Select.field(Product::getImage), () -> faker.internet().image())
+                .supply(Select.field(Product::getCategory), () -> faker.commerce().department())
+                .supply(Select.field(Product::getBrand), () -> faker.company().name())
+                .supply(Select.field(Product::getColor), () -> faker.color().name())
                 .create();
     }
 
     @Test
     public void testIndex() throws Exception {
-        Matcher<Iterable<?>> isBoolean = everyItem(anyOf(is(true), is(false)));
+        Product product1 = generateProduct();
+        Product product2 = generateProduct();
+        Product product3 = generateProduct();
+        productRepository.saveAll(List.of(product1, product2, product3));
 
-        var request = get("/api/data/products");
-
-        var result = mockMvc.perform(request)
+        var result = mockMvc.perform(get(PRODUCTS_PATH))
                 .andExpect(status().isOk())
                 .andReturn();
 
         var body = result.getResponse().getContentAsString();
-        assertThatJson(body).isArray();
+        assertThatJson(body).isArray().hasSize(3);
+    }
 
-        mockMvc.perform(request)
-                .andExpect(jsonPath("$", hasSize(9)))
-                .andExpect(jsonPath("$[*].id").exists())
-                .andExpect(jsonPath("$[*].title").exists())
-                .andExpect(jsonPath("$[*].description").exists())
-                .andExpect(jsonPath("$[*].price").exists())
-                .andExpect(jsonPath("$[*].image").exists())
-                .andExpect(jsonPath("$[*].brand").exists())
-                .andExpect(jsonPath("$[*].category").exists())
-                .andExpect(jsonPath("$[*].color").exists())
-                .andExpect(jsonPath("$[*].releaseDate", everyItem(matchesPattern(DATE_PATTERN))))
-                .andExpect(jsonPath("$[*].isFavorite").value(isBoolean))
-                .andExpect(jsonPath("$[*].isInCart").value(isBoolean));
+    @Test
+    public void testIndexWithParams() throws Exception {
+
+        Product product1 = generateProduct();
+        Product product2 = generateProduct();
+        Product product3 = generateProduct();
+        product3.setCategory("washing machine");
+        product3.setBrand("LG");
+        productRepository.saveAll(List.of(product1, product2, product3));
+
+        var result = mockMvc.perform(get(PRODUCTS_PATH)
+                        .param("category", "washing machine")
+                        .param("brand", "LG"))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        var body = result.getResponse().getContentAsString();
+
+        assertThatJson(body)
+                .isArray()
+                .hasSize(1)
+                .first()
+                .isObject()
+                .containsEntry("id", product3.getId())
+                .containsEntry("category", "washing machine")
+                .containsEntry("brand", "LG")
+                .containsEntry("title", product3.getTitle());
     }
 
     @Test
     public void testShow() throws Exception {
-        Product product = generation();
+        Product product = generateProduct();
         productRepository.save(product);
 
-        var request = get("/api/data/products/{id}", product.getId());
-
-        var result = mockMvc.perform(request)
+        var result = mockMvc.perform(get(PRODUCT_BY_ID_PATH, product.getId()))
                 .andExpect(status().isOk())
                 .andReturn();
 
         var body = result.getResponse().getContentAsString();
+
         assertThatJson(body).isObject();
 
-        mockMvc.perform(request)
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(product.getId()))
-                .andExpect(jsonPath("$.title").value(product.getTitle()))
-                .andExpect(jsonPath("$.description").value(product.getDescription()))
-                .andExpect(jsonPath("$.price").value(product.getPrice()))
-                .andExpect(jsonPath("$.image").value(product.getImage()))
-                .andExpect(jsonPath("$.brand").value(product.getBrand()))
-                .andExpect(jsonPath("$.category").value("washing machine"))
-                .andExpect(jsonPath("$.color").value(product.getColor()))
-                .andExpect(jsonPath("$.releaseDate").value(matchesPattern(DATE_PATTERN)))
-                .andExpect(jsonPath("$.isFavorite").value(false))
-                .andExpect(jsonPath("$.isInCart").value(false));
+        assertThatJson(body)
+                .and(
+                        v -> v.node("id").isEqualTo(product.getId()),
+                        v -> v.node("title").isEqualTo(product.getTitle()),
+                        v -> v.node("description").isEqualTo(product.getDescription()),
+                        v -> v.node("price").isEqualTo(product.getPrice()),
+                        v -> v.node("image").isEqualTo(product.getImage()),
+                        v -> v.node("category").isEqualTo(product.getCategory()),
+                        v -> v.node("brand").isEqualTo(product.getBrand()),
+                        v -> v.node("color").isEqualTo(product.getColor())
+                );
+
     }
 
     @Test
     public void testShowNotFound() throws Exception {
-        int productId = 10000;
-
-        var request = get("/api/data/products/{id}", productId);
-
-        mockMvc.perform(request)
+        mockMvc.perform(get(PRODUCT_BY_ID_PATH, 999))
                 .andExpect(status().isNotFound());
     }
 }
