@@ -1,8 +1,11 @@
+run:
+	./gradlew bootRun
+
 run-development:
-	./gradlew bootRun -D spring.profiles.active=development
+	SPRING_PROFILE=development ./gradlew bootRun
 
 run-prod:
-	./gradlew bootRun -D spring.profiles.active=production
+	SPRING_PROFILE=production ./gradlew bootRun
 
 lint:
 	./gradlew checkstyleMain
