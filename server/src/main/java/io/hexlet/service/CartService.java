@@ -88,6 +88,10 @@ public class CartService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("User Not Found"));
 
+        if (!productRepository.existsById(productId)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product Not Found");
+        }
+
         Cart cart = user.getCart();
 
         cart.getProductIds().removeIf(id -> id.equals(productId));
