@@ -2,7 +2,9 @@ package io.hexlet.service;
 
 import io.hexlet.dto.OrderDTO;
 import io.hexlet.dto.OrderItemRequestDTO;
+import io.hexlet.enums.OrderStatus;
 import io.hexlet.mapper.OrderMapper;
+import io.hexlet.mapper.PurchaseMapper;
 import io.hexlet.model.Order;
 import io.hexlet.model.Product;
 import io.hexlet.model.Purchase;
@@ -15,8 +17,9 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,53 +40,61 @@ public class OrderService {
     @Autowired
     private OrderMapper orderMapper;
 
+    @Autowired
+    private PurchaseMapper purchaseMapper;
 
     public List<OrderDTO> getUserOrders(Integer userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("User Not Found"));
-
+        User user = getUserById(userId);
         List<Order> orders = orderRepository.findByUser(user);
 
         return orders.stream()
                 .map(order -> {
                     List<Purchase> purchases = purchaseRepository.findAllById(order.getPurchaseIds());
-                    return orderMapper.toOrderDTOWithPurchases(order, purchases);
+                    return orderMapper.toOrderDTO(order, purchases);
                 })
                 .collect(Collectors.toList());
     }
 
     public void createOrder(Integer userId, List<OrderItemRequestDTO> orderItems) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("User Not Found"));
+        User user = getUserById(userId);
+        Order order = createInitialOrder(user);
 
-        Order order = new Order();
-        order.setUser(user);
-        order.setStatus("Оформлен");
-        order.setDate(null);
-        order.setTitle("Order #");
-
-        order = orderRepository.save(order);
-
-        List<Purchase> purchases = new ArrayList<>();
-        int totalAmount = 0;
-
-        for (OrderItemRequestDTO item : orderItems) {
-            Product product = productRepository.findById(item.getProductId())
-                    .orElseThrow(() -> new EntityNotFoundException("Product not found"));
-
-            Purchase purchase = orderMapper.toPurchase(item, product, user);
-            purchase.setOrder(order);
-            purchases.add(purchase);
-            totalAmount += product.getPrice() * item.getQuantity();
-        }
+        List<Purchase> purchases = orderItems.stream()
+                .map(item -> {
+                    Product product = productRepository.findById(item.getProductId())
+                            .orElseThrow(() -> new EntityNotFoundException("Product not found"));
+                    return purchaseMapper.toPurchase(item, product, user);
+                })
+                .peek(purchase -> purchase.setOrder(order))
+                .collect(Collectors.toList());
 
         List<Purchase> savedPurchases = purchaseRepository.saveAll(purchases);
 
-        order.setTotalAmount(totalAmount);
+        order.setTotalAmount(calculateTotalAmount(savedPurchases));
         order.setPurchaseIds(savedPurchases.stream()
                 .map(Purchase::getId)
                 .collect(Collectors.toList()));
 
         orderRepository.save(order);
+    }
+
+    private int calculateTotalAmount(List<Purchase> purchases) {
+        return purchases.stream()
+                .mapToInt(p -> p.getProductPrice() * p.getQuantity())
+                .sum();
+    }
+
+    private User getUserById(Integer userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User Not Found"));
+    }
+
+    private Order createInitialOrder(User user) {
+        Order order = new Order();
+        order.setUser(user);
+        order.setStatus(OrderStatus.CREATED);
+        order.setDate(LocalDateTime.now());
+        order.setTitle("Заказ №" + UUID.randomUUID().toString().substring(0, 8));
+        return orderRepository.save(order);
     }
 }
