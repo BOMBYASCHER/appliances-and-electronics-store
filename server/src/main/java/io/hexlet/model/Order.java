@@ -1,10 +1,13 @@
 package io.hexlet.model;
 
+import io.hexlet.enums.OrderStatus;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -16,7 +19,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +38,7 @@ public class Order {
     private Integer id;
 
     @Column(name = "date")
-    private Timestamp date;
+    private LocalDateTime date;
 
     @ElementCollection
     @CollectionTable(name = "order_purchases", joinColumns = @JoinColumn(name = "order_id"))
@@ -48,8 +51,9 @@ public class Order {
     @Column(name = "title")
     private String title;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private String status;
+    private OrderStatus status;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.PERSIST)
     private List<Purchase> purchases = new ArrayList<>();
