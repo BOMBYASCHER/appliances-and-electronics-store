@@ -10,7 +10,9 @@ import io.hexlet.repository.ReturnRepository;
 import io.hexlet.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,8 +33,15 @@ public class ReturnService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
 
-        purchaseRepository.findByIdAndOrderId(request.getPurchaseId(), request.getOrderId())
+        Purchase purchase = purchaseRepository.findByIdAndOrderId(request.getPurchaseId(), request.getOrderId())
                 .orElseThrow(() -> new EntityNotFoundException("Purchase not found in this order"));
+
+        if (purchase.getOrder().getUser().getId() != userId) {
+            throw new ResponseStatusException(
+                        HttpStatus.FORBIDDEN,
+                        "You are not allowed to create return for this purchase"
+                    );
+        }
 
         Return returnEntity = new Return();
         returnEntity.setPurchaseId(request.getPurchaseId());
