@@ -2,13 +2,13 @@ package io.hexlet.service;
 
 import io.hexlet.dto.CartDTO;
 import io.hexlet.dto.CartItemDTO;
+import io.hexlet.exception.ResourceNotFoundException;
 import io.hexlet.mapper.CartMapper;
 import io.hexlet.model.Cart;
 import io.hexlet.model.Product;
 import io.hexlet.model.User;
 import io.hexlet.repository.ProductRepository;
 import io.hexlet.repository.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -34,11 +34,10 @@ public class CartService {
 
     public void addProductToCarts(Integer userId, Integer productId) {
         if (!productRepository.existsById(productId)) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product Not Found");
+            throw new ResourceNotFoundException("Product not found with id: " + productId);
         }
 
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("User Not Found"));
+        User user = getUserOrThrow(userId);
 
         Cart cart = user.getCart();
 
@@ -47,8 +46,7 @@ public class CartService {
     }
 
     public CartDTO getUserCart(Integer userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("User Not Found"));
+        User user = getUserOrThrow(userId);
 
         Cart cart = user.getCart();
 
@@ -75,8 +73,7 @@ public class CartService {
     }
 
     public void clearCart(Integer userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("User Not Found"));
+        User user = getUserOrThrow(userId);
 
         Cart cart = user.getCart();
 
@@ -85,8 +82,7 @@ public class CartService {
     }
 
     public void deleteProductById(Integer userId, Integer productId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("User Not Found"));
+        User user = getUserOrThrow(userId);
 
         if (!productRepository.existsById(productId)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product Not Found");
@@ -96,5 +92,10 @@ public class CartService {
 
         cart.getProductIds().removeIf(id -> id.equals(productId));
         userRepository.save(user);
+    }
+
+    public User getUserOrThrow(Integer userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
     }
 }

@@ -2,6 +2,8 @@ package io.hexlet.service;
 
 import io.hexlet.dto.ReturnDTO;
 import io.hexlet.dto.ReturnRequestDTO;
+import io.hexlet.exception.AccessDeniedException;
+import io.hexlet.exception.ResourceNotFoundException;
 import io.hexlet.model.Purchase;
 import io.hexlet.model.Return;
 import io.hexlet.model.User;
@@ -10,9 +12,7 @@ import io.hexlet.repository.ReturnRepository;
 import io.hexlet.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,17 +30,13 @@ public class ReturnService {
     private UserRepository userRepository;
 
     public void createReturn(int userId, ReturnRequestDTO request) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+        User user = getUserOrThrow(userId);
 
         Purchase purchase = purchaseRepository.findByIdAndOrderId(request.getPurchaseId(), request.getOrderId())
                 .orElseThrow(() -> new EntityNotFoundException("Purchase not found in this order"));
 
         if (purchase.getOrder().getUser().getId() != userId) {
-            throw new ResponseStatusException(
-                        HttpStatus.FORBIDDEN,
-                        "You are not allowed to create return for this purchase"
-                    );
+            throw new AccessDeniedException("You are not allowed to create return for this purchase");
         }
 
         Return returnEntity = new Return();
@@ -54,8 +50,7 @@ public class ReturnService {
     }
 
     public List<ReturnDTO> getReturnsForUser(int userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+        User user = getUserOrThrow(userId);
 
         List<Return> returns = returnRepository.findByUser(user);
         return returns.stream()
@@ -82,5 +77,10 @@ public class ReturnService {
         dto.setPhoto(returnItem.getPhoto());
 
         return dto;
+    }
+
+    public User getUserOrThrow(Integer userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
     }
 }
