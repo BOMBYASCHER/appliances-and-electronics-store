@@ -4,3 +4,4 @@ package-lock.json
 /.react-router/
 /build/
 /dist/
+/coverage/

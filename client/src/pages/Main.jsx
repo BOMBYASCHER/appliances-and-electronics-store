@@ -8,9 +8,23 @@ import DataTransfer from '../DataTransfer.js';
 import { useState, useEffect } from 'react';
 
 const Main = () => {
-  const defaultSort = (products) => products;
+  const defaultSort = (data) => {
+    const products = [...data];
+    for (let i = products.length - 1; i > 0; i--) {
+      let j = Math.floor(Math.random() * (i + 1));
+      [products[i], products[j]] = [products[j], products[i]];
+    }
+    return products;
+  };
 
-  const [data, setData] = useState(getData([]));
+  const [data, setData] = useState({
+    brands: [],
+    categories: [],
+    colors: [],
+    releaseYears: [],
+    minPrice: null,
+    maxPrice: null
+  });
   const [filter, setFilter] = useState(new FilterObject({}));
   const [productsList, setProductsList] = useState([]);
   const [sort, setSort] = useState(() => defaultSort);
@@ -30,6 +44,11 @@ const Main = () => {
         setProductsList(sortedList);
       });
   }, [filter]);
+
+  useEffect(() => {
+    const sortedList = sort(productsList);
+    setProductsList(sortedList);
+  }, [sort]);
 
   return (
     <>
@@ -53,6 +72,7 @@ const Catalog = ({ products }) => {
       {products.map(p =>
         <ProductCard
           key={p.id}
+          id={p.id}
           title={p.title}
           description={p.description}
           price={p.price}
@@ -81,8 +101,6 @@ const getData = (data) => {
   const prices = data.map(({ price }) => price);
   const minPrice = Math.min(...prices);
   const maxPrice = Math.max(...prices);
-  console.log(`Min: ${minPrice}`)
-  console.log(`Max: ${maxPrice}`)
 
   return {
     brands,
