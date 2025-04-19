@@ -6,9 +6,6 @@ import io.hexlet.dto.OrderDTO;
 import io.hexlet.dto.OrderItemRequestDTO;
 import io.hexlet.dto.ReturnDTO;
 import io.hexlet.dto.ReturnRequestDTO;
-import io.hexlet.repository.OrderRepository;
-import io.hexlet.repository.PurchaseRepository;
-import io.hexlet.repository.ReturnRepository;
 import io.hexlet.utils.TestAuthUtils;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
@@ -43,15 +40,6 @@ public class ReturnControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
-
-    @Autowired
-    private PurchaseRepository purchaseRepository;
-
-    @Autowired
-    private OrderRepository orderRepository;
-
-    @Autowired
-    private ReturnRepository returnRepository;
 
     private String jwtToken;
 
