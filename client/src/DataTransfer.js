@@ -17,6 +17,11 @@ export default class DataTransfer {
     return (await fetch(requestUrl)).json();
   }
 
+  static async getFavorites() {
+    const requestUrl = new URL('/api/data/favorites', this.baseUrl);
+    return (await fetch(requestUrl)).json();
+  }
+
   static async postProductToFavorites(productId) {
     const requestUrl = new URL('/api/data/favorites', this.baseUrl);
     return (await fetch(requestUrl, {

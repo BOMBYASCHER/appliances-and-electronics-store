@@ -1,10 +1,13 @@
 import cn from 'classnames';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import DataTransfer from '../DataTransfer';
+import { addToCart, addToFavorite, deleteFromCart, deleteFromFavorite, useProductsDispatch } from '../ProductsContext';
 
 const ProductCard = ({ id, title, description, price, image, isFavorite, isInCart }) => {
   const [isAddedToFavorite, setIsAddedToFavorite] = useState(isFavorite);
   const [isAddedToCart, setIsAddedToCart] = useState(isInCart);
+
+  const dispatch = useProductsDispatch();
 
   const btnFavorite = cn('btn', 'btn-favorite', {
     active: isAddedToFavorite
@@ -15,37 +18,52 @@ const ProductCard = ({ id, title, description, price, image, isFavorite, isInCar
 
   const handleBtnFavorite = () => {
     if (isAddedToFavorite) {
-      DataTransfer.deleteProductFromFavorites(id)
-        .then(response => {
-          if (response.status == 204) {
-            setIsAddedToFavorite(false);
-          }
-        });
-    } else {
-      DataTransfer.postProductToFavorites(id)
-        .then(response => {
-          if (response.status == 201) {
-            setIsAddedToFavorite(true);
-          }
-        });
+      dispatch(deleteFromFavorite(id));
+      setIsAddedToFavorite(false);
+    } else if (!isAddedToFavorite) {
+      dispatch(addToFavorite(id));
+      setIsAddedToFavorite(true);
     }
+    
+    // if (isAddedToFavorite) {
+    //   DataTransfer.deleteProductFromFavorites(id)
+    //     .then(response => {
+    //       if (response.status == 204) {
+    //         setIsAddedToFavorite(false);
+    //       }
+    //     });
+    // } else {
+    //   DataTransfer.postProductToFavorites(id)
+    //     .then(response => {
+    //       if (response.status == 201) {
+    //         setIsAddedToFavorite(true);
+    //       }
+    //     });
+    // }
   };
   const handleBtnCart = () => {
     if (isAddedToCart) {
-      DataTransfer.deleteProductFromCart(id)
-        .then(response => {
-          if (response.status == 204) {
-            setIsAddedToCart(false);
-          }
-        });
-    } else {
-      DataTransfer.postProductToCart(id)
-        .then(response => {
-          if (response.status == 201) {
-            setIsAddedToCart(true);
-          }
-        });
+      dispatch(deleteFromCart(id));
+      setIsAddedToCart(false);
+    } else if (!isAddedToCart) {
+      dispatch(addToCart(id));
+      setIsAddedToCart(true);
     }
+    // if (isAddedToCart) {
+    //   DataTransfer.deleteProductFromCart(id)
+    //     .then(response => {
+    //       if (response.status == 204) {
+    //         setIsAddedToCart(false);
+    //       }
+    //     });
+    // } else {
+    //   DataTransfer.postProductToCart(id)
+    //     .then(response => {
+    //       if (response.status == 201) {
+    //         setIsAddedToCart(true);
+    //       }
+    //     });
+    // }
   };
 
   return (
