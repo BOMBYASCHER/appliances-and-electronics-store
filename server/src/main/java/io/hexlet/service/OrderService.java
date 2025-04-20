@@ -3,6 +3,7 @@ package io.hexlet.service;
 import io.hexlet.dto.OrderDTO;
 import io.hexlet.dto.OrderItemRequestDTO;
 import io.hexlet.enums.OrderStatus;
+import io.hexlet.exception.ResourceNotFoundException;
 import io.hexlet.mapper.OrderMapper;
 import io.hexlet.mapper.PurchaseMapper;
 import io.hexlet.model.Order;
@@ -13,7 +14,6 @@ import io.hexlet.repository.OrderRepository;
 import io.hexlet.repository.ProductRepository;
 import io.hexlet.repository.PurchaseRepository;
 import io.hexlet.repository.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,7 +44,7 @@ public class OrderService {
     private PurchaseMapper purchaseMapper;
 
     public List<OrderDTO> getUserOrders(Integer userId) {
-        User user = getUserById(userId);
+        User user = getUserOrThrow(userId);
         List<Order> orders = orderRepository.findByUser(user);
 
         return orders.stream()
@@ -56,13 +56,16 @@ public class OrderService {
     }
 
     public void createOrder(Integer userId, List<OrderItemRequestDTO> orderItems) {
-        User user = getUserById(userId);
+        User user = getUserOrThrow(userId);
         Order order = createInitialOrder(user);
 
         List<Purchase> purchases = orderItems.stream()
                 .map(item -> {
-                    Product product = productRepository.findById(item.getProductId())
-                            .orElseThrow(() -> new EntityNotFoundException("Product not found"));
+                    int productId = item.getProductId();
+                    Product product = productRepository.findById(productId)
+                            .orElseThrow(
+                                    () -> new ResourceNotFoundException("Product not found with id: " + productId)
+                            );
                     return purchaseMapper.toPurchase(item, product, user);
                 })
                 .peek(purchase -> purchase.setOrder(order))
@@ -84,11 +87,6 @@ public class OrderService {
                 .sum();
     }
 
-    private User getUserById(Integer userId) {
-        return userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("User Not Found"));
-    }
-
     private Order createInitialOrder(User user) {
         Order order = new Order();
         order.setUser(user);
@@ -96,5 +94,10 @@ public class OrderService {
         order.setDate(LocalDateTime.now());
         order.setTitle("Заказ №" + UUID.randomUUID().toString().substring(0, 8));
         return orderRepository.save(order);
+    }
+
+    public User getUserOrThrow(Integer userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
     }
 }

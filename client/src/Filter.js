@@ -20,28 +20,6 @@ class Filter {
     if (this.releaseYears.length != 0) { o.releaseYears = this.releaseYears }
     return o;
   }
-
-  // constructor({ search, brands, categories, colors, minPrice,  maxPrice, releaseYears }) {
-  //   this.search = search;
-  //   this.brands = new Set(brands);
-  //   this.categories = new Set(categories);
-  //   this.colors = new Set(colors);
-  //   this.minPrice = minPrice;
-  //   this.maxPrice = maxPrice;
-  //   this.releaseYears = new Set(releaseYears);
-  // };
-
-  // toParameters() {
-  //   const o = {};
-  //   if (this.search) { o.search = this.search }
-  //   if (this.brands) { o.brands = [...this.brands] }
-  //   if (this.categories) { o.categories = [...this.categories] }
-  //   if (this.colors) { o.colors = [...this.colors] }
-  //   if (this.minPrice) { o.minPrice = this.minPrice }
-  //   if (this.maxPrice) { o.maxPrice = this.maxPrice }
-  //   if (this.releaseYears) { o.releaseYears = [...this.releaseYears] }
-  //   return o;
-  // }
 };
 
 export default Filter;

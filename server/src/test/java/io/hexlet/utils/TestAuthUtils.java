@@ -12,10 +12,11 @@ public class TestAuthUtils {
     private static final String REGISTRATION_PATH = "/api/auth/registration";
     private static final String LOGIN_PATH = "/api/auth/login";
 
-    public static String getJwtToken(MockMvc mockMvc, ObjectMapper objectMapper) throws Exception {
+    public static String getJwtToken(MockMvc mockMvc, ObjectMapper objectMapper,
+                                     String phone, String password) throws Exception {
         RegistrationDTO dto = new RegistrationDTO();
-        dto.setPhone("79001234567");
-        dto.setPassword("password");
+        dto.setPhone(phone);
+        dto.setPassword(password);
 
         mockMvc.perform(post(REGISTRATION_PATH)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -29,5 +30,9 @@ public class TestAuthUtils {
                 .andReturn();
 
         return result.getResponse().getContentAsString();
+    }
+
+    public static String getJwtToken(MockMvc mockMvc, ObjectMapper objectMapper) throws Exception {
+        return getJwtToken(mockMvc, objectMapper, "79001234567", "password");
     }
 }

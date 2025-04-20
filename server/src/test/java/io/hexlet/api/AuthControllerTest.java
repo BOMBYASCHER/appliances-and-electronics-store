@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
-public class AuthControllerITest {
+public class AuthControllerTest {
 
     private static final String BASE_API_PATH = "/api/auth";
     private static final String REGISTRATION_PATH = BASE_API_PATH + "/registration";

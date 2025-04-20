@@ -54,7 +54,7 @@ const Brands = ({ brands, filter, setFilter }) => {
 
   return (
     <>
-    {brands.map((brand, index) => 
+    {brands.sort().map((brand, index) => 
       <label id={index}>
         {brand}
         <input type='checkbox' name={brand} onChange={(e) => handleBrandCheckbox(e, brand)}/>
@@ -140,7 +140,7 @@ const ReleaseYears = ({ years, filter, setFilter }) => {
 
   return (
     <>
-    {years.map((year, index) => 
+    {years.sort((a, b) => b - a).map((year, index) => 
       <label id={index}>
         {year}
         <input type='checkbox' name={year} onChange={(e) => handleReleaseYearCheckbox(e, year)}/>
@@ -153,6 +153,7 @@ const ReleaseYears = ({ years, filter, setFilter }) => {
 const PriceRange = ({ minPrice, maxPrice, filter, setFilter }) => {
   const [currentMinPrice, setCurrentMinPrice] = useState(minPrice);
   const [currentMaxPrice, setCurrentMaxPrice] = useState(maxPrice);
+
   useEffect(() => {
     const newFilter = new FilterObject(filter);
     newFilter.minPrice = currentMinPrice;
@@ -160,6 +161,25 @@ const PriceRange = ({ minPrice, maxPrice, filter, setFilter }) => {
     setFilter(newFilter);
   }, [currentMinPrice, currentMaxPrice]);
 
+  const handleMinPrice = ({ target: { value } }) => {
+    if (value < minPrice) {
+      setCurrentMinPrice(minPrice);
+    } else if (value > currentMaxPrice) {
+      setCurrentMinPrice(currentMaxPrice);
+    } else {
+      setCurrentMinPrice(value);
+    }
+  };
+
+  const handleMaxPrice = ({ target: { value } }) => {
+    if (value > maxPrice) {
+      setCurrentMaxPrice(maxPrice);
+    } else if (value < currentMinPrice) {
+      setCurrentMaxPrice(currentMinPrice);
+    } else {
+      setCurrentMaxPrice(value);
+    }
+  };
  
   return (
     <div className="price">
@@ -171,7 +191,7 @@ const PriceRange = ({ minPrice, maxPrice, filter, setFilter }) => {
           value={currentMinPrice}
           min={minPrice}
           max={maxPrice}
-          onChange={e => setCurrentMinPrice(e.target.value)}
+          onChange={e => handleMinPrice(e)}
         />
       </label>
       <label>
@@ -181,17 +201,17 @@ const PriceRange = ({ minPrice, maxPrice, filter, setFilter }) => {
           value={currentMaxPrice}
           min={minPrice}
           max={maxPrice}
-          onChange={e => setCurrentMaxPrice(e.target.value)}
+          onChange={e => handleMaxPrice(e)}
         />
       </label>
-      {/* <input
+      <input
         type='number'
         className="min input"
         value={currentMinPrice}
         placeholder={minPrice}
         min={minPrice}
         max={maxPrice}
-        onChange={e => setCurrentMinPrice(e.target.value)}
+        onChange={e => handleMinPrice(e)}
       />
       <input
         type='number'
@@ -200,8 +220,8 @@ const PriceRange = ({ minPrice, maxPrice, filter, setFilter }) => {
         placeholder={maxPrice}
         min={minPrice}
         max={maxPrice}
-        onChange={e => setCurrentMaxPrice(e.target.value)}
-      /> */}
+        onChange={e => handleMaxPrice(e)}
+      />
     </div>
   );
 };

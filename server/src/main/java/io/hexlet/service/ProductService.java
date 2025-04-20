@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.hexlet.dto.ProductDTO;
 import io.hexlet.dto.ProductParamsDTO;
+import io.hexlet.exception.ResourceNotFoundException;
 import io.hexlet.mapper.ProductMapper;
 import io.hexlet.model.Product;
 import io.hexlet.repository.ProductRepository;
@@ -11,9 +12,7 @@ import io.hexlet.specification.ProductSpecification;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -49,10 +48,7 @@ public class ProductService {
 
     public ProductDTO getProductById(Integer productId) {
         Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
-                        "Product not found with id: " + productId)
-                );
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + productId));
 
         return productMapper.map(product);
     }
