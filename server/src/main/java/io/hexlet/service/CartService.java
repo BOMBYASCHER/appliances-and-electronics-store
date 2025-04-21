@@ -72,6 +72,28 @@ public class CartService {
         return cartMapper.toCartDto(totalAmount, items);
     }
 
+    public void updateProductQuantity(Integer userId, Integer productId, Integer newQuantity) {
+        User user = getUserOrThrow(userId);
+
+        if (!productRepository.existsById(productId)) {
+            throw new ResourceNotFoundException("Product not found with id: " + productId);
+        }
+
+        Cart cart = user.getCart();
+
+        if (!cart.getProductIds().contains(productId)) {
+            throw new ResourceNotFoundException("Product id: " + productId + " not found in cart");
+        }
+
+        cart.getProductIds().removeIf(id -> id.equals(productId));
+
+        for (int i = 0; i < newQuantity; i++) {
+            cart.getProductIds().add(productId);
+        }
+
+        userRepository.save(user);
+    }
+
     public void clearCart(Integer userId) {
         User user = getUserOrThrow(userId);
 
