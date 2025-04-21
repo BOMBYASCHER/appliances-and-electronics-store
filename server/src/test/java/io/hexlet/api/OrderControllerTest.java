@@ -20,9 +20,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -169,5 +167,23 @@ public class OrderControllerTest {
     public void testGetOrdersWithoutAuth() throws Exception {
         mockMvc.perform(get(ORDERS_PATH))
                 .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    public void testCreateOrderBadRequest() throws Exception {
+        List<OrderItemRequestDTO> request1 = List.of(new OrderItemRequestDTO(null, 2));
+        List<OrderItemRequestDTO> request2 = List.of(new OrderItemRequestDTO(1, 0));
+
+        mockMvc.perform(post(ORDERS_PATH)
+                        .header("Authorization", "Bearer " + jwtToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request1)))
+                .andExpect(status().isBadRequest());
+
+        mockMvc.perform(post(ORDERS_PATH)
+                        .header("Authorization", "Bearer " + jwtToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request2)))
+                .andExpect(status().isBadRequest());
     }
 }
