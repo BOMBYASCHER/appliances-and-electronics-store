@@ -3,6 +3,7 @@ package io.hexlet.api;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.hexlet.dto.AddToCartsRequestDTO;
 import io.hexlet.dto.CartDTO;
+import io.hexlet.dto.UpdateCartItemQuantityDTO;
 import io.hexlet.repository.CartRepository;
 import io.hexlet.utils.TestAuthUtils;
 import jakarta.transaction.Transactional;
@@ -20,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -149,5 +151,38 @@ public class CartControllerTest {
 
         assertEquals(36999, cart.getTotalAmount());
         assertEquals(1, cart.getElements().size());
+    }
+
+    @Test
+    public void testUpdateCartItemCount() throws Exception {
+        addToCart(createCartRequest(5));
+
+        var request = new UpdateCartItemQuantityDTO(3);
+
+        int id = 5;
+        mockMvc.perform(put(CART_BY_ID_PATH + id)
+                        .header("Authorization", "Bearer " + jwtToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isOk());
+
+        var body = performGetCart();
+        var cart = objectMapper.readValue(body, CartDTO.class);
+
+        assertEquals(3, cart.getElements().get(0).getQuantity());
+    }
+
+    @Test
+    public void testUpdateCartItemNotFound() throws Exception {
+        addToCart(createCartRequest(1));
+
+        var request = new UpdateCartItemQuantityDTO(5);
+
+        int id = 5;
+        mockMvc.perform(put(CART_BY_ID_PATH + id)
+                        .header("Authorization", "Bearer " + jwtToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isNotFound());
     }
 }
