@@ -2,11 +2,8 @@ package io.hexlet.api;
 
 import io.hexlet.model.Product;
 import io.hexlet.repository.ProductRepository;
-import net.datafaker.Faker;
-import org.instancio.Instancio;
-import org.instancio.Select;
+import io.hexlet.utils.ProductTestUtils;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -18,9 +15,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -43,41 +37,14 @@ public class ProductControllerTest {
     @Autowired
     private ProductRepository productRepository;
 
-    private static final Faker FAKER = new Faker();
-
     @BeforeEach
     public void cleanup() {
         productRepository.deleteAll();
     }
 
-    private Product generateProduct() {
-        return Instancio.of(Product.class)
-                .ignore(Select.field(Product::getId))
-                .supply(Select.field(Product::getTitle), () -> FAKER.commerce().productName())
-                .supply(Select.field(Product::getDescription), () -> FAKER.lorem().paragraph())
-                .supply(Select.field(Product::getPrice), () -> FAKER.number().numberBetween(20000, 100000))
-                .supply(Select.field(Product::getImage), () ->
-                        "https://picsum.photos/200/300?random=" + FAKER.random().hex(10))
-                .supply(Select.field(Product::getCategory), () -> FAKER.commerce().department())
-                .supply(Select.field(Product::getBrand), () ->
-                        FAKER.options().option("Samsung", "LG", "Sony", "Apple", "Xiaomi"))
-                .supply(Select.field(Product::getColor), () ->
-                        FAKER.options().option("Red", "Blue", "Green", "Black", "White"))
-                .supply(Select.field(Product::getReleaseDate), () ->
-                        new java.sql.Date(FAKER.date().past(365 * 2, TimeUnit.DAYS).getTime())
-                )
-                .create();
-    }
-
-    public List<Product> generateProducts(int count) {
-        return IntStream.range(0, count)
-                .mapToObj(i -> generateProduct())
-                .collect(Collectors.toList());
-    }
-
     @Test
     public void testIndex() throws Exception {
-        List<Product> products = generateProducts(15);
+        List<Product> products = ProductTestUtils.generateProducts(15);
         productRepository.saveAll(products);
 
         var result = mockMvc.perform(get(PRODUCTS_PATH))
@@ -91,7 +58,7 @@ public class ProductControllerTest {
 
     @Test
     public void testIndexWithParams() throws Exception {
-        List<Product> products = generateProducts(10);
+        List<Product> products = ProductTestUtils.generateProducts(10);
 
         Product filteredProduct1 = products.get(1);
         filteredProduct1.setCategory("Electronic");
@@ -118,7 +85,7 @@ public class ProductControllerTest {
 
     @Test
     public void testShow() throws Exception {
-        List<Product> products = generateProducts(5);
+        List<Product> products = ProductTestUtils.generateProducts(5);
         productRepository.saveAll(products);
 
         Product existingProduct = products.get(3);
