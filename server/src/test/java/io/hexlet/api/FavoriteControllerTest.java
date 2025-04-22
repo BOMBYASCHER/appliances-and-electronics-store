@@ -4,15 +4,20 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.hexlet.dto.AddToFavoritesRequestDTO;
 import io.hexlet.dto.FavoriteDTO;
+import io.hexlet.model.Product;
+import io.hexlet.repository.ProductRepository;
+import io.hexlet.utils.ProductTestUtils;
 import io.hexlet.utils.TestAuthUtils;
-import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -26,9 +31,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@Transactional
 @SpringBootTest
 @AutoConfigureMockMvc
-@Transactional
+@ActiveProfiles("test")
+@Import(TestcontainersConfiguration.class)
 public class FavoriteControllerTest {
 
     private static final String BASE_API_PATH = "/api/data";
@@ -39,13 +46,21 @@ public class FavoriteControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
+    private ProductRepository productRepository;
+
+    @Autowired
     private ObjectMapper objectMapper;
+
+    private List<Product> testProducts;
 
     private String jwtToken;
 
     @BeforeEach
     public void setUp() throws Exception {
         this.jwtToken = TestAuthUtils.getJwtToken(mockMvc, objectMapper);
+        productRepository.deleteAll();
+        testProducts = ProductTestUtils.generateProducts(3);
+        productRepository.saveAll(testProducts);
     }
 
     private AddToFavoritesRequestDTO createFavoriteRequest(int productId) {
@@ -74,9 +89,17 @@ public class FavoriteControllerTest {
 
     @Test
     public void testIndex() throws Exception {
-        addToFavorites(createFavoriteRequest(1));
-        addToFavorites(createFavoriteRequest(2));
-        addToFavorites(createFavoriteRequest(3));
+        Product product1 = testProducts.get(0);
+        var request1 = createFavoriteRequest(product1.getId());
+        addToFavorites(request1);
+
+        Product product2 = testProducts.get(1);
+        var request2 = createFavoriteRequest(product2.getId());
+        addToFavorites(request2);
+
+        Product product3 = testProducts.get(2);
+        var request3 = createFavoriteRequest(product3.getId());
+        addToFavorites(request3);
 
         var body = performGetFavorites();
 
@@ -85,9 +108,17 @@ public class FavoriteControllerTest {
 
     @Test
     public void testAddToFavorites() throws Exception {
-        addToFavorites(createFavoriteRequest(1));
-        addToFavorites(createFavoriteRequest(2));
-        addToFavorites(createFavoriteRequest(3));
+        Product product1 = testProducts.get(0);
+        var request1 = createFavoriteRequest(product1.getId());
+        addToFavorites(request1);
+
+        Product product2 = testProducts.get(1);
+        var request2 = createFavoriteRequest(product2.getId());
+        addToFavorites(request2);
+
+        Product product3 = testProducts.get(2);
+        var request3 = createFavoriteRequest(product3.getId());
+        addToFavorites(request3);
 
 
         String body = performGetFavorites();
@@ -97,20 +128,28 @@ public class FavoriteControllerTest {
                 });
 
         assertFalse(favorites.isEmpty());
-        assertEquals(1, favorites.get(0).getProductId());
-        assertEquals(2, favorites.get(1).getProductId());
-        assertEquals(3, favorites.get(2).getProductId());
+        assertEquals(product1.getId(), favorites.get(0).getProductId());
+        assertEquals(product2.getId(), favorites.get(1).getProductId());
+        assertEquals(product3.getId(), favorites.get(2).getProductId());
     }
 
     @Test
     public void testDeleteById() throws Exception {
-        addToFavorites(createFavoriteRequest(1));
-        addToFavorites(createFavoriteRequest(2));
-        addToFavorites(createFavoriteRequest(3));
+        Product product1 = testProducts.get(0);
+        var request1 = createFavoriteRequest(product1.getId());
+        addToFavorites(request1);
 
-        int id = 2;
+        Product product2 = testProducts.get(1);
+        var request2 = createFavoriteRequest(product2.getId());
+        addToFavorites(request2);
 
-        mockMvc.perform(delete(FAVORITE_BY_ID_PATH + id)
+        Product product3 = testProducts.get(2);
+        var request3 = createFavoriteRequest(product3.getId());
+        addToFavorites(request3);
+
+        int productId = product2.getId();
+
+        mockMvc.perform(delete(FAVORITE_BY_ID_PATH + productId)
                         .header("Authorization", "Bearer " + jwtToken))
                 .andExpect(status().isNoContent());
 
@@ -121,14 +160,16 @@ public class FavoriteControllerTest {
                 });
 
         assertEquals(2, favorites.size());
-        assertTrue(favorites.stream().noneMatch(favorite -> favorite.getId() == id));
-        assertEquals(1, favorites.get(0).getProductId());
-        assertEquals(3, favorites.get(1).getProductId());
+        assertTrue(favorites.stream().noneMatch(favorite -> favorite.getId() == productId));
+        assertEquals(product1.getId(), favorites.get(0).getProductId());
+        assertEquals(product3.getId(), favorites.get(1).getProductId());
     }
 
     @Test
     public void testDeleteByIdNotFound() throws Exception {
-        addToFavorites(createFavoriteRequest(1));
+        Product product1 = testProducts.get(0);
+        var request1 = createFavoriteRequest(product1.getId());
+        addToFavorites(request1);
 
         int id = 999;
 
