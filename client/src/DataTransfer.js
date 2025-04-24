@@ -1,5 +1,13 @@
+
 export default class DataTransfer {
+  static token;
   static baseUrl = new URL('http://localhost:4040');
+
+  set token(token) { this.token = token };
+
+
+
+  static async registry() {}
 
   static async getProducts() {
     const requestUrl = new URL('/api/data/products', this.baseUrl);
@@ -19,6 +27,11 @@ export default class DataTransfer {
 
   static async getFavorites() {
     const requestUrl = new URL('/api/data/favorites', this.baseUrl);
+    return (await fetch(requestUrl)).json();
+  }
+
+  static async getCart() {
+    const requestUrl = new URL('/api/data/cart', this.baseUrl);
     return (await fetch(requestUrl)).json();
   }
 

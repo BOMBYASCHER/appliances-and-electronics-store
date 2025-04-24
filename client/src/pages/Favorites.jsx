@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import DataTransfer from '../DataTransfer';
-import FavoriteCard from '../components/FavoriteCard.jsx';
+import FavoriteCard from '../components/FavoriteProductCard.jsx';
 import { useProductsMarks } from '../ProductsContext.jsx';
 
 const Favorites = () => {

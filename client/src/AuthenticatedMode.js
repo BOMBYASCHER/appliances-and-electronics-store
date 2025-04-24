@@ -1,19 +1,13 @@
-import DataTransfer from "./DataTransfer";
+import DataTransfer from './DataTransfer.js';
 
-export default class Authenticated {
-  static addToCart(productId) {
-    DataTransfer.postProductToCart(productId);
-  }
+export default function Authenticated() {
+  return {
+    addToCart: (productId) => DataTransfer.postProductToCart(productId),
 
-  static addToFavorites(productId) {
-    DataTransfer.postProductToFavorites(productId);
-  }
+    addToFavorites: (productId) => DataTransfer.postProductToFavorites(productId),
 
-  static deleteFromCart(productId) {
-    DataTransfer.deleteProductFromCart(productId);
-  }
+    deleteFromCart: (productId) => DataTransfer.deleteProductFromCart(productId),
 
-  static deleteFromFavorites(productId) {
-    DataTransfer.deleteProductFromFavorites(productId);
+    deleteFromFavorites: (productId) => DataTransfer.deleteProductFromFavorites(productId)
   }
 };

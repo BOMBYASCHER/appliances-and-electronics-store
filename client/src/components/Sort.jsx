@@ -10,6 +10,7 @@ import {
 import { useState, useEffect } from 'react';
 
 const Sort = ({ defaultSort = (data) => data, setSort }) => {
+// const Sort = ({ reloadProducts = () => {}, setSort }) => {
   // const [sortNumber, setSortNumber] = useState(0);
 
   // useEffect(() => {
@@ -25,6 +26,7 @@ const Sort = ({ defaultSort = (data) => data, setSort }) => {
   const selectSortClassName = cn('select-sort');
 
   const handleSort = ({ target: { value } }) => {
+    // if (value == 0) { reloadProducts() }
     if (value == 0) { setSort(() => defaultSort) }
     if (value == 1) { setSort(() => sortByPriceAsc) }
     if (value == 2) { setSort(() => sortByPriceDesc) }

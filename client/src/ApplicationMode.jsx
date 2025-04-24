@@ -30,7 +30,7 @@ function modeReducer(mode, action) {
   const { type } = action;
   switch (type) {
     case 'ANONIMOUS_MODE': {
-      return Anonimous;
+      return Anonimous();
     }
     case 'AUTHENTICATED_MODE': {
       return Authenticated;

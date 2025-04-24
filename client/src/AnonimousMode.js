@@ -1,9 +1,8 @@
 import { useContext } from "react"
-import { addToCart, addToFavorite, deleteFromCart, deleteFromFavorite, ProductsContext, ProductsDispatchContext } from "./ProductsContext";
+import { addToCart, addToFavorite, deleteFromCart, deleteFromFavorite, ProductsDispatchContext } from "./ProductsContext";
 
 
 export default function Anonimous() {
-  const context = useContext(ProductsContext);
   const dispatch = useContext(ProductsDispatchContext);
   return ({
     addToCart: (productId) => dispatch(addToCart(productId)),
