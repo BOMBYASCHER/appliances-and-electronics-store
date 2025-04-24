@@ -27,8 +27,11 @@ public class User {
     @GeneratedValue(strategy = IDENTITY)
     private Integer id;
 
-    @Column(name = "phone")
+    @Column(name = "phone", unique = true)
     private String phone;
+
+    @Column(name = "fio")
+    private String fio;
 
     @Column(name = "password")
     private String password;

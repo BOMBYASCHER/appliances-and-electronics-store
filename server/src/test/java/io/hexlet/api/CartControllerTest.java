@@ -3,16 +3,24 @@ package io.hexlet.api;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.hexlet.dto.AddToCartsRequestDTO;
 import io.hexlet.dto.CartDTO;
+import io.hexlet.dto.UpdateCartItemQuantityDTO;
+import io.hexlet.model.Product;
 import io.hexlet.repository.CartRepository;
+import io.hexlet.repository.ProductRepository;
+import io.hexlet.utils.ProductTestUtils;
 import io.hexlet.utils.TestAuthUtils;
-import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -21,12 +29,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@Transactional
 @SpringBootTest
 @AutoConfigureMockMvc
-@Transactional
+@ActiveProfiles("test")
+@Import(TestcontainersConfiguration.class)
 public class CartControllerTest {
     private static final String BASE_API_PATH = "/api/data";
     private static final String CART_PATH = BASE_API_PATH + "/cart";
@@ -41,12 +52,19 @@ public class CartControllerTest {
     @Autowired
     private CartRepository cartRepository;
 
+    @Autowired
+    private ProductRepository productRepository;
+
+    private List<Product> testProducts;
+
     private String jwtToken;
 
     @BeforeEach
     public void setUp() throws Exception {
         this.jwtToken = TestAuthUtils.getJwtToken(mockMvc, objectMapper);
-        cartRepository.deleteAll();
+        productRepository.deleteAll();
+        testProducts = ProductTestUtils.generateProducts(10);
+        productRepository.saveAll(testProducts);
     }
 
     private AddToCartsRequestDTO createCartRequest(int productId) {
@@ -85,60 +103,107 @@ public class CartControllerTest {
 
     @Test
     public void testAddToCart() throws Exception {
-        addToCart(createCartRequest(1));
-        addToCart(createCartRequest(2));
-        addToCart(createCartRequest(3));
+        Product product1 = testProducts.get(0);
+        var request1 = createCartRequest(product1.getId());
+        addToCart(request1);
+
+        Product product2 = testProducts.get(1);
+        var request2 = createCartRequest(product2.getId());
+        addToCart(request2);
+
+        Product product3 = testProducts.get(1);
+        var request3 = createCartRequest(product3.getId());
+        addToCart(request3);
+
+        Product product4 = testProducts.get(2);
+        var request4 = createCartRequest(product4.getId());
+        addToCart(request4);
+
+        int price1 = testProducts.get(0).getPrice();
+        int price2 = testProducts.get(1).getPrice();
+        int price3 = testProducts.get(2).getPrice();
+
+        int expectedTotal = price1 + price2 + price2 + price3;
 
         var body = performGetCart();
         var cart = objectMapper.readValue(body, CartDTO.class);
 
-        assertEquals(173997, cart.getTotalAmount());
+        assertEquals(expectedTotal, cart.getTotalAmount());
         assertEquals(3, cart.getElements().size());
-        assertTrue(cart.getElements().stream().anyMatch(item -> item.getProductId() == 1));
-        assertTrue(cart.getElements().stream().anyMatch(item -> item.getProductId() == 2));
-        assertTrue(cart.getElements().stream().anyMatch(item -> item.getProductId() == 3));
+        assertEquals(2, cart.getElements().get(1).getQuantity());
     }
 
     @Test
     public void testClearCart() throws Exception {
-        addToCart(createCartRequest(1));
-        addToCart(createCartRequest(2));
-        addToCart(createCartRequest(3));
+        Product product1 = testProducts.get(0);
+        var request1 = createCartRequest(product1.getId());
+        addToCart(request1);
+
+        Product product2 = testProducts.get(1);
+        var request2 = createCartRequest(product2.getId());
+        addToCart(request2);
+
+        Product product3 = testProducts.get(2);
+        var request3 = createCartRequest(product3.getId());
+        addToCart(request3);
+
+        var body = performGetCart();
+        var cart = objectMapper.readValue(body, CartDTO.class);
+
+        assertEquals(3, cart.getElements().size());
 
         mockMvc.perform(delete(CART_PATH)
                         .header("Authorization", "Bearer " + jwtToken))
                 .andExpect(status().isNoContent());
 
-        var body = performGetCart();
-        var cart = objectMapper.readValue(body, CartDTO.class);
+        var responseBody = performGetCart();
+        var cartBody = objectMapper.readValue(responseBody, CartDTO.class);
 
-        assertEquals(0, cart.getTotalAmount());
-        assertTrue(cart.getElements().isEmpty());
+        assertEquals(0, cartBody.getTotalAmount());
+        assertTrue(cartBody.getElements().isEmpty());
     }
 
     @Test
     public void testDeleteCartItem() throws Exception {
-        addToCart(createCartRequest(1));
-        addToCart(createCartRequest(2));
-        addToCart(createCartRequest(3));
+        Product product1 = testProducts.get(0);
+        var request1 = createCartRequest(product1.getId());
+        addToCart(request1);
 
-        int id = 2;
+        Product product2 = testProducts.get(1);
+        var request2 = createCartRequest(product2.getId());
+        addToCart(request2);
+
+        Product product3 = testProducts.get(2);
+        var request3 = createCartRequest(product3.getId());
+        addToCart(request3);
+
+        int price1 = testProducts.get(0).getPrice();
+        int price2 = testProducts.get(2).getPrice();
+
+        int expectedTotal = price1 + price2;
+
+        int id = product2.getId();
+
         mockMvc.perform(delete(CART_BY_ID_PATH + id)
                         .header("Authorization", "Bearer " + jwtToken))
                 .andExpect(status().isNoContent());
 
         var body = performGetCart();
         var cart = objectMapper.readValue(body, CartDTO.class);
-        assertEquals(91998, cart.getTotalAmount());
+
         assertEquals(2, cart.getElements().size());
+        assertEquals(expectedTotal, cart.getTotalAmount());
         assertFalse(cart.getElements().stream().anyMatch(item -> item.getProductId() == id));
     }
 
     @Test
     public void testDeleteByIdNotFound() throws Exception {
-        addToCart(createCartRequest(1));
+        Product product1 = testProducts.get(0);
+        var request1 = createCartRequest(product1.getId());
+        addToCart(request1);
 
         int id = 999;
+
         mockMvc.perform(delete(CART_BY_ID_PATH + id)
                         .header("Authorization", "Bearer " + jwtToken))
                 .andExpect(status().isNotFound());
@@ -147,7 +212,55 @@ public class CartControllerTest {
         var body = performGetCart();
         var cart = objectMapper.readValue(body, CartDTO.class);
 
-        assertEquals(36999, cart.getTotalAmount());
-        assertEquals(1, cart.getElements().size());
+        var expectedPrice = product1.getPrice();
+        var expectedSize = 1;
+
+        assertEquals(expectedPrice, cart.getTotalAmount());
+        assertEquals(expectedSize, cart.getElements().size());
+    }
+
+    @Test
+    public void testUpdateCartItemCount() throws Exception {
+        Product product1 = testProducts.get(5);
+        var request1 = createCartRequest(product1.getId());
+        addToCart(request1);
+
+        var request = new UpdateCartItemQuantityDTO(9);
+
+        int id = product1.getId();
+
+        mockMvc.perform(put(CART_BY_ID_PATH + id)
+                        .header("Authorization", "Bearer " + jwtToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isOk());
+
+        var body = performGetCart();
+        var cart = objectMapper.readValue(body, CartDTO.class);
+
+        var expectedQuantity = 9;
+
+        assertEquals(expectedQuantity, cart.getElements().get(0).getQuantity());
+
+        var expectedAmount = product1.getPrice() * expectedQuantity;
+
+        assertEquals(expectedAmount, cart.getTotalAmount());
+    }
+
+    @Test
+    public void testUpdateCartItemNotFound() throws Exception {
+        Product product1 = testProducts.get(1);
+        var request1 = createCartRequest(product1.getId());
+        addToCart(request1);
+
+        var request = new UpdateCartItemQuantityDTO(5);
+
+        int id = 5;
+
+        mockMvc.perform(put(CART_BY_ID_PATH + id)
+                        .header("Authorization", "Bearer " + jwtToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isNotFound());
     }
 }

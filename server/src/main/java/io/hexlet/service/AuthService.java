@@ -1,6 +1,8 @@
 package io.hexlet.service;
 
+import io.hexlet.dto.LoginDTO;
 import io.hexlet.dto.RegistrationDTO;
+import io.hexlet.exception.PhoneAlreadyExistsException;
 import io.hexlet.mapper.UserMapper;
 import io.hexlet.model.Cart;
 import io.hexlet.model.Favorite;
@@ -34,6 +36,10 @@ public class AuthService {
     private PasswordEncoder passwordEncoder;
 
     public User register(RegistrationDTO registrationDTO) {
+        if (userRepository.existsByPhone(registrationDTO.getPhone())) {
+            throw new PhoneAlreadyExistsException("Phone number already in use");
+        }
+
         User user = userMapper.map(registrationDTO);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
@@ -48,15 +54,15 @@ public class AuthService {
         return userRepository.save(user);
     }
 
-    public String authenticateAndGetToken(RegistrationDTO registrationDTO) {
+    public String authenticateAndGetToken(LoginDTO loginDTO) {
         Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(
-                        registrationDTO.getPhone(),
-                        registrationDTO.getPassword()
+                        loginDTO.getPhone(),
+                        loginDTO.getPassword()
                 ));
 
         if (authentication.isAuthenticated()) {
-            return jwtService.generateToken(registrationDTO.getPhone());
+            return jwtService.generateToken(loginDTO.getPhone());
         }
 
         return "Fail authentication";

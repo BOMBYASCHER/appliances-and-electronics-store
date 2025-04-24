@@ -4,6 +4,7 @@ import io.hexlet.dto.OrderDTO;
 import io.hexlet.dto.OrderItemRequestDTO;
 import io.hexlet.model.CustomUserDetails;
 import io.hexlet.service.OrderService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,8 +33,8 @@ public class OrderController {
     }
 
     @PostMapping("/orders")
-    public ResponseEntity<Void> create(@AuthenticationPrincipal CustomUserDetails user,
-                                       @RequestBody List<OrderItemRequestDTO> orderItems) {
+    public ResponseEntity<?> create(@AuthenticationPrincipal CustomUserDetails user,
+                                    @Valid @RequestBody List<OrderItemRequestDTO> orderItems) {
         Integer userId = user.getUserId();
         orderService.createOrder(userId, orderItems);
 

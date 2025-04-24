@@ -1,6 +1,7 @@
 package io.hexlet.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.hexlet.dto.LoginDTO;
 import io.hexlet.dto.RegistrationDTO;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -13,19 +14,24 @@ public class TestAuthUtils {
     private static final String LOGIN_PATH = "/api/auth/login";
 
     public static String getJwtToken(MockMvc mockMvc, ObjectMapper objectMapper,
-                                     String phone, String password) throws Exception {
-        RegistrationDTO dto = new RegistrationDTO();
-        dto.setPhone(phone);
-        dto.setPassword(password);
+                                     String phone, String password, String fio) throws Exception {
+        RegistrationDTO regDto = new RegistrationDTO();
+        regDto.setPhone(phone);
+        regDto.setPassword(password);
+        regDto.setFio(fio);
 
         mockMvc.perform(post(REGISTRATION_PATH)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(dto)))
-                .andExpect(status().isOk());
+                        .content(objectMapper.writeValueAsString(regDto)))
+                .andExpect(status().isCreated());
+
+        LoginDTO loginDto = new LoginDTO();
+        loginDto.setPhone(phone);
+        loginDto.setPassword(password);
 
         var result = mockMvc.perform(post(LOGIN_PATH)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(dto)))
+                        .content(objectMapper.writeValueAsString(loginDto)))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -33,6 +39,6 @@ public class TestAuthUtils {
     }
 
     public static String getJwtToken(MockMvc mockMvc, ObjectMapper objectMapper) throws Exception {
-        return getJwtToken(mockMvc, objectMapper, "79001234567", "password");
+        return getJwtToken(mockMvc, objectMapper, "79001234567", "password", "Test User");
     }
 }

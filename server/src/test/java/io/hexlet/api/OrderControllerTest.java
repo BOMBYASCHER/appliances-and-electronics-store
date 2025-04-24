@@ -170,4 +170,22 @@ public class OrderControllerTest {
         mockMvc.perform(get(ORDERS_PATH))
                 .andExpect(status().isUnauthorized());
     }
+
+    @Test
+    public void testCreateOrderBadRequest() throws Exception {
+        List<OrderItemRequestDTO> request1 = List.of(new OrderItemRequestDTO(null, 2));
+        List<OrderItemRequestDTO> request2 = List.of(new OrderItemRequestDTO(1, 0));
+
+        mockMvc.perform(post(ORDERS_PATH)
+                        .header("Authorization", "Bearer " + jwtToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request1)))
+                .andExpect(status().isBadRequest());
+
+        mockMvc.perform(post(ORDERS_PATH)
+                        .header("Authorization", "Bearer " + jwtToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request2)))
+                .andExpect(status().isBadRequest());
+    }
 }

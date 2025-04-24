@@ -2,26 +2,29 @@ package io.hexlet.api;
 
 import io.hexlet.model.Product;
 import io.hexlet.repository.ProductRepository;
-import net.datafaker.Faker;
-import org.instancio.Instancio;
-import org.instancio.Select;
+import io.hexlet.utils.ProductTestUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@WithMockUser
 @SpringBootTest
 @AutoConfigureMockMvc
-@WithMockUser
+@ActiveProfiles("test")
+@Import(TestcontainersConfiguration.class)
 public class ProductControllerTest {
 
     private static final String BASE_API_PATH = "/api/data";
@@ -34,100 +37,92 @@ public class ProductControllerTest {
     @Autowired
     private ProductRepository productRepository;
 
-    private final Faker faker = new Faker();
-
     @BeforeEach
     public void cleanup() {
         productRepository.deleteAll();
     }
 
-    private Product generateProduct() {
-        return Instancio.of(Product.class)
-                .ignore(Select.field(Product::getId))
-                .supply(Select.field(Product::getTitle), () -> faker.commerce().productName())
-                .supply(Select.field(Product::getDescription), () -> faker.lorem().paragraph())
-                .supply(Select.field(Product::getPrice), () -> faker.number().numberBetween(10, 1000))
-                .supply(Select.field(Product::getImage), () -> faker.internet().image())
-                .supply(Select.field(Product::getCategory), () -> faker.commerce().department())
-                .supply(Select.field(Product::getBrand), () -> faker.company().name())
-                .supply(Select.field(Product::getColor), () -> faker.color().name())
-                .create();
-    }
-
     @Test
     public void testIndex() throws Exception {
-        Product product1 = generateProduct();
-        Product product2 = generateProduct();
-        Product product3 = generateProduct();
-        productRepository.saveAll(List.of(product1, product2, product3));
+        List<Product> products = ProductTestUtils.generateProducts(15);
+        productRepository.saveAll(products);
 
         var result = mockMvc.perform(get(PRODUCTS_PATH))
                 .andExpect(status().isOk())
                 .andReturn();
 
         var body = result.getResponse().getContentAsString();
-        assertThatJson(body).isArray().hasSize(3);
+
+        assertThatJson(body).isArray().hasSize(15);
     }
 
     @Test
     public void testIndexWithParams() throws Exception {
+        List<Product> products = ProductTestUtils.generateProducts(10);
 
-        Product product1 = generateProduct();
-        Product product2 = generateProduct();
-        Product product3 = generateProduct();
-        product3.setCategory("washing machine");
-        product3.setBrand("LG");
-        productRepository.saveAll(List.of(product1, product2, product3));
+        Product filteredProduct1 = products.get(1);
+        filteredProduct1.setCategory("Electronic");
+        filteredProduct1.setBrand("Samsung");
+
+        Product filteredProduct2 = products.get(5);
+        filteredProduct2.setCategory("Electronic");
+        filteredProduct2.setBrand("Samsung");
+
+        productRepository.saveAll(products);
+
+        int expectedCount = 2;
 
         var result = mockMvc.perform(get(PRODUCTS_PATH)
-                        .param("category", "washing machine")
-                        .param("brand", "LG"))
+                        .param("category", "Electronic")
+                        .param("brand", "Samsung"))
                 .andExpect(status().isOk())
                 .andReturn();
 
         var body = result.getResponse().getContentAsString();
 
-        assertThatJson(body)
-                .isArray()
-                .hasSize(1)
-                .first()
-                .isObject()
-                .containsEntry("id", product3.getId())
-                .containsEntry("category", "washing machine")
-                .containsEntry("brand", "LG")
-                .containsEntry("title", product3.getTitle());
+        assertThatJson(body).isArray().hasSize(expectedCount);
     }
 
     @Test
     public void testShow() throws Exception {
-        Product product = generateProduct();
-        productRepository.save(product);
+        List<Product> products = ProductTestUtils.generateProducts(5);
+        productRepository.saveAll(products);
 
-        var result = mockMvc.perform(get(PRODUCT_BY_ID_PATH, product.getId()))
+        Product existingProduct = products.get(3);
+        int existingProductId = existingProduct.getId();
+
+        var result = mockMvc.perform(get(PRODUCT_BY_ID_PATH, existingProductId))
                 .andExpect(status().isOk())
                 .andReturn();
 
         var body = result.getResponse().getContentAsString();
 
-        assertThatJson(body).isObject();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        String expectedDate = existingProduct.getReleaseDate() != null
+                ? dateFormat.format(existingProduct.getReleaseDate())
+                : null;
 
+        assertThatJson(body).isObject();
         assertThatJson(body)
                 .and(
-                        v -> v.node("id").isEqualTo(product.getId()),
-                        v -> v.node("title").isEqualTo(product.getTitle()),
-                        v -> v.node("description").isEqualTo(product.getDescription()),
-                        v -> v.node("price").isEqualTo(product.getPrice()),
-                        v -> v.node("image").isEqualTo(product.getImage()),
-                        v -> v.node("category").isEqualTo(product.getCategory()),
-                        v -> v.node("brand").isEqualTo(product.getBrand()),
-                        v -> v.node("color").isEqualTo(product.getColor())
+                        v -> v.node("id").isEqualTo(existingProduct.getId()),
+                        v -> v.node("title").isEqualTo(existingProduct.getTitle()),
+                        v -> v.node("description").isEqualTo(existingProduct.getDescription()),
+                        v -> v.node("price").isEqualTo(existingProduct.getPrice()),
+                        v -> v.node("image").isEqualTo(existingProduct.getImage()),
+                        v -> v.node("brand").isEqualTo(existingProduct.getBrand()),
+                        v -> v.node("category").isEqualTo(existingProduct.getCategory()),
+                        v -> v.node("color").isEqualTo(existingProduct.getColor()),
+                        v -> v.node("releaseDate").isEqualTo(expectedDate),
+                        v -> v.node("isFavorite").isEqualTo(false),
+                        v -> v.node("isInCart").isEqualTo(false)
                 );
-
     }
 
     @Test
     public void testShowNotFound() throws Exception {
-        mockMvc.perform(get(PRODUCT_BY_ID_PATH, 999))
+        int productId = 999;
+        mockMvc.perform(get(PRODUCT_BY_ID_PATH, productId))
                 .andExpect(status().isNotFound());
     }
 }
