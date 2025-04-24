@@ -1,6 +1,7 @@
 package io.hexlet.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.hexlet.dto.AuthResponse;
 import io.hexlet.dto.LoginDTO;
 import io.hexlet.dto.RegistrationDTO;
 import org.springframework.http.MediaType;
@@ -18,7 +19,7 @@ public class TestAuthUtils {
         RegistrationDTO regDto = new RegistrationDTO();
         regDto.setPhone(phone);
         regDto.setPassword(password);
-        regDto.setFio(fio);
+        regDto.setFullName(fio);
 
         mockMvc.perform(post(REGISTRATION_PATH)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -35,7 +36,10 @@ public class TestAuthUtils {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        return result.getResponse().getContentAsString();
+        String responseJson = result.getResponse().getContentAsString();
+        AuthResponse authResponse = objectMapper.readValue(responseJson, AuthResponse.class);
+
+        return authResponse.getAccessToken();
     }
 
     public static String getJwtToken(MockMvc mockMvc, ObjectMapper objectMapper) throws Exception {

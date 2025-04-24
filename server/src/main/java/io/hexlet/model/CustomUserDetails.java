@@ -25,7 +25,7 @@ public class CustomUserDetails implements UserDetails {
     }
 
     public String getFio() {
-        return user.getFio();
+        return user.getFullName();
     }
 
     @Override

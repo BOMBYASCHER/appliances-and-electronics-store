@@ -31,7 +31,7 @@ public class User {
     private String phone;
 
     @Column(name = "fio")
-    private String fio;
+    private String fullName;
 
     @Column(name = "password")
     private String password;
