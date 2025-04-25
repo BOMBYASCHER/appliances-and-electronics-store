@@ -1,8 +1,8 @@
 package io.hexlet.controller;
 
+import io.hexlet.dto.AuthResponse;
 import io.hexlet.dto.LoginDTO;
 import io.hexlet.dto.RegistrationDTO;
-import io.hexlet.model.User;
 import io.hexlet.service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,14 +21,14 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/registration")
-    public ResponseEntity<User> register(@RequestBody @Valid RegistrationDTO registrationDTO) {
-        User user = authService.register(registrationDTO);
+    public ResponseEntity<AuthResponse> register(@RequestBody @Valid RegistrationDTO registrationDTO) {
+        AuthResponse user = authService.register(registrationDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginDTO loginDTO) {
-        var body = authService.authenticateAndGetToken(loginDTO);
+    public ResponseEntity<AuthResponse> login(@RequestBody LoginDTO loginDTO) {
+        AuthResponse body = authService.authenticateAndGetToken(loginDTO);
         return ResponseEntity.ok(body);
     }
 }

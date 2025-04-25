@@ -3,7 +3,7 @@ package io.hexlet.api;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.hexlet.dto.LoginDTO;
 import io.hexlet.dto.RegistrationDTO;
-import io.hexlet.model.User;
+import io.hexlet.model.entity.User;
 import io.hexlet.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,7 +22,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Transactional
@@ -57,14 +56,13 @@ public class AuthControllerTest {
     public void testRegisterSuccess() throws Exception {
         RegistrationDTO dto = new RegistrationDTO();
         dto.setPhone("79501234567");
-        dto.setFio("Test User");
+        dto.setFullName("Test User");
         dto.setPassword("password123");
 
         mockMvc.perform(post(REGISTRATION_PATH)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.phone").value(dto.getPhone()));
+                .andExpect(status().isCreated());
 
         User savedUser = userRepository.findByPhone(dto.getPhone());
         assertNotNull(savedUser);
@@ -76,7 +74,7 @@ public class AuthControllerTest {
     public void testLoginSuccess() throws Exception {
         RegistrationDTO regDto = new RegistrationDTO();
         regDto.setPhone("79501234567");
-        regDto.setFio("Test User");
+        regDto.setFullName("Test User");
         regDto.setPassword("password123");
 
         mockMvc.perform(post(REGISTRATION_PATH)
@@ -104,7 +102,7 @@ public class AuthControllerTest {
     public void testRegisterWithInvalidPhone() throws Exception {
         RegistrationDTO dto = new RegistrationDTO();
         dto.setPhone("123");
-        dto.setFio("Test User");
+        dto.setFullName("Test User");
         dto.setPassword("password123");
 
         mockMvc.perform(post(REGISTRATION_PATH)
@@ -129,7 +127,7 @@ public class AuthControllerTest {
     public void testRegisterDuplicateUser() throws Exception {
         RegistrationDTO dto = new RegistrationDTO();
         dto.setPhone("79501234567");
-        dto.setFio("Test User");
+        dto.setFullName("Test User");
         dto.setPassword("password123");
 
         mockMvc.perform(post(REGISTRATION_PATH)
@@ -147,7 +145,7 @@ public class AuthControllerTest {
     public void testLoginWithWrongPassword() throws Exception {
         RegistrationDTO regDto = new RegistrationDTO();
         regDto.setPhone("79501234567");
-        regDto.setFio("Test User");
+        regDto.setFullName("Test User");
         regDto.setPassword("password123");
 
         mockMvc.perform(post(REGISTRATION_PATH)

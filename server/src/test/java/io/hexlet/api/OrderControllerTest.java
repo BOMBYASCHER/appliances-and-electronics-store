@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.hexlet.dto.OrderDTO;
 import io.hexlet.dto.OrderItemRequestDTO;
 import io.hexlet.dto.PurchaseDTO;
-import io.hexlet.model.Purchase;
+import io.hexlet.model.entity.Purchase;
 import io.hexlet.repository.OrderRepository;
 import io.hexlet.repository.PurchaseRepository;
 import io.hexlet.utils.TestAuthUtils;

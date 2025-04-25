@@ -6,7 +6,7 @@ import io.hexlet.dto.OrderDTO;
 import io.hexlet.dto.OrderItemRequestDTO;
 import io.hexlet.dto.ReturnDTO;
 import io.hexlet.dto.ReturnRequestDTO;
-import io.hexlet.model.Product;
+import io.hexlet.model.entity.Product;
 import io.hexlet.repository.ProductRepository;
 import io.hexlet.utils.TestAuthUtils;
 import jakarta.transaction.Transactional;

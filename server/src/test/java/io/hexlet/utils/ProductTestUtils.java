@@ -1,6 +1,6 @@
 package io.hexlet.utils;
 
-import io.hexlet.model.Product;
+import io.hexlet.model.entity.Product;
 import net.datafaker.Faker;
 import org.instancio.Instancio;
 import org.instancio.Select;

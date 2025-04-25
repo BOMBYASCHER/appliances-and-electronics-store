@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.hexlet.dto.AddToFavoritesRequestDTO;
 import io.hexlet.dto.FavoriteDTO;
-import io.hexlet.model.Product;
+import io.hexlet.model.entity.Product;
 import io.hexlet.repository.ProductRepository;
 import io.hexlet.utils.ProductTestUtils;
 import io.hexlet.utils.TestAuthUtils;

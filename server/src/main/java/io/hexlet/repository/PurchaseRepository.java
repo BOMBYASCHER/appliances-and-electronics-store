@@ -1,6 +1,6 @@
 package io.hexlet.repository;
 
-import io.hexlet.model.Purchase;
+import io.hexlet.model.entity.Purchase;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
