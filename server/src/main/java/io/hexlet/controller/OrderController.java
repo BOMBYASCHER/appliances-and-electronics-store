@@ -2,7 +2,7 @@ package io.hexlet.controller;
 
 import io.hexlet.dto.OrderDTO;
 import io.hexlet.dto.OrderItemRequestDTO;
-import io.hexlet.model.CustomUserDetails;
+import io.hexlet.model.entity.CustomUserDetails;
 import io.hexlet.service.OrderService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

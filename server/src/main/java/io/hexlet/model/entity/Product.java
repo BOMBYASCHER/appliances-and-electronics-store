@@ -1,4 +1,4 @@
-package io.hexlet.model;
+package io.hexlet.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;

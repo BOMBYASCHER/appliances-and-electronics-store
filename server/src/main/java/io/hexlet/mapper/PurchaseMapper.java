@@ -2,9 +2,9 @@ package io.hexlet.mapper;
 
 import io.hexlet.dto.OrderItemRequestDTO;
 import io.hexlet.dto.PurchaseDTO;
-import io.hexlet.model.Product;
-import io.hexlet.model.Purchase;
-import io.hexlet.model.User;
+import io.hexlet.model.entity.Product;
+import io.hexlet.model.entity.Purchase;
+import io.hexlet.model.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;

@@ -1,8 +1,8 @@
 package io.hexlet.mapper;
 
 import io.hexlet.dto.OrderDTO;
-import io.hexlet.model.Order;
-import io.hexlet.model.Purchase;
+import io.hexlet.model.entity.Order;
+import io.hexlet.model.entity.Purchase;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;

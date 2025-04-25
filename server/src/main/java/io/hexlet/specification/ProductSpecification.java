@@ -1,7 +1,7 @@
 package io.hexlet.specification;
 
 import io.hexlet.dto.ProductParamsDTO;
-import io.hexlet.model.Product;
+import io.hexlet.model.entity.Product;
 import jakarta.persistence.criteria.Expression;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;

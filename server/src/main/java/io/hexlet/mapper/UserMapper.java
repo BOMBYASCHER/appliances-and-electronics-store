@@ -2,7 +2,7 @@ package io.hexlet.mapper;
 
 import io.hexlet.dto.AuthResponse;
 import io.hexlet.dto.RegistrationDTO;
-import io.hexlet.model.User;
+import io.hexlet.model.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;

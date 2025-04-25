@@ -3,7 +3,7 @@ package io.hexlet.api;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.hexlet.dto.LoginDTO;
 import io.hexlet.dto.RegistrationDTO;
-import io.hexlet.model.User;
+import io.hexlet.model.entity.User;
 import io.hexlet.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

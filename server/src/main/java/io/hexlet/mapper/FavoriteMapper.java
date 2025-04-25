@@ -1,7 +1,7 @@
 package io.hexlet.mapper;
 
 import io.hexlet.dto.FavoriteDTO;
-import io.hexlet.model.Product;
+import io.hexlet.model.entity.Product;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;

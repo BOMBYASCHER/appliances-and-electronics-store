@@ -2,7 +2,7 @@ package io.hexlet.controller;
 
 import io.hexlet.dto.AddToFavoritesRequestDTO;
 import io.hexlet.dto.FavoriteDTO;
-import io.hexlet.model.CustomUserDetails;
+import io.hexlet.model.entity.CustomUserDetails;
 import io.hexlet.service.FavoriteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

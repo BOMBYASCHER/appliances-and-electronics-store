@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.hexlet.dto.AddToCartsRequestDTO;
 import io.hexlet.dto.CartDTO;
 import io.hexlet.dto.UpdateCartItemQuantityDTO;
-import io.hexlet.model.Product;
+import io.hexlet.model.entity.Product;
 import io.hexlet.repository.CartRepository;
 import io.hexlet.repository.ProductRepository;
 import io.hexlet.utils.ProductTestUtils;
