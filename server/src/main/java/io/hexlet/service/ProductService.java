@@ -6,7 +6,7 @@ import io.hexlet.dto.ProductDTO;
 import io.hexlet.dto.ProductParamsDTO;
 import io.hexlet.exception.ResourceNotFoundException;
 import io.hexlet.mapper.ProductMapper;
-import io.hexlet.model.Product;
+import io.hexlet.model.entity.Product;
 import io.hexlet.repository.ProductRepository;
 import io.hexlet.specification.ProductSpecification;
 import jakarta.annotation.PostConstruct;

@@ -1,15 +1,18 @@
 package io.hexlet.service;
 
+import io.hexlet.dto.AuthResponse;
 import io.hexlet.dto.LoginDTO;
 import io.hexlet.dto.RegistrationDTO;
 import io.hexlet.exception.PhoneAlreadyExistsException;
+import io.hexlet.exception.ResourceNotFoundException;
 import io.hexlet.mapper.UserMapper;
-import io.hexlet.model.Cart;
-import io.hexlet.model.Favorite;
-import io.hexlet.model.User;
+import io.hexlet.model.entity.Cart;
+import io.hexlet.model.entity.Favorite;
+import io.hexlet.model.entity.User;
 import io.hexlet.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -35,7 +38,7 @@ public class AuthService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public User register(RegistrationDTO registrationDTO) {
+    public AuthResponse register(RegistrationDTO registrationDTO) {
         if (userRepository.existsByPhone(registrationDTO.getPhone())) {
             throw new PhoneAlreadyExistsException("Phone number already in use");
         }
@@ -51,20 +54,39 @@ public class AuthService {
         favorite.setProductIds(new ArrayList<>());
         user.setFavorites(favorite);
 
-        return userRepository.save(user);
+        User savedUser = userRepository.save(user);
+
+        String accessToken = jwtService.generateToken(savedUser.getPhone());
+
+        AuthResponse response = userMapper.toAuthResponse(savedUser);
+        response.setAccessToken(accessToken);
+
+        return response;
     }
 
-    public String authenticateAndGetToken(LoginDTO loginDTO) {
+    public AuthResponse authenticateAndGetToken(LoginDTO loginDTO) {
         Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(
                         loginDTO.getPhone(),
                         loginDTO.getPassword()
                 ));
 
-        if (authentication.isAuthenticated()) {
-            return jwtService.generateToken(loginDTO.getPhone());
+        if (!authentication.isAuthenticated()) {
+            throw new BadCredentialsException("Invalid credentials");
         }
 
-        return "Fail authentication";
+        User user = userRepository.findByPhone(loginDTO.getPhone());
+
+        if (user == null) {
+            throw new ResourceNotFoundException("User not found");
+        }
+
+        String accessToken = jwtService.generateToken(user.getPhone());
+
+        AuthResponse response = new AuthResponse();
+        response.setAccessToken(accessToken);
+        response.setFullName(user.getFullName());
+
+        return response;
     }
 }

@@ -3,7 +3,7 @@ package io.hexlet.controller;
 import io.hexlet.dto.AddToCartsRequestDTO;
 import io.hexlet.dto.CartDTO;
 import io.hexlet.dto.UpdateCartItemQuantityDTO;
-import io.hexlet.model.CustomUserDetails;
+import io.hexlet.model.entity.CustomUserDetails;
 import io.hexlet.service.CartService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

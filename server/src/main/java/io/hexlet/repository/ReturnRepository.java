@@ -1,7 +1,7 @@
 package io.hexlet.repository;
 
-import io.hexlet.model.Return;
-import io.hexlet.model.User;
+import io.hexlet.model.entity.Return;
+import io.hexlet.model.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

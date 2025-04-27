@@ -1,6 +1,6 @@
 package io.hexlet.api;
 
-import io.hexlet.model.Product;
+import io.hexlet.model.entity.Product;
 import io.hexlet.repository.ProductRepository;
 import io.hexlet.utils.ProductTestUtils;
 import org.junit.jupiter.api.BeforeEach;

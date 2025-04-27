@@ -1,13 +1,13 @@
-package io.hexlet.model;
+package io.hexlet.model.entity;
 
-import io.hexlet.enums.OrderStatus;
+import io.hexlet.model.enums.OrderStatus;
+import io.hexlet.model.enums.converter.OrderStatusConverter;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -51,7 +51,7 @@ public class Order {
     @Column(name = "title")
     private String title;
 
-    @Enumerated(EnumType.STRING)
+    @Convert(converter = OrderStatusConverter.class)
     @Column(name = "status")
     private OrderStatus status;
 

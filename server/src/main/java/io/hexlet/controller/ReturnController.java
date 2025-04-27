@@ -2,7 +2,7 @@ package io.hexlet.controller;
 
 import io.hexlet.dto.ReturnDTO;
 import io.hexlet.dto.ReturnRequestDTO;
-import io.hexlet.model.CustomUserDetails;
+import io.hexlet.model.entity.CustomUserDetails;
 import io.hexlet.service.ReturnService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

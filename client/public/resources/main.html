@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="./style/style.css">
 </head>
 <body>
+  <script src="card.js"></script>
+
     <div class="main-container"> 
         <img src="/client/public/photo main.jpg" class="main">
     <ul>
@@ -17,26 +19,98 @@
         <li><a href="#">История возвратов</a></li>
         <li><a href="#">История заказов</a></li>
         <li><a href="#">Избранное</a></li>
-        <li><a href="#">Корзина</a></li>
+        <li><a id="cartButton" href="#">Корзина</a></li>
       </ul>
     
       <h1> Maconi</h1>
-      <p>Интернет магазин бытовой техники</p>
+      <p class="z">Интернет магазин бытовой техники</p>
     </div>
+    <div class="search-container">
+      <input type="text" placeholder="Поиск..." class="search-input">
+      <select class="sort-select">
+          <option value="default">Порядок: по умолчанию</option>
+          <option value="price-asc">По цене: низкая к высокой</option>
+          <option value="price-desc">По цене: высокая к низкой</option>
+          <option value="price-desc">Название: А-Я</option>
+          <option value="price-desc">Название: Я-А</option>
+      </select>
+  </div>
+        <div class="container" >
+            <aside class="sidebar">
+                <h2>ФИЛЬТРЫ</h2>
+                <h3>Цена</h3>
+                <input  type="range" id="priceRange" min="20000" max="80000" value="20000">
+                <div class="price-values">
+                    <span>20 999 р.</span>
+                    <span>75 345 р.</span>
+                </div>
+    
+                <h3>Цвет</h3>
+                <p><label><input type="checkbox"> Белый</label></p>
+                <p><label><input type="checkbox"> Серый</label></p>
+                <p><label><input type="checkbox"> Черный</label></p>
+    
+                <h3>Год производства</h3>
+                <p><label ><input type="checkbox"> 2020</label></p>
+                <p><label><input type="checkbox"> 2021</label></p>
+                <p><label><input type="checkbox"> 2023</label></p>
+    
+                <h3>Бренды</h3>
+                <p><label><input type="checkbox"> Indesit</label></p>
+                <p><label><input type="checkbox"> LG</label></p>
+                <p><label><input type="checkbox"> Samsung</label></p>
 
-    <div class="wrapper">
-        <div class="flex">
-          <div class="cart">
-            <div class="tovar">
-              <img class="tovar" src="/client/public/logo.png" alt="">
+                <h3>Устройство</h3>
+                <p><label><input type="checkbox"> Стиральная машина</label></p>
+                <p><label><input type="checkbox">Посудомойки</label></p>
+                <p><label><input type="checkbox"> Сушильная машина</label></p>
+    
+                <button class="applyFilterButton" id="applyFilterButton">Применить фильтр</button>
+            </aside>
+    
+            <main class="product-list">
+                <div class="product-card">
+                    <img src="#" alt="Стиральная машина Indesit">
+                    <h4>Стиральная машина Indesit EWSD 51031 BK CIS</h4>
+                    <p>20 999 р.<span class="original-price">  31 000 р.</span></p>
+                    <button class="buy-button">Купить</button>
+                </div>
+                <div class="product-card">
+                  <img src="#" alt="Стиральная машина Indesit">
+                  <h4>Стиральная машина Indesit EWSD 51031 BK CIS</h4>
+                  <p>20 999 р.<span class="original-price">  31 000 р.</span></p>
+                  <button class="buy-button">Купить</button>
+              </div>
+              <div class="product-card">
+                <img src="#" alt="Стиральная машина Indesit">
+                <h4>Стиральная машина Indesit EWSD 51031 BK CIS</h4>
+                <p>20 999 р.<span class="original-price">  31 000 р.</span></p>
+                <button class="buy-button">Купить</button>
             </div>
-            <div class="description">Мега духовка</div>
-            <div class="description">ОПисание</div>
-            <div class="price">3000</div>
-            <div class="button">
-              <button type="button"> Купить</button>
-            </div>
+            <div class="product-card">
+              <img src="#" alt="Стиральная машина Indesit">
+              <h4>Стиральная машина Indesit EWSD 51031 BK CIS</h4>
+              <p>20 999 р.<span class="original-price">  31 000 р.</span></p>
+              <button class="buy-button">Купить</button>
           </div>
+          <div class="product-card">
+            <img src="#" alt="Стиральная машина Indesit">
+            <h4>Стиральная машина Indesit EWSD 51031 BK CIS</h4>
+            <p>20 999 р.<span class="original-price">  31 000 р.</span></p>
+            <button class="buy-button">Купить</button>
+        </div>
+        <div class="product-card">
+          <img src="#" alt="Стиральная машина Indesit">
+          <h4>Стиральная машина Indesit EWSD 51031 BK CIS</h4>
+          <p>20 999 р.<span class="original-price">  31 000 р.</span></p>
+          <button class="buy-button">Купить</button>
       </div>
+    </div>
+    
+                <div class="contact-container">
+                  <p class="contact-telephon">+7 (999) 999-99-99</p>
+                  <p class="contact-info">info@maconi.ru</p>
+                  <p class="contact-address">Санкт-Петербург, Садистская ул., 21</p>
+              </div>
 </body>
 </html>

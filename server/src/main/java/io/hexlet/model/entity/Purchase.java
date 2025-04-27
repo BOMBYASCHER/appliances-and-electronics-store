@@ -1,4 +1,4 @@
-package io.hexlet.model;
+package io.hexlet.model.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
