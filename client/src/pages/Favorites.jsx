@@ -1,31 +1,41 @@
 import { useEffect, useState } from 'react';
-import DataTransfer from '../DataTransfer';
 import FavoriteCard from '../components/FavoriteProductCard.jsx';
 import { useProductsMarks } from '../ProductsContext.jsx';
+import { useSelector } from 'react-redux';
+import { useGetProductByIdMutation } from '../slices/api/productsApi.js';
 
 const Favorites = () => {
-  const context = useProductsMarks();
-  const [favoritesList, setFavoritesList] = useState([]);
+  const [getFavorite] = useGetProductByIdMutation();
+  const { favorites: favoriteProductIds } = useSelector((state) => state.favorites)
 
-  // useEffect(() => {
-  //   DataTransfer.getFavorites()
-  //     .then(favorites => {
-  //       setFavoritesList(favorites);
-  //     });
-  // }, []);
+  const [favorites, setFavorites] = useState([]);
 
   useEffect(() => {
-    const { favorites } = context;
-    setFavoritesList(favorites);
-  });
+    favoriteProductIds.forEach(productId => {
+      console.log(productId)
+      getFavorite(productId)
+        .then(favorite => {
+          console.log('Favorite object: ')
+          // console.log(favorite)
+          const { data } = favorite;
+          console.log(data)
+          setFavorites([...favorites, data])
+        });
+    });
+  }, []);
 
+  useEffect(() => {
+    console.log(favorites)
+  }, [favorites])
+
+  const headers = ['One', 'Two'];
   return (
     <div>
       <h1>Favorites page</h1>
       <div>
-        {favoritesList.map(({ id, productId, title, description, price, image, isInCart }) => {
-          <FavoriteCard 
-            key={id} 
+        {favorites.map(({ id, productId, title, description, price, image, isInCart }) => {
+          return <FavoriteCard
+            key={id}
             productId={productId}
             title={title}
             description={description}

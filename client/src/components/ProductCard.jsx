@@ -1,13 +1,18 @@
 import cn from 'classnames';
 import { useContext, useState } from 'react';
-import DataTransfer from '../DataTransfer';
 import { addToCart, addToFavorite, deleteFromCart, deleteFromFavorite, useProductsDispatch } from '../ProductsContext';
+import { useAddFavoriteMutation, useDeleteFavoriteMutation } from '../slices/api/favoritesApi';
+import { useAddProductToCartMutation, useDeleteProductFromCartMutation } from '../slices/api/cartApi';
 
 const ProductCard = ({ id, title, description, price, image, isFavorite, isInCart }) => {
-  const [isAddedToFavorite, setIsAddedToFavorite] = useState(isFavorite);
-  const [isAddedToCart, setIsAddedToCart] = useState(isInCart);
+  const [isAddedToFavorite, setIsAddedToFavorite] = useState(false);
+  const [isAddedToCart, setIsAddedToCart] = useState(false);
 
-  const dispatch = useProductsDispatch();
+  const [addFavorite] = useAddFavoriteMutation();
+  const [deleteFavorite] = useDeleteFavoriteMutation();
+
+  const [addToCart] = useAddFavoriteMutation();
+  const [deleteFromCart] = useDeleteFavoriteMutation();
 
   const btnFavorite = cn('btn', 'btn-favorite', {
     active: isAddedToFavorite
@@ -17,53 +22,24 @@ const ProductCard = ({ id, title, description, price, image, isFavorite, isInCar
   });
 
   const handleBtnFavorite = () => {
+    console.log('ID: ' + id)
     if (isAddedToFavorite) {
-      dispatch(deleteFromFavorite(id));
+      deleteFavorite(id);
       setIsAddedToFavorite(false);
     } else if (!isAddedToFavorite) {
-      dispatch(addToFavorite(id));
+      addFavorite(id);
       setIsAddedToFavorite(true);
     }
-    
-    // if (isAddedToFavorite) {
-    //   DataTransfer.deleteProductFromFavorites(id)
-    //     .then(response => {
-    //       if (response.status == 204) {
-    //         setIsAddedToFavorite(false);
-    //       }
-    //     });
-    // } else {
-    //   DataTransfer.postProductToFavorites(id)
-    //     .then(response => {
-    //       if (response.status == 201) {
-    //         setIsAddedToFavorite(true);
-    //       }
-    //     });
-    // }
   };
+
   const handleBtnCart = () => {
     if (isAddedToCart) {
-      dispatch(deleteFromCart(id));
+      deleteFromCart(id);
       setIsAddedToCart(false);
     } else if (!isAddedToCart) {
-      dispatch(addToCart(id));
+      addToCart(id);
       setIsAddedToCart(true);
     }
-    // if (isAddedToCart) {
-    //   DataTransfer.deleteProductFromCart(id)
-    //     .then(response => {
-    //       if (response.status == 204) {
-    //         setIsAddedToCart(false);
-    //       }
-    //     });
-    // } else {
-    //   DataTransfer.postProductToCart(id)
-    //     .then(response => {
-    //       if (response.status == 201) {
-    //         setIsAddedToCart(true);
-    //       }
-    //     });
-    // }
   };
 
   return (
@@ -79,16 +55,5 @@ const ProductCard = ({ id, title, description, price, image, isFavorite, isInCar
     </div>
   )
 }
-
-const postFavorites = (id) => {
-  let success = false;
-  DataTransfer.postProductToFavorites(id)
-    .then(response => {
-      if (response.status == 201 || response.status == 401) {
-        success = true;
-      }
-    });
-  return success
-};
 
 export default ProductCard;

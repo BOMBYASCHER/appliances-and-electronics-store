@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from './authReducer.js';
+import productsReducer from './productsReducer.js';
 import favoritesReducer from './favoritesReducer.js';
 import cartReducer from './cartReducer.js';
 import { productsApi } from './api/productsApi.js';
@@ -9,20 +10,21 @@ import { authApi } from './api/authApi.js';
 
 const store = configureStore({
   reducer: {
-    authentication: authReducer, 
+    authentication: authReducer,
+    products: productsReducer,
     favorites: favoritesReducer,
     cart: cartReducer,
+    [authApi.reducerPath]: authApi.reducer,
     [productsApi.reducerPath]: productsApi.reducer,
     [favoritesApi.reducerPath]: favoritesApi.reducer,
     [cartApi.reducerPath]: cartApi.reducer,
-    [authApi.reducerPath]: authApi.reducer,
   },
   middleware: (getDefaultMiddleware) => 
     getDefaultMiddleware().concat(
+      authApi.middleware,
       productsApi.middleware,
       favoritesApi.middleware,
       cartApi.middleware,
-      authApi.middleware,
     ),
 });
 

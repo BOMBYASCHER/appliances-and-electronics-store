@@ -1,6 +1,5 @@
 import React from 'react';
 import { useState } from "react";
-import DataTransfer from "../DataTransfer";
 import CartProductCard from "../components/CartProductCard";
 import { useDispatch, useSelector } from "react-redux";
 import {  } from '../slices/cartReducer';

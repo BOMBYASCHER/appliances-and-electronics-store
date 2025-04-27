@@ -7,26 +7,12 @@ import {
   sortByReleaseDateAsc,
   sortByReleaseDateDesc
 } from '../SortFunctions.js';
-import { useState, useEffect } from 'react';
 
-const Sort = ({ defaultSort = (data) => data, setSort }) => {
-// const Sort = ({ reloadProducts = () => {}, setSort }) => {
-  // const [sortNumber, setSortNumber] = useState(0);
-
-  // useEffect(() => {
-  //   if (sortNumber == 0) { setSort(defaultSort) }
-  //   if (sortNumber == 1) { setSort(sortByPriceAsc) }
-  //   if (sortNumber == 2) { setSort(sortByPriceDesc) }
-  //   if (sortNumber == 3) { setSort(sortByNameAsc) }
-  //   if (sortNumber == 4) { setSort(sortByNameDesc) }
-  //   if (sortNumber == 5) { setSort(sortByReleaseDateAsc) }
-  //   if (sortNumber == 6) { setSort(sortByReleaseDateDesc) }
-  // }, [sortNumber]);
-
+const Sort = ({ setSort }) => {
+  const defaultSort = (products) => products;
   const selectSortClassName = cn('select-sort');
 
   const handleSort = ({ target: { value } }) => {
-    // if (value == 0) { reloadProducts() }
     if (value == 0) { setSort(() => defaultSort) }
     if (value == 1) { setSort(() => sortByPriceAsc) }
     if (value == 2) { setSort(() => sortByPriceDesc) }
@@ -38,7 +24,6 @@ const Sort = ({ defaultSort = (data) => data, setSort }) => {
 
   return (
     <select defaultValue={0} onChange={e => handleSort(e)} className={selectSortClassName}>
-    {/* <select value={sortNumber} onChange={e => setSortNumber(e.target.value)} className={selectSortClassName}> */}
       <option value={0} >By default</option>
       <option value={1} >Price: Low to High</option>
       <option value={2} >Price: High to Low</option>

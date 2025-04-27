@@ -4,88 +4,23 @@ import Header from '../components/Header.jsx';
 import ProductCard from '../components/ProductCard.jsx';
 import Search from '../components/Search.jsx';
 import Sort from '../components/Sort.jsx';
-import DataTransfer from '../DataTransfer.js';
 import { useState, useEffect } from 'react';
-import { useGetProductsByFilterMutation, useGetProductsQuery } from '../slices/applicationApi.js';
+import { useGetProductsByFilterMutation, useGetProductsQuery, useGetProductsMetadataQuery } from '../slices/api/productsApi.js';
+import { useSelector } from 'react-redux';
 
 const Main = () => {
-  const defaultSort = (data) => {
-    // const products = [...data];
-    // for (let i = products.length - 1; i > 0; i--) {
-    //   let j = Math.floor(Math.random() * (i + 1));
-    //   [products[i], products[j]] = [products[j], products[i]];
-    // }
-    // return products;
-    return data;
-  };
-
-  const { data = [] } = useGetProductsQuery();
-  const [loadProductsByFilter] = useGetProductsByFilterMutation();
-
+  const defaultSort = (data) => data;
+  const { data } = useGetProductsQuery();
+  const metadata = getMetadata(data);
   const [filter, setFilter] = useState(new FilterObject({}));
-  const [productsList, setProductsList] = useState([]);
+  const [loadProductsByFilter] = useGetProductsByFilterMutation();
+  const { products } = useSelector((state) => state.products);
   const [sort, setSort] = useState(() => defaultSort);
+  const processedProducts = sort(products);
 
-  const [metadata, setMetadata] = useState({
-    brands: [],
-    categories: [],
-    colors: [],
-    releaseYears: [],
-    minPrice: null,
-    maxPrice: null
-  });
-
-  useEffect(() => {
-    setProductsList(data);
-    setMetadata(getMetadata(data)); 
-  }, [data]);
-
-  useEffect(() => {
-    const sortedList = sort(productsList);
-    setProductsList(sortedList);
-  }, [sort]);
-
-  useEffect(() => {
-    loadProductsByFilter(filter.toParameters())
-      .then(({ data }) => {
-        const sortedList = sort(data);
-        setProductsList(sortedList);
-      });
+  useEffect(() => { 
+    loadProductsByFilter(filter.toParameters());
   }, [filter]);
-
-
-  // const [metadata, setMetadata] = useState({
-  //   brands: [],
-  //   categories: [],
-  //   colors: [],
-  //   releaseYears: [],
-  //   minPrice: null,
-  //   maxPrice: null
-  // });
-  // const [filter, setFilter] = useState(new FilterObject({}));
-  // const [productsList, setProductsList] = useState([]);
-  // const [sort, setSort] = useState(() => defaultSort);
-
-  // useEffect(() => {
-  //   DataTransfer.getProducts()
-  //     .then(products => {
-  //       setMetadata(getData(products));
-  //       setProductsList(products);
-  //     });
-  // }, []);
-
-  // useEffect(() => {
-  //   DataTransfer.getProductsByParamenters(filter.toParameters())
-  //     .then(products => {
-  //       const sortedList = sort(products);
-  //       setProductsList(sortedList);
-  //     });
-  // }, [filter]);
-
-  // useEffect(() => {
-  //   const sortedList = sort(productsList);
-  //   setProductsList(sortedList);
-  // }, [sort]);
 
   return (
     <>
@@ -94,10 +29,9 @@ const Main = () => {
         <h1>Main page</h1>
         <Search filter={filter} setFilter={setFilter}></Search>
         <Sort defaultSort={defaultSort} setSort={setSort}></Sort>
-        {/* <Sort reloadProducts={refetch} setSort={setSort}></Sort> */}
         <div>
           <Filter data={metadata} filter={filter} setFilter={setFilter}></Filter>
-          <Catalog products={productsList}/>
+          <Catalog products={processedProducts}/>
         </div>
       </div>
     </>
@@ -108,7 +42,6 @@ const Catalog = ({ products = [] }) => {
   return (
     <div>
       {products.map(p =>  {
-        console.log(p.isFavorite)
         return (<ProductCard
           key={p.id}
           id={p.id}
@@ -125,7 +58,17 @@ const Catalog = ({ products = [] }) => {
   );
 };
 
-const getMetadata = (data) => {
+const getMetadata = (data = []) => {
+  if (data.length == 0) {
+    return {
+      brands: [],
+      categories: [],
+      colors: [],
+      releaseYears: [],
+      minPrice: null,
+      maxPrice: null,
+    }
+  }
   const brands = [...new Set(
     data.map(({ brand }) => brand)
   )];

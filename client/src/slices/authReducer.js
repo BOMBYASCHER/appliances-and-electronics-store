@@ -3,7 +3,7 @@ import { authApi } from './api/authApi';
 
 const initialState = {
   accessToken: null,
-  user: '',
+  user: null,
 };
 
 const authSlice = createSlice({
@@ -16,11 +16,17 @@ const authSlice = createSlice({
     }
   },
   extraReducers: (builder) => {
-    builder.addMatcher(authApi.endpoints.login.matchFulfilled, (state, { payload }) => {
-      const { accessToken, fullName } = payload;
-      state.accessToken = accessToken;
-      state.user = fullName;
-    })
+    builder
+      .addMatcher(authApi.endpoints.login.matchFulfilled, (state, { payload }) => {
+        const { accessToken, fullName } = payload;
+        state.accessToken = accessToken;
+        state.user = fullName;
+      })
+      .addMatcher(authApi.endpoints.registration.matchFulfilled, (state, { payload }) => {
+        const { accessToken, fullName } = payload;
+        state.accessToken = accessToken;
+        state.user = fullName;
+      })
   }
 });
 

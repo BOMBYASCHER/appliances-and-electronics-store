@@ -1,17 +1,17 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { getStore } from '../index.js';
+import { urls } from '.';
 
 export const cartApi = createApi({
   reducerPath: 'cartApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:4040/api/data/cart',
-    prepareHeaders: (headers, { getState }) => {
-      const token = getStore().authentication.accessToken;
-      if (token) {
-        headers.set('Authorization', `Bearer ${token}`);
-      }
-      return headers;
-    },
+    baseUrl: urls.data.cart,
+    // prepareHeaders: (headers, { getState }) => {
+    //   const token = getStore().authentication.accessToken;
+    //   if (token) {
+    //     headers.set('Authorization', `Bearer ${token}`);
+    //   }
+    //   return headers;
+    // },
   }),
   tagTypes: ['Cart'],
   endpoints: (builder) => ({
