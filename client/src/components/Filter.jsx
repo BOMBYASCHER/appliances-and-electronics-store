@@ -10,26 +10,28 @@ const Filter = ({ data, filter, setFilter }) => {
   const { brands, categories, colors, releaseYears, minPrice, maxPrice } = data;
 
   return (
-    <div className={filterClassName}>
-      <p>Brand</p>
-      <div className={checkboxClassName}>
-        <Brands brands={brands} filter={filter} setFilter={setFilter}/>
-      </div>
-      <p>Categories</p>
-      <div className={checkboxClassName}>
-        <Categories categories={categories} filter={filter} setFilter={setFilter}/>
-      </div>
-      <p>Price</p>
-      <div className={checkboxClassName}>
-        <PriceRange minPrice={minPrice} maxPrice={maxPrice} filter={filter} setFilter={setFilter} />
-      </div>
-      <p>Color</p>
-      <div className={checkboxClassName}>
-        <Colors colors={colors} filter={filter} setFilter={setFilter}/>
-      </div>
-      <p>Release year</p>
-      <div className={checkboxClassName}>
-        <ReleaseYears years={releaseYears} filter={filter} setFilter={setFilter}/>
+    <div className='col-md-4'>
+      <div className='position-sticky' style={{top: 2 + 'rem'}}>
+        <p>Brand</p>
+        <div className={checkboxClassName}>
+          <Brands brands={brands} filter={filter} setFilter={setFilter}/>
+        </div>
+        <p>Categories</p>
+        <div className={checkboxClassName}>
+          <Categories categories={categories} filter={filter} setFilter={setFilter}/>
+        </div>
+        <p>Price</p>
+        <div className={checkboxClassName}>
+          <PriceRange minPrice={minPrice} maxPrice={maxPrice} filter={filter} setFilter={setFilter} />
+        </div>
+        <p>Color</p>
+        <div className={checkboxClassName}>
+          <Colors colors={colors} filter={filter} setFilter={setFilter}/>
+        </div>
+        <p>Release year</p>
+        <div className={checkboxClassName}>
+          <ReleaseYears years={releaseYears} filter={filter} setFilter={setFilter}/>
+        </div>
       </div>
     </div>
   )

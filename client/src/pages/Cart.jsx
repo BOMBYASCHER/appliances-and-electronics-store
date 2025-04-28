@@ -1,19 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from "react";
 import CartProductCard from "../components/CartProductCard";
 import { useDispatch, useSelector } from "react-redux";
 import {  } from '../slices/cartReducer';
+import Header from '../components/Header.jsx';
 
 const Cart = () => {
-  const context = useProductsMarks();
-
   // const [totalAmount, setTotalAmout] = useState(0);
   // const [cartElements, setCartElements] = useState([]);
-  const totalAmount = useSelector((state) => state.cart.totalAmount);
-  const cartElements = useSelector((state) => state.cart.elements);
-  const dispatch = useDispatch();
 
-  
+  const cartElements = []
+  const totalAmount = 0
 
   // useEffect(() => {
   //   DataTransfer.getCart()
@@ -25,11 +22,11 @@ const Cart = () => {
   // }, []);
 
   useEffect(() => {
-    dispatch()
   }, [cartElements]);
 
   return (
     <div>
+      <Header/>
       <h1>Cart page</h1>
       {cartElements.map(({ id, productId, title, price, image, quantity }) => 
         <CartProductCard

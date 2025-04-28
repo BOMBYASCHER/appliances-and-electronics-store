@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { addToCart, addToFavorite, deleteFromCart, deleteFromFavorite } from '../ProductsContext.jsx';
+// import { addToCart, addToFavorite, deleteFromCart, deleteFromFavorite } from '../ProductsContext.jsx';
 
 const CartProductCard = ({ productId, title, price, image, isFavorite, quantity }) => {
   const dispatch = useProductsDispatch();
@@ -15,31 +15,31 @@ const CartProductCard = ({ productId, title, price, image, isFavorite, quantity 
     active: isAddedToCart
   });
 
-  const handleBtnFavorite = () => {
-    if (isAddedToCart) {
-      dispatch(deleteFromFavorite(productId))
-      setIsAddedToFavorite(false);
-    } else if (!isAddedToCart) {
-      dispatch(addToFavorite(productId))
-      setIsAddedToFavorite(true);
-    }
-  };
-  const handleBtnCart = () => {
-    if (isAddedToCart) {
-      dispatch(deleteFromCart(productId))
-      setIsAddedToCart(false);
-    } else if (!isAddedToCart) {
-      dispatch(addToCart(productId))
-      setIsAddedToCart(true);
-    }
-  };
+  // const handleBtnFavorite = () => {
+  //   if (isAddedToCart) {
+  //     dispatch(deleteFromFavorite(productId))
+  //     setIsAddedToFavorite(false);
+  //   } else if (!isAddedToCart) {
+  //     dispatch(addToFavorite(productId))
+  //     setIsAddedToFavorite(true);
+  //   }
+  // };
+  // const handleBtnCart = () => {
+  //   if (isAddedToCart) {
+  //     dispatch(deleteFromCart(productId))
+  //     setIsAddedToCart(false);
+  //   } else if (!isAddedToCart) {
+  //     dispatch(addToCart(productId))
+  //     setIsAddedToCart(true);
+  //   }
+  // };
 
-  const handleBtnQuantityDec = () => {
-    setCurrentQuantity(currentQuantity + 1);
-  };
-  const handleBtnQuantityInc = () => {
-    setCurrentQuantity(currentQuantity - 1);
-  };
+  // const handleBtnQuantityDec = () => {
+  //   setCurrentQuantity(currentQuantity + 1);
+  // };
+  // const handleBtnQuantityInc = () => {
+  //   setCurrentQuantity(currentQuantity - 1);
+  // };
 
   return (
     <div>

@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { authApi } from './api/authApi';
+import { getStore } from '.';
 
 const initialState = {
   accessToken: null,
@@ -13,7 +14,7 @@ const authSlice = createSlice({
     setCredentials: (state, { payload: { user, token } }) => {
       state.user = user;
       state.accessToken = token;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -29,6 +30,8 @@ const authSlice = createSlice({
       })
   }
 });
+
+export const isAuthenticated = () => getStore().authentication.accessToken !== null;
 
 export const { setCredentials } = authSlice.actions;
 

@@ -25,11 +25,11 @@ const Main = () => {
   return (
     <>
       <Header/>
-      <div>
+      <div className='container'>
         <h1>Main page</h1>
         <Search filter={filter} setFilter={setFilter}></Search>
         <Sort defaultSort={defaultSort} setSort={setSort}></Sort>
-        <div>
+        <div className='row g-5'>
           <Filter data={metadata} filter={filter} setFilter={setFilter}></Filter>
           <Catalog products={processedProducts}/>
         </div>
@@ -39,21 +39,31 @@ const Main = () => {
 };
 
 const Catalog = ({ products = [] }) => {
+  const { favorites } = useSelector((state) => state.favorites);
+  
+  const syncedProducts = products.map(product => {
+    const isFavorite = favorites.includes(product.id);
+    const isInCart = false;
+    return { ...product, isFavorite, isInCart }
+    // product.isFavorite = favorites.includes(product.id)
+  });
   return (
-    <div>
-      {products.map(p =>  {
-        return (<ProductCard
-          key={p.id}
-          id={p.id}
-          title={p.title}
-          description={p.description}
-          price={p.price}
-          image={p.image}
-          isFavorite={p.isFavorite}
-          isInCart={p.isInCart}
-        />)
-      }
-      )}
+    <div className='col-md-8'>
+      <div className='row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3'>
+        {syncedProducts.map(p =>  {
+          return (<ProductCard
+            key={p.id}
+            id={p.id}
+            title={p.title}
+            description={p.description}
+            price={p.price}
+            image={p.image}
+            isFavorite={p.isFavorite}
+            isInCart={p.isInCart}
+          />)
+        }
+        )}
+      </div>
     </div>
   );
 };

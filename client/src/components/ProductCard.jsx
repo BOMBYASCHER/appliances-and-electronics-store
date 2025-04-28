@@ -1,29 +1,33 @@
 import cn from 'classnames';
-import { useContext, useState } from 'react';
-import { addToCart, addToFavorite, deleteFromCart, deleteFromFavorite, useProductsDispatch } from '../ProductsContext';
+import { useState } from 'react';
 import { useAddFavoriteMutation, useDeleteFavoriteMutation } from '../slices/api/favoritesApi';
 import { useAddProductToCartMutation, useDeleteProductFromCartMutation } from '../slices/api/cartApi';
 
 const ProductCard = ({ id, title, description, price, image, isFavorite, isInCart }) => {
-  const [isAddedToFavorite, setIsAddedToFavorite] = useState(false);
-  const [isAddedToCart, setIsAddedToCart] = useState(false);
+  const [isAddedToFavorite, setIsAddedToFavorite] = useState(isFavorite);
+  const [isAddedToCart, setIsAddedToCart] = useState(isInCart);
+  const [isFullText, setIsFullText] = useState(false);
 
   const [addFavorite] = useAddFavoriteMutation();
   const [deleteFavorite] = useDeleteFavoriteMutation();
 
-  const [addToCart] = useAddFavoriteMutation();
-  const [deleteFromCart] = useDeleteFavoriteMutation();
+  const [addToCart] = useAddProductToCartMutation();
+  const [deleteFromCart] = useDeleteProductFromCartMutation();
 
-  const btnFavorite = cn('btn', 'btn-favorite', {
+  const container = cn('col');
+
+  const imageClassName = cn('bd-placeholder-img card-img-top');
+
+  const btnFavorite = cn('btn', 'btn-favorite', 'btn-sm btn-outline-secondary', {
     active: isAddedToFavorite
   });
-  const btnCart = cn('btn', 'btn-cart', {
+  const btnCart = cn('btn', 'btn-cart', 'btn-sm btn-outline-secondary', {
     active: isAddedToCart
   });
 
   const handleBtnFavorite = () => {
-    console.log('ID: ' + id)
     if (isAddedToFavorite) {
+      console.log('id: ' + id + ' title: ' + title)
       deleteFavorite(id);
       setIsAddedToFavorite(false);
     } else if (!isAddedToFavorite) {
@@ -43,17 +47,27 @@ const ProductCard = ({ id, title, description, price, image, isFavorite, isInCar
   };
 
   return (
-    <div>
+    <div className={container}>
       <div>
-        <img src={image} alt="Product image" />
+        <img className='img-fluid img-thumbnail' src={image} alt="Product image" />
       </div>
-      <h1>{title}</h1>
-      <p>{description}</p>
-      <h2>{price}</h2>
-      <button className={btnFavorite} onClick={handleBtnFavorite}>To Favorites</button>
-      <button className={btnCart} onClick={handleBtnCart}>To Cart</button>
+      <div className='card-body'>
+        <h3>{title}</h3>
+        <p className='card-text fw-light'>
+          {isFullText ? description : description.slice(0, 150).concat('...', '\n')}
+          <a className='text-reset' onClick={() => setIsFullText(!isFullText)}>read more</a>
+        </p>
+        {/* <h2>{price}</h2> */}
+        <div className='d-flex justify-content-between align-items-center'>
+          <div className='btn-group'>
+            <button className={btnFavorite} onClick={handleBtnFavorite}>To Favorites</button>
+            <button className={btnCart} onClick={handleBtnCart}>To Cart</button>
+          </div>
+          <div className='p-2 mb-2 text-bg-success rounded-2'>{price}</div>
+        </div>
+      </div>
     </div>
-  )
-}
+  );
+};
 
 export default ProductCard;

@@ -1,52 +1,49 @@
 import { useEffect, useState } from 'react';
 import FavoriteCard from '../components/FavoriteProductCard.jsx';
-import { useProductsMarks } from '../ProductsContext.jsx';
 import { useSelector } from 'react-redux';
 import { useGetProductByIdMutation } from '../slices/api/productsApi.js';
+import Header from '../components/Header.jsx';
+import { useGetFavoritesQuery } from '../slices/api/favoritesApi.js';
 
 const Favorites = () => {
-  const [getFavorite] = useGetProductByIdMutation();
+  const { data } = useGetFavoritesQuery();
   const { favorites: favoriteProductIds } = useSelector((state) => state.favorites)
-
+  const [getFavorite] = useGetProductByIdMutation();
   const [favorites, setFavorites] = useState([]);
 
   useEffect(() => {
-    favoriteProductIds.forEach(productId => {
-      console.log(productId)
+    const result = [];
+    favoriteProductIds.forEach((productId) => {
       getFavorite(productId)
         .then(favorite => {
-          console.log('Favorite object: ')
-          // console.log(favorite)
           const { data } = favorite;
-          console.log(data)
-          setFavorites([...favorites, data])
+          result.push(data);
         });
     });
+    setFavorites(result);
   }, []);
 
-  useEffect(() => {
-    console.log(favorites)
-  }, [favorites])
-
-  const headers = ['One', 'Two'];
   return (
-    <div>
-      <h1>Favorites page</h1>
-      <div>
-        {favorites.map(({ id, productId, title, description, price, image, isInCart }) => {
-          return <FavoriteCard
-            key={id}
-            productId={productId}
-            title={title}
-            description={description}
-            price={price}
-            image={image}
-            isInCart={isInCart}
-          />
-        })}
-      </div>
-    </div>
-  )
-}
+    <>
+      <Header/>
+      <div className='container'>
+        <h1>Favorites page</h1>
+        <div className='col mb-2'>
+          {favorites.map(({ id, productId, title, description, price, image, isInCart }) => (
+            <FavoriteCard
+              key={id}
+              productId={productId}
+              title={title}
+              description={description}
+              price={price}
+              image={image}
+              isInCart={isInCart}
+            />
+          ))}
+        </div>
+      </div> 
+    </>
+  );
+};
 
 export default Favorites;

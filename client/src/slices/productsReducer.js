@@ -3,20 +3,11 @@ import { productsApi } from './api/productsApi';
 
 const initialState = {
   products: [],
-  // sort: (data) => { data },
 };
 
 const productsSlice = createSlice({
   name: 'products',
   initialState,
-  // reducers: {
-  //   // setSort: (state, { payload: { sort } }) => {
-  //   //   state.sort = sort;
-  //   // },
-  //   // sort: (state, { payload: { sort = (p) => p } }) => {
-  //   //   state.products = sort(state.products);
-  //   // },
-  // },
   extraReducers: (builder) => {
     builder
       .addMatcher(productsApi.endpoints.getProducts.matchFulfilled, (state, { payload }) => {
@@ -26,7 +17,5 @@ const productsSlice = createSlice({
       })
   }
 });
-
-// export const { setSort } = productsSlice.actions;
 
 export default productsSlice.reducer;
