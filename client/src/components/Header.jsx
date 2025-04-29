@@ -1,7 +1,9 @@
 import { NavLink } from "react-router";
 import logo from '../assets/logo.png';
+import { useSelector } from "react-redux";
 
 const Header = () => {
+  const { favorites } = useSelector((state) => state.favorites);
   // const classname = "d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom";
   return (
     <div className='container bg-dark'>
@@ -19,7 +21,7 @@ const Header = () => {
           </li>
           <li>
             <NavLink to="/favorites" className='nav-link px-2 link-secondary'>
-              Favorites
+              Favorites ({favorites.length})
             </NavLink>
           </li>
           <li>

@@ -18,6 +18,8 @@ export const cartApi = createApi({
     getCart: builder.query({
       query: () => '',
       providesTags: 'Cart',
+      transformResponse: (response, meta, arg) => ({ data: response, status: meta.response.status }),
+      transformErrorResponse: (response, meta, arg) => ({ data: arg, status: meta.response.status })
     }),
     addProductToCart: builder.mutation({
       query: (product) => ({
@@ -25,6 +27,8 @@ export const cartApi = createApi({
         body: product
       }),
       invalidatesTags: ['Cart', 'Products'],
+      transformResponse: (response, meta, arg) => ({ data: response, status: meta.response.status }),
+      transformErrorResponse: (response, meta, arg) => ({ data: arg, status: meta.response.status })
     }),
     updateProductInCart: builder.mutation({
       query: ({id, quantity}) => ({
@@ -32,6 +36,8 @@ export const cartApi = createApi({
         body: quantity
       }),
       invalidatesTags: ['Cart'],
+      transformResponse: (response, meta, arg) => ({ data: response, status: meta.response.status }),
+      transformErrorResponse: (response, meta, arg) => ({ data: arg, status: meta.response.status })
     }),
     deleteProductFromCart: builder.mutation({
       query: (product) => ({
@@ -39,6 +45,8 @@ export const cartApi = createApi({
         body: product
       }),
       invalidatesTags: ['Cart', 'Products'],
+      transformResponse: (response, meta, arg) => ({ data: response, status: meta.response.status }),
+      transformErrorResponse: (response, meta, arg) => ({ data: arg, status: meta.response.status })
     }),
   }),
 });

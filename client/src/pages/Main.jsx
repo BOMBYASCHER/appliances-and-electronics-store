@@ -42,11 +42,11 @@ const Catalog = ({ products = [] }) => {
   const { favorites } = useSelector((state) => state.favorites);
   
   const syncedProducts = products.map(product => {
-    const isFavorite = favorites.includes(product.id);
+    const isFavorite = favorites.find(({ productId }) => productId == product.id) !== undefined;
     const isInCart = false;
     return { ...product, isFavorite, isInCart }
-    // product.isFavorite = favorites.includes(product.id)
   });
+
   return (
     <div className='col-md-8'>
       <div className='row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3'>

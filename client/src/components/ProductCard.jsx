@@ -27,11 +27,10 @@ const ProductCard = ({ id, title, description, price, image, isFavorite, isInCar
 
   const handleBtnFavorite = () => {
     if (isAddedToFavorite) {
-      console.log('id: ' + id + ' title: ' + title)
       deleteFavorite(id);
       setIsAddedToFavorite(false);
     } else if (!isAddedToFavorite) {
-      addFavorite(id);
+      addFavorite({ productId: id, title, description, price, image, isFavorite, isInCart });
       setIsAddedToFavorite(true);
     }
   };
@@ -57,7 +56,6 @@ const ProductCard = ({ id, title, description, price, image, isFavorite, isInCar
           {isFullText ? description : description.slice(0, 150).concat('...', '\n')}
           <a className='text-reset' onClick={() => setIsFullText(!isFullText)}>read more</a>
         </p>
-        {/* <h2>{price}</h2> */}
         <div className='d-flex justify-content-between align-items-center'>
           <div className='btn-group'>
             <button className={btnFavorite} onClick={handleBtnFavorite}>To Favorites</button>

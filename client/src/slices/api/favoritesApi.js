@@ -18,12 +18,14 @@ export const favoritesApi = createApi({
     getFavorites: builder.query({
       query: () => '',
       providesTags: ['Favorites'],
+      transformResponse: (response, meta, arg) => ({ data: response, status: meta.response.status }),
+      transformErrorResponse: (response, meta, arg) => ({ data: arg, status: meta.response.status }),
     }),
     addFavorite: builder.mutation({
-      query: (product) => ({
+      query: ({ productId }) => ({
         url: '',
         method: 'POST',
-        body: product,
+        body: productId,
         headers: {
           "content-type": "application/json"
         }
@@ -33,8 +35,8 @@ export const favoritesApi = createApi({
       transformErrorResponse: (response, meta, arg) => ({ data: arg, status: meta.response.status }),
     }),
     deleteFavorite: builder.mutation({
-      query: (id) => ({
-        url: `${id}`,
+      query: (productId) => ({
+        url: `${productId}`,
         method: 'DELETE',
       }),
       // invalidatesTags: ['Favorites', 'Products'],

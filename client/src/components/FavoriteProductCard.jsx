@@ -1,9 +1,13 @@
 import cn from 'classnames';
 import { useState } from "react";
+import { useAddFavoriteMutation, useDeleteFavoriteMutation } from '../slices/api/favoritesApi';
 
 const FavoriteCard = ({ productId, title, description, price, image, isInCart }) => {
   const [isAddedToFavorite, setIsAddedToFavorite] = useState(true);
   const [isAddedToCart, setIsAddedToCart] = useState(isInCart);
+
+  const [addFavorite] = useAddFavoriteMutation();
+  const [deleteFavorite] = useDeleteFavoriteMutation()
 
   const btnFavorite = cn('btn', 'btn-favorite', {
     active: isAddedToFavorite
@@ -13,20 +17,21 @@ const FavoriteCard = ({ productId, title, description, price, image, isInCart })
   });
 
   const handleBtnFavorite = () => {
-    if (isAddedToCart) {
-      dispatch(deleteFromFavorite(productId))
-      setIsAddedToFavorite(false);
-    } else if (!isAddedToCart) {
-      dispatch(addToFavorite(productId))
-      setIsAddedToFavorite(true);
+    if (isAddedToFavorite) {
+      deleteFavorite(productId);
+      // setIsAddedToFavorite(false);
+    } else if (!isAddedToFavorite) {
+      addFavorite(productId);
+      // setIsAddedToFavorite(true);
     }
   };
+
   const handleBtnCart = () => {
     if (isAddedToCart) {
-      dispatch(deleteFromCart(productId))
+      deleteFromCart(productId);
       setIsAddedToCart(false);
     } else if (!isAddedToCart) {
-      dispatch(addToCart(productId))
+      addToCart(productId);
       setIsAddedToCart(true);
     }
   };
