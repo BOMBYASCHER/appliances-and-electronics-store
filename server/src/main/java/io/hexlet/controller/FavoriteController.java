@@ -42,11 +42,11 @@ public class FavoriteController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @DeleteMapping("/favorites/{id}")
+    @DeleteMapping("/favorites/{productId}")
     public ResponseEntity<Void> deleteFavoriteItem(@AuthenticationPrincipal CustomUserDetails user,
-                                           @PathVariable Integer id) {
+                                           @PathVariable Integer productId) {
         Integer userId = user.getUserId();
-        favoriteService.deleteFavoriteItemById(userId, id);
+        favoriteService.deleteFavoriteItemById(userId, productId);
 
         return ResponseEntity.noContent().build();
     }
