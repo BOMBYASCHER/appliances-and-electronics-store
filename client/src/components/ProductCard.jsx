@@ -16,8 +16,6 @@ const ProductCard = ({ id, title, description, price, image, isFavorite, isInCar
 
   const container = cn('col');
 
-  const imageClassName = cn('bd-placeholder-img card-img-top');
-
   const btnFavorite = cn('btn', 'btn-favorite', 'btn-sm btn-outline-secondary', {
     active: isAddedToFavorite
   });
@@ -40,7 +38,7 @@ const ProductCard = ({ id, title, description, price, image, isFavorite, isInCar
       deleteFromCart(id);
       setIsAddedToCart(false);
     } else if (!isAddedToCart) {
-      addToCart(id);
+      addToCart({ productId: id, title, price, image });
       setIsAddedToCart(true);
     }
   };

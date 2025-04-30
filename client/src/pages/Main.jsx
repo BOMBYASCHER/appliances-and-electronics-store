@@ -27,8 +27,14 @@ const Main = () => {
       <Header/>
       <div className='container'>
         <h1>Main page</h1>
-        <Search filter={filter} setFilter={setFilter}></Search>
-        <Sort defaultSort={defaultSort} setSort={setSort}></Sort>
+        <div className='row py-3'>
+          <div className='col'>
+            <Search filter={filter} setFilter={setFilter}></Search>
+          </div>
+          <div className='col'>
+            <Sort defaultSort={defaultSort} setSort={setSort}></Sort>
+          </div>
+        </div>
         <div className='row g-5'>
           <Filter data={metadata} filter={filter} setFilter={setFilter}></Filter>
           <Catalog products={processedProducts}/>
@@ -40,10 +46,11 @@ const Main = () => {
 
 const Catalog = ({ products = [] }) => {
   const { favorites } = useSelector((state) => state.favorites);
+  const { products: productsInCart } = useSelector((state) => state.cart);
   
   const syncedProducts = products.map(product => {
     const isFavorite = favorites.find(({ productId }) => productId == product.id) !== undefined;
-    const isInCart = false;
+    const isInCart = productsInCart.find(({ productId }) => productId == product.id) !== undefined;;
     return { ...product, isFavorite, isInCart }
   });
 

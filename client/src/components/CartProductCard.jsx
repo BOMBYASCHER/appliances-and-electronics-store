@@ -1,62 +1,49 @@
-import { useState } from 'react';
-// import { addToCart, addToFavorite, deleteFromCart, deleteFromFavorite } from '../ProductsContext.jsx';
+import cn from 'classnames';
+import { useDeleteProductFromCartMutation, useUpdateProductInCartMutation } from '../slices/api/cartApi';
 
 const CartProductCard = ({ productId, title, price, image, isFavorite, quantity }) => {
-  const dispatch = useProductsDispatch();
+  const [changeQuantity] = useUpdateProductInCartMutation();
+  const [deleteProduct] = useDeleteProductFromCartMutation();
 
-  const [isAddedToCart, setIsAddedToCart] = useState(true);
-  const [isAddedToFavorite, setIsAddedToFavorite] = useState(isFavorite);
-  const [currentQuantity, setCurrentQuantity] = useState(quantity);
-
-  const btnFavorite = cn('btn', 'btn-favorite', {
-    active: isAddedToFavorite
+  const btnDecreaseQuantity = cn('btn', {
+    'btn-primary': quantity > 1,
+    'btn-secondary': quantity == 1
   });
-  const btnCart = cn('btn', 'btn-cart', {
-    active: isAddedToCart
-  });
+  const btnIncreaseQuantity = cn('btn', 'btn-primary');
 
-  // const handleBtnFavorite = () => {
-  //   if (isAddedToCart) {
-  //     dispatch(deleteFromFavorite(productId))
-  //     setIsAddedToFavorite(false);
-  //   } else if (!isAddedToCart) {
-  //     dispatch(addToFavorite(productId))
-  //     setIsAddedToFavorite(true);
-  //   }
-  // };
-  // const handleBtnCart = () => {
-  //   if (isAddedToCart) {
-  //     dispatch(deleteFromCart(productId))
-  //     setIsAddedToCart(false);
-  //   } else if (!isAddedToCart) {
-  //     dispatch(addToCart(productId))
-  //     setIsAddedToCart(true);
-  //   }
-  // };
-
-  // const handleBtnQuantityDec = () => {
-  //   setCurrentQuantity(currentQuantity + 1);
-  // };
-  // const handleBtnQuantityInc = () => {
-  //   setCurrentQuantity(currentQuantity - 1);
-  // };
+  const handleBtnDecrease = () => {
+    if (quantity - 1 > 0) {
+      changeQuantity({ productId, quantity: quantity - 1 });
+    }
+  };
+  const handleBtnIncrease = () => {
+    changeQuantity({ productId, quantity: quantity + 1 });
+  };
 
   return (
-    <div>
-      <div>
-        <img src={image} alt="Product image" />
+    <div className="row g-0 border rounded">
+      <div className="col p-4 d-flex flex-column position-static justify-content-between">
+        <h3>{title}</h3>
+        <div className='d-flex justify-content-between align-items-center'>
+          <div className='row row-cols-auto'>
+            <div className='col'>
+              <button className={btnDecreaseQuantity} onClick={handleBtnDecrease}>-</button>
+            </div>
+            <div className='col-3'>
+              <input className="form-control" type='number' value={quantity} disabled={true}></input>
+            </div>
+            <div className='col'>
+              <button className={btnIncreaseQuantity} onClick={handleBtnIncrease}>+</button>
+            </div>
+          </div>
+          <h2 className='text-end'>{price}</h2>
+        </div>
       </div>
-      <h1>{title}</h1>
-      <h2>{price}</h2>
-      <button className={btnFavorite} onClick={handleBtnFavorite}>To Favorites</button>
-      <button className={btnCart} onClick={handleBtnCart}>To Cart</button>
-      <div>
-        <label>
-          Quantity:
-          <input type='number' value={currentQuantity}></input>
-        </label>
-        <button onClick={handleBtnQuantityDec}></button>
-        <button onClick={handleBtnQuantityInc}></button>
+      <div className="col-3 d-none d-lg-block">
+        <img width={'auto'} height={200} src={image} alt="Product image" />
+      </div>
+      <div className="col-auto d-flex">
+        <button className="btn btn-danger" onClick={() => deleteProduct(productId)}>X</button>
       </div>
     </div>
   );

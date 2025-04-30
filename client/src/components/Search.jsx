@@ -5,7 +5,7 @@ import { useState } from 'react';
 const Search = ({ filter, setFilter }) => {
   const [searchString, setSearchString] = useState('');
 
-  const inputSearchClassName = cn('search');
+  const inputSearchClassName = cn('input-group');
 
   const onInput = (s) => {
     const newFilter = new Filter(filter);
@@ -15,8 +15,14 @@ const Search = ({ filter, setFilter }) => {
 
   return (
     <div className={inputSearchClassName}>
-      <input type='search' value={searchString} onChange={(e) => setSearchString(e.target.value)}/>
-      <button onClick={() => onInput(searchString)}></button>
+      <input
+        className='form-control'
+        type='search'
+        value={searchString}
+        onChange={(e) => setSearchString(e.target.value)}
+        placeholder='search string...'
+      />
+      <button className='btn btn-secondary' onClick={() => onInput(searchString)}>Find</button>
     </div>
   );
 };

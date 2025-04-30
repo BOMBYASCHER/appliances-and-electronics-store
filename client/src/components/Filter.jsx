@@ -4,33 +4,45 @@ import { useState, useEffect } from 'react';
 import FilterObject from '../Filter.js';
 
 const Filter = ({ data, filter, setFilter }) => {
-  const filterClassName = cn('filter');
-  const checkboxClassName = cn('select-filter');
-
+  const checkboxClassName = cn('col');
   const { brands, categories, colors, releaseYears, minPrice, maxPrice } = data;
 
   return (
     <div className='col-md-4'>
       <div className='position-sticky' style={{top: 2 + 'rem'}}>
-        <p>Brand</p>
-        <div className={checkboxClassName}>
-          <Brands brands={brands} filter={filter} setFilter={setFilter}/>
+        <div className='border rounded p-3 mb-2'>
+          <p className='fs-5'>Brands</p>
+          <div className={checkboxClassName}>
+            <Brands brands={brands} filter={filter} setFilter={setFilter}/>
+          </div>
         </div>
-        <p>Categories</p>
-        <div className={checkboxClassName}>
-          <Categories categories={categories} filter={filter} setFilter={setFilter}/>
+        
+        <div className='border rounded p-3 mb-2'>
+          <p className='fs-5'>Categories</p>
+          <div className={checkboxClassName}>
+            <Categories categories={categories} filter={filter} setFilter={setFilter}/>
+          </div>
         </div>
-        <p>Price</p>
-        <div className={checkboxClassName}>
-          <PriceRange minPrice={minPrice} maxPrice={maxPrice} filter={filter} setFilter={setFilter} />
+        
+        <div className='border rounded p-3 mb-2'>
+          <p className='fs-5'>Price</p>
+          <div className={checkboxClassName}>
+            <PriceRange minPrice={minPrice} maxPrice={maxPrice} filter={filter} setFilter={setFilter} />
+          </div>
         </div>
-        <p>Color</p>
-        <div className={checkboxClassName}>
-          <Colors colors={colors} filter={filter} setFilter={setFilter}/>
+        
+        <div className='border rounded p-3 mb-2'>
+          <p className='fs-5'>Color</p>
+          <div className={checkboxClassName}>
+            <Colors colors={colors} filter={filter} setFilter={setFilter}/>
+          </div>
         </div>
-        <p>Release year</p>
-        <div className={checkboxClassName}>
-          <ReleaseYears years={releaseYears} filter={filter} setFilter={setFilter}/>
+        
+        <div className='border rounded p-3 mb-2'>
+          <p className='fs-5'>Release year</p>
+          <div className={checkboxClassName}>
+            <ReleaseYears years={releaseYears} filter={filter} setFilter={setFilter}/>
+          </div>
         </div>
       </div>
     </div>
@@ -54,16 +66,14 @@ const Brands = ({ brands, filter, setFilter }) => {
     }
   };
 
-  return (
-    <>
-    {brands.sort().map((brand, index) => 
+  return (brands.sort().map((brand, index) => 
+    <div className='row'>
       <label id={index}>
+        <input className='form-check-input' type='checkbox' name={brand} onChange={(e) => handleBrandCheckbox(e, brand)}/>
         {brand}
-        <input type='checkbox' name={brand} onChange={(e) => handleBrandCheckbox(e, brand)}/>
       </label>
-    )}
-    </>
-  );
+    </div>
+  ));
 };
 
 const Colors = ({ colors, filter, setFilter }) => {
@@ -82,16 +92,14 @@ const Colors = ({ colors, filter, setFilter }) => {
       setCheckedColors(checkedColors.filter(c => c !== color));
     }
   };
-  return (
-    <>
-    {colors.map((color, index)=> 
+  return (colors.map((color, index) =>
+    <div className='row'>
       <label id={index}>
+        <input className='form-check-input' type='checkbox' name={color} onChange={(e) => handleColorCheckbox(e, color)}/>
         {color}
-        <input type='checkbox' name={color} onChange={(e) => handleColorCheckbox(e, color)}/>
       </label>
-    )}
-    </>
-  );
+    </div>
+  ));
 };
 
 const Categories = ({ categories, filter, setFilter }) => {
@@ -111,16 +119,14 @@ const Categories = ({ categories, filter, setFilter }) => {
     }
 
   };
-  return (
-    <>
-    {categories.map((category, index) => 
+  return (categories.map((category, index) =>
+    <div className='row'>
       <label id={index}>
+        <input className='form-check-input' type='checkbox' name={category} onChange={(e) => handleCategoryCheckbox(e, category)}/>
         {category}
-        <input type='checkbox' name={category} onChange={(e) => handleCategoryCheckbox(e, category)}/>
       </label>
-    )}
-    </>
-  );
+    </div>
+  ));
 };
 
 const ReleaseYears = ({ years, filter, setFilter }) => {
@@ -140,16 +146,14 @@ const ReleaseYears = ({ years, filter, setFilter }) => {
     }
   };
 
-  return (
-    <>
-    {years.sort((a, b) => b - a).map((year, index) => 
+  return (years.sort((a, b) => b - a).map((year, index) =>
+    <div className='row'>
       <label id={index}>
+        <input className='form-check-input' type='checkbox' name={year} onChange={(e) => handleReleaseYearCheckbox(e, year)}/>
         {year}
-        <input type='checkbox' name={year} onChange={(e) => handleReleaseYearCheckbox(e, year)}/>
-      </label>
-    )}
-    </>
-  );
+      </label> 
+    </div>
+  ));
 };
 
 const PriceRange = ({ minPrice, maxPrice, filter, setFilter }) => {
@@ -189,7 +193,7 @@ const PriceRange = ({ minPrice, maxPrice, filter, setFilter }) => {
       <label>
         <input
           type="range"
-          className="min range-input"
+          className="form-range min range-input"
           value={currentMinPrice}
           min={minPrice}
           max={maxPrice}
@@ -199,7 +203,7 @@ const PriceRange = ({ minPrice, maxPrice, filter, setFilter }) => {
       <label>
         <input
           type="range"
-          className="max range-input"
+          className="form-range max range-input"
           value={currentMaxPrice}
           min={minPrice}
           max={maxPrice}
@@ -208,7 +212,7 @@ const PriceRange = ({ minPrice, maxPrice, filter, setFilter }) => {
       </label>
       <input
         type='number'
-        className="min input"
+        className="form-control min input"
         value={currentMinPrice}
         placeholder={minPrice}
         min={minPrice}
@@ -217,7 +221,7 @@ const PriceRange = ({ minPrice, maxPrice, filter, setFilter }) => {
       />
       <input
         type='number'
-        className="max input"
+        className="form-control max input"
         value={currentMaxPrice}
         placeholder={maxPrice}
         min={minPrice}

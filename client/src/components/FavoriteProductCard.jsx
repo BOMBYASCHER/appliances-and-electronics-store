@@ -1,6 +1,7 @@
 import cn from 'classnames';
 import { useState } from "react";
 import { useAddFavoriteMutation, useDeleteFavoriteMutation } from '../slices/api/favoritesApi';
+import { useAddProductToCartMutation, useDeleteProductFromCartMutation } from '../slices/api/cartApi';
 
 const FavoriteCard = ({ productId, title, description, price, image, isInCart }) => {
   const [isAddedToFavorite, setIsAddedToFavorite] = useState(true);
@@ -9,20 +10,21 @@ const FavoriteCard = ({ productId, title, description, price, image, isInCart })
   const [addFavorite] = useAddFavoriteMutation();
   const [deleteFavorite] = useDeleteFavoriteMutation()
 
-  const btnFavorite = cn('btn', 'btn-favorite', {
+  const [addToCart] = useAddProductToCartMutation();
+  const [deleteFromCart] = useDeleteProductFromCartMutation();
+
+  const btnFavorite = cn('btn', 'col-auto', 'btn-secondary', {
     active: isAddedToFavorite
   });
-  const btnCart = cn('btn', 'btn-cart', {
+  const btnCart = cn('btn', 'col-auto', 'btn-outline-secondary', {
     active: isAddedToCart
   });
 
   const handleBtnFavorite = () => {
     if (isAddedToFavorite) {
       deleteFavorite(productId);
-      // setIsAddedToFavorite(false);
     } else if (!isAddedToFavorite) {
       addFavorite(productId);
-      // setIsAddedToFavorite(true);
     }
   };
 
@@ -31,7 +33,7 @@ const FavoriteCard = ({ productId, title, description, price, image, isInCart })
       deleteFromCart(productId);
       setIsAddedToCart(false);
     } else if (!isAddedToCart) {
-      addToCart(productId);
+      addToCart({ productId, title, price, image });
       setIsAddedToCart(true);
     }
   };
@@ -43,7 +45,7 @@ const FavoriteCard = ({ productId, title, description, price, image, isInCart })
         <h3 className="mb-0">{title}</h3>
         <p className="card-text mb-auto">{description}</p>
         <h2>{price}</h2>
-        <div>
+        <div className='row gap-2'>
           <button className={btnFavorite} onClick={handleBtnFavorite}>To Favorites</button>
           <button className={btnCart} onClick={handleBtnCart}>To Cart</button>
         </div>

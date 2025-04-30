@@ -5,7 +5,13 @@ import { useGetFavoritesQuery } from '../slices/api/favoritesApi.js';
 
 const Favorites = () => {
   const { data } = useGetFavoritesQuery();
-  const { favorites } = useSelector((state) => state.favorites)
+  const { favorites } = useSelector((state) => state.favorites);
+  const { products } = useSelector((state) => state.cart);
+
+  const syncedFavorites = favorites.map(favorite => {
+    const isInCart = products.find(({ productId }) => productId == favorite.productId) !== undefined;
+    return { ...favorite, isInCart }
+  });
 
   return (
     <>
@@ -13,7 +19,7 @@ const Favorites = () => {
       <div className='container'>
         <h1>Favorites page</h1>
         <div className='col mb-2'>
-          {favorites.map(({ id, productId, title, description, price, image, isInCart }) => {
+          {syncedFavorites.map(({ id, productId, title, description, price, image, isInCart }) => {
             return (
             <FavoriteCard
               key={id}

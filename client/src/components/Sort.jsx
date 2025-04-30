@@ -10,7 +10,7 @@ import {
 
 const Sort = ({ setSort }) => {
   const defaultSort = (products) => products;
-  const selectSortClassName = cn('select-sort');
+  const selectSortClassName = cn('form-select');
 
   const handleSort = ({ target: { value } }) => {
     if (value == 0) { setSort(() => defaultSort) }
