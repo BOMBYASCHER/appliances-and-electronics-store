@@ -55,13 +55,9 @@ public class FavoriteService {
         }
 
         User user = getUserOrThrow(userId);
-
         Favorite favorite = user.getFavorites();
-
-        if (!favorite.getProductIds().contains(productId)) {
-            favorite.getProductIds().add(productId);
-            userRepository.save(user);
-        }
+        favorite.getProductIds().add(productId);
+        userRepository.save(user);
     }
 
     public void deleteFavoriteItemById(Integer userId, Integer productId) {

@@ -13,7 +13,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
+import java.util.Set;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -32,5 +32,5 @@ public class Favorite {
     @ElementCollection
     @CollectionTable(name = "favorite_products", joinColumns = @JoinColumn(name = "favorite_id"))
     @Column(name = "product_id")
-    private List<Integer> productIds;
+    private Set<Integer> productIds;
 }
