@@ -19,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 @Service
 public class AuthService {
@@ -51,7 +52,7 @@ public class AuthService {
         user.setCart(cart);
 
         Favorite favorite = new Favorite();
-        favorite.setProductIds(new ArrayList<>());
+        favorite.setProductIds(new HashSet<>());
         user.setFavorites(favorite);
 
         User savedUser = userRepository.save(user);

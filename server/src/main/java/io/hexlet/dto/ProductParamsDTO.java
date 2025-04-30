@@ -15,4 +15,6 @@ public class ProductParamsDTO {
     private String category;
     private List<String> colors;
     private List<Integer> releaseYears;
+    private Integer page = 0;
+    private Integer limit = 15;
 }
