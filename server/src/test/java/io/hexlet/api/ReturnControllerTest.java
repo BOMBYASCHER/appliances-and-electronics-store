@@ -8,15 +8,18 @@ import io.hexlet.dto.ReturnDTO;
 import io.hexlet.dto.ReturnRequestDTO;
 import io.hexlet.model.entity.Product;
 import io.hexlet.repository.ProductRepository;
+import io.hexlet.utils.ProductTestUtils;
 import io.hexlet.utils.TestAuthUtils;
-import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -29,9 +32,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@Transactional
 @SpringBootTest
 @AutoConfigureMockMvc
-@Transactional
+@ActiveProfiles("test")
+@Import(TestcontainersConfiguration.class)
 public class ReturnControllerTest {
     private static final String BASE_API_PATH = "/api/data";
     private static final String RETURNS_PATH = BASE_API_PATH + "/returns";
@@ -46,11 +51,16 @@ public class ReturnControllerTest {
     @Autowired
     private ProductRepository productRepository;
 
+    private List<Product> testProducts;
+
     private String jwtToken;
 
     @BeforeEach
     public void setUp() throws Exception {
         this.jwtToken = TestAuthUtils.getJwtToken(mockMvc, objectMapper);
+        productRepository.deleteAll();
+        testProducts = ProductTestUtils.generateProducts(3);
+        productRepository.saveAll(testProducts);
     }
 
     private String performGetReturns() throws Exception {
@@ -97,30 +107,6 @@ public class ReturnControllerTest {
 
     @Test
     public void testCreateAndGetReturn() throws Exception {
-        productRepository.deleteAll();
-
-        Product product1 = new Product();
-        product1.setTitle("Test Product 1");
-        product1.setDescription("Description 1");
-        product1.setPrice(100);
-        product1.setImage("image1.jpg");
-        product1.setCategory("category1");
-        product1.setBrand("brand1");
-        product1.setColor("color1");
-        product1.setReleaseDate(null);
-
-        Product product2 = new Product();
-        product2.setTitle("Test Product 2");
-        product2.setDescription("Description 2");
-        product2.setPrice(200);
-        product2.setImage("image2.jpg");
-        product2.setCategory("category2");
-        product2.setBrand("brand2");
-        product2.setColor("color2");
-        product2.setReleaseDate(null);
-
-        productRepository.saveAll(List.of(product1, product2));
-
         List<Integer> productIds = productRepository.findAll()
                 .stream()
                 .map(Product::getId)
