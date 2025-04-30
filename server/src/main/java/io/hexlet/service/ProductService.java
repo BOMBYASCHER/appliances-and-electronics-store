@@ -11,6 +11,9 @@ import io.hexlet.repository.ProductRepository;
 import io.hexlet.specification.ProductSpecification;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -34,9 +37,12 @@ public class ProductService {
 
     public List<ProductDTO> getAllProducts(ProductParamsDTO params) {
         Specification<Product> specification = productSpecification.build(params);
-        List<Product> products = productRepository.findAll(specification);
+        Pageable pageable = PageRequest.of(params.getPage(), params.getLimit());
 
-        return products.stream()
+        Page<Product> page = productRepository.findAll(specification, pageable);
+
+        return page.getContent()
+                .stream()
                 .map(product -> {
                     ProductDTO dto = productMapper.map(product);
                     dto.setIsInCart(false);
