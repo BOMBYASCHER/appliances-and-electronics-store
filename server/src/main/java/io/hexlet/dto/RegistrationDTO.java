@@ -9,9 +9,11 @@ import lombok.Setter;
 @Setter
 @Getter
 public class RegistrationDTO {
+    public static final String PHONE_REGEXP = "^[+]?[(]?[0-9]{3}[)]?[-\\s.]?[0-9]{3}[-\\s.]?[0-9]{4,6}$";
+    public static final String PHONE_MESSAGE = "Phone number must be valid (e.g., +1234567890, (123) 456-7890)";
 
     @NotBlank(message = "Phone number is required")
-    @Pattern(regexp = "^7\\d{10}$", message = "Phone number must start with 7 and have 11 digits")
+    @Pattern(regexp = PHONE_REGEXP, message = PHONE_MESSAGE)
     private String phone;
 
     @NotBlank(message = "Full name (FIO) is required")
