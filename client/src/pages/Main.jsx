@@ -18,6 +18,9 @@ const Main = () => {
   const [sort, setSort] = useState(() => defaultSort);
   const processedProducts = sort(products);
 
+  const { accessToken } = useSelector((state) => state.authentication);
+  console.log('Main() - accessToken: ' + accessToken)
+
   useEffect(() => { 
     loadProductsByFilter(filter.toParameters());
   }, [filter]);

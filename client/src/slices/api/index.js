@@ -6,7 +6,7 @@ const getUrlOrigin = () => {
 };
 
 export const urls = {
-  auth: new URL('api/auth', getUrlOrigin()),
+  auth: new URL('api/auth', getUrlOrigin()).toString(),
   data: {
     products: new URL('api/data/products', getUrlOrigin()).toString(),
     favorites: new URL('api/data/favorites', getUrlOrigin()).toString(),

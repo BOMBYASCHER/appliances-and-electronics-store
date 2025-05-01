@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { authApi } from './api/authApi';
-import { getStore } from '.';
 
 const initialState = {
   accessToken: null,
@@ -11,29 +10,35 @@ const authSlice = createSlice({
   name: 'authentication',
   initialState,
   reducers: {
-    setCredentials: (state, { payload: { user, token } }) => {
-      state.user = user;
-      state.accessToken = token;
+    logout: (state) => {
+      state.user = null;
+      state.accessToken = null;
     },
   },
   extraReducers: (builder) => {
     builder
-      .addMatcher(authApi.endpoints.login.matchFulfilled, (state, { payload }) => {
-        const { accessToken, fullName } = payload;
+      .addMatcher(authApi.endpoints.login.matchFulfilled, (state, { payload: { data, status } }) => {
+        console.log('IN login.matchFulfilled()')
+        const { accessToken, fullName } = data;
         state.accessToken = accessToken;
         state.user = fullName;
+        console.log('login.matchFulfilled() - accessToken: ' + accessToken);
       })
-      .addMatcher(authApi.endpoints.registration.matchFulfilled, (state, { payload }) => {
-        const { accessToken, fullName } = payload;
+      .addMatcher(authApi.endpoints.login.matchRejected, (state, { payload: { data, status } }) => {
+        console.log('IN login.matchRejected()')
+        const { accessToken, fullName } = data;
+        state.accessToken = accessToken;
+        state.user = fullName;
+        console.log('login.matchFulfilled() - accessToken: ' + accessToken);
+      })
+      .addMatcher(authApi.endpoints.registration.matchFulfilled, (state, { payload: { data, status } }) => {
+        const { accessToken, fullName } = data;
         state.accessToken = accessToken;
         state.user = fullName;
       })
   }
 });
 
-export const isAuthenticated = () => getStore().authentication.accessToken !== null;
+export const { logout } = authSlice.actions;
 
-export const { setCredentials } = authSlice.actions;
-
-export const selectCurrentUser = (state) => state.authentication.user
 export default authSlice.reducer;

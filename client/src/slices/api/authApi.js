@@ -10,6 +10,8 @@ export const authApi = createApi({
         method: 'POST',
         body: { phone, password },
       }),
+      transformResponse: (response, meta, arg) => ({ data: response, status: meta.response.status }),
+      transformErrorResponse: (response, meta, arg) => ({ data: arg, status: meta.response.status }),
     }),
     registration: build.mutation({
       query: ({ fullName, phone, password }) => ({
