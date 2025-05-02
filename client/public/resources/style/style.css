@@ -269,4 +269,103 @@ h1 {
 }
 
 /*корзина*/
+.cart {
+  display: none;
+  position: fixed;
+  top: 20%;
+  right: 20px;
+  width: 300px;
+  height: auto;
+  background: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  padding: 15px;
+  z-index: 100;
+  transition: transform 0.3s ease;
+}
 
+.cart h2 {
+  margin: 0;
+  font-size: 24px;
+  text-align: center;
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  border-bottom: 1px solid #e0e0e0;
+  transition: background-color 0.3s ease;
+}
+
+.cart-item:hover {
+  background-color: #f0f8ff;
+  transform: scale(1.02);
+}
+
+.product-image {
+  width: 60px;
+  height: auto;
+  border-radius: 5px;
+}
+
+.product-details {
+  flex: 1;
+  margin-left: 10px;
+}
+
+.quantity-controls {
+  display: flex;
+  align-items: center;
+}
+
+.quantity-controls input {
+  width: 40px;
+  text-align: center;
+  border: 1px solid #007bff;
+  border-radius: 5px;
+  margin: 0 5px;
+  transition: border-color 0.3s ease;
+}
+
+.quantity-controls input:focus {
+  outline: none;
+  border-color: #0056b3;
+}
+
+.remove-item {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.remove-item:hover {
+  background-color: #c82333;
+}
+
+#total-price {
+  margin-top: 15px;
+  font-size: 18px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.close-cart {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: block;
+  margin: 10px auto 0;
+}
+
+.close-cart:hover {
+  background-color: #5a6268;
+}

@@ -7,22 +7,24 @@
     <link rel="stylesheet" href="./style/style.css">
 </head>
 <body>
+    <!--шапка -->
     <div class="main-container"> 
         <img src="/client/public/photo main.jpg" class="main">
     <ul class="main-text">
         <li class="text-main"><img src="/client/public/logo.png" class="logo"></li>
-        <li class="text-main"><a href="#">Главная</a></li>
+        <li class="text-main"><a  href="#">Главная</a></li>
         <li class="text-main"><a href="#">Войти</a></li>
         <li class="text-main"><a href="#">Возврат</a></li>
         <li class="text-main"><a href="#">История возвратов</a></li>
         <li class="text-main"><a href="#">История заказов</a></li>
         <li class="text-main"><a href="#">Избранное</a></li>
-        <li class="text-main"><a id="cartButton" href="#">Корзина</a></li>
+        <li class="text-main"><a  class="cart-toggle" id="cartButton" href="#">Корзина</a></li>
       </ul>
     
       <h1> Maconi</h1>
       <p class="z">Интернет магазин бытовой техники</p>
     </div>
+    <!--Сортировка -->
     <div class="search-container">
       <input type="text" placeholder="Поиск..." class="search-input">
       <select class="sort-select">
@@ -33,6 +35,7 @@
           <option value="price-desc">Название: Я-А</option>
       </select>
   </div>
+        <!--Фильтры -->
         <div class="container" >
             <aside class="sidebar">
                 <h2>ФИЛЬТРЫ</h2>
@@ -65,7 +68,7 @@
     
                 <button class="applyFilterButton" id="applyFilterButton">Применить фильтр</button>
             </aside>
-    
+            <!--Карточка товара -->
             <main class="product-list">
                 <div class="product-card">
                     <img src="#" alt="Стиральная машина Indesit">
@@ -74,7 +77,7 @@
                     <button class="product-button" id="productBtn">Подробности о товаре</button>
                 </div>
             </div>
-
+            <!--Модальное окно с информацией о товаре + добавление в корзину и избранное -->
             <div id="productModal" class="modal">
               <div class="modal-content">
                 <span class="close" id="closeBtn">&times;</span>
@@ -92,11 +95,20 @@
                 </div>
               </div>
             </div>
+            <!--Корзина-->
+            <div class="cart">
+              <h2>Ваша Корзина</h2>
+              <div id="cart-items"></div>
+              <div id="total-price">Итог: 0 рублей</div>
+              <button class="close-cart">Закрыть</button>
+          </div>
+          <!--Контакты-->
               <div class="contact-container">
                 <p class="contact-telephon">+7 (999) 999-99-99</p>
                 <p class="contact-info">info@maconi.ru</p>
                 <p class="contact-address">Санкт-Петербург, Садистская ул., 21</p>
               </div>
+              
               <script src="./style/modal.js"></script>
               <script src="./style/card.js"></script>
 </body>
