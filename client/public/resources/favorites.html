@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Избранные Товары</title>
+    <link rel="stylesheet" href="./style/favorites.css">
+</head>
+<body>
+
+    <div class="main-container"> 
+        <ul class="main-text">
+            <li class="text-main"><img src="/client/public/logo.png" class="logo"></li>
+            <li class="text-main"><a  href="#">Главная</a></li>
+            <li class="text-main"><a href="#">Войти</a></li>
+            <li class="text-main"><a href="#">Возврат</a></li>
+            <li class="text-main"><a href="#">История возвратов</a></li>
+            <li class="text-main"><a href="#">История заказов</a></li>
+            <li class="text-main"><a href="#">Избранное</a></li>
+            <li class="text-main"><a href="#">Корзина</a></li>
+          </ul>
+        </div>
+
+    <div class="container">
+        <h1>Избранные Товары</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Изображение</th>
+                    <th>Наименование</th>
+                    <th>Описание</th>
+                    <th>Цена</th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><img src="" alt="Товар 1" class="product-image"></td>
+                    <td>Товар 1</td>
+                    <td>Описание товара 1.</td>
+                    <td>49.99</td>
+                    <td>
+                        <button class="remove-btn" onclick="removeFromFavorites(this)">❤️</button>
+                        <button class="add-to-cart">Добавить в корзину</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="contact-container">
+        <p class="contact-telephon">+7 (999) 999-99-99</p>
+        <p class="contact-info">info@maconi.ru</p>
+        <p class="contact-address">Санкт-Петербург, Садистская ул., 21</p>
+    </div>
+    
+</body>
+</html>

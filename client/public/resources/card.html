@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Корзина</title>
+    <link rel="stylesheet" href="./style/card.css">
+</head>
+<body>
+    <div class="main-container"> 
+    <ul class="main-text">
+        <li class="text-main"><img src="/client/public/logo.png" class="logo"></li>
+        <li class="text-main"><a  href="#">Главная</a></li>
+        <li class="text-main"><a href="#">Войти</a></li>
+        <li class="text-main"><a href="#">Возврат</a></li>
+        <li class="text-main"><a href="#">История возвратов</a></li>
+        <li class="text-main"><a href="#">История заказов</a></li>
+        <li class="text-main"><a href="#">Избранное</a></li>
+        <li class="text-main"><a href="#">Корзина</a></li>
+      </ul>
+    </div>
+    <!--корзина -->
+    <div class="container-cart">
+        <h1 class="text-cart">Ваша корзина</h1>
+        <table class="cart-table">
+            <thead>
+                <tr>
+                    <th>Изображение</th>
+                    <th>Товар</th>
+                    <th>Цена</th>
+                    <th>Количество</th>
+                    <th>Итого</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><img src="" alt="Товар" class="product-image"></td>
+                    <td>товар <br>
+                    <td>0 $</td>
+                    <td>
+                        <button class="btn-change">-</button>
+                        <input type="number" class="quantity-input" value="1" min="1">
+                        <button class="btn-change">+</button>
+                    </td>
+                    <td>0 $</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="summary">
+            <div class="grand-total">
+                <span>Итоговая сумма:</span>
+                <span>0$</span>
+            </div>
+            <button class="checkout-btn">Оформить заказ</button>
+        </div>
+    </div>
+
+    <div class="contact-container">
+        <p class="contact-telephon">+7 (999) 999-99-99</p>
+        <p class="contact-info">info@maconi.ru</p>
+        <p class="contact-address">Санкт-Петербург, Садистская ул., 21</p>
+    </div>
+</body>
+</html>

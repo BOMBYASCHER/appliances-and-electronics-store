@@ -1,0 +1,137 @@
+body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: #f3f3f3;
+    overflow-x: hidden;
+}
+
+.logo {
+    width: 12%; 
+    height: 20%; 
+    object-fit: cover;
+    padding-top: 10px;
+    padding-left: 10px; 
+}
+
+.main-text {
+  list-style-type: none;
+  margin: 0;
+  overflow: hidden;
+  background-color: #2d2d2d00;
+  position:absolute;
+  top: 0;
+  width: 100%;
+
+
+}
+
+.text-main {
+  float: left;
+}
+
+.text-main a {
+  display: block;
+  color: #f3f3f3;
+  padding-left: 10px; 
+  padding-right: 60px; 
+  padding-top: 40px;
+  text-decoration: none;
+  
+ 
+}
+
+.text-main a:hover:not(.active) {
+ color: #288fce;
+}
+
+.main-container {
+    width: 100%; 
+    height: 100px; 
+    overflow: hidden; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    background-color: #2d2d2d; 
+    
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+.container {
+    max-width: 1200px;
+    margin: 50px auto;
+    overflow: hidden;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+th {
+    background-color: #2d2d2d;
+    color: white;
+}
+.product-image {
+    width: 100px;
+    height: auto;
+    border-radius: 5px;
+}
+.remove-btn {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+}
+.add-to-cart {
+    background-color: #2d2d2d;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.add-to-cart:hover {
+    background-color: #3d3d3d; 
+}
+
+.contact-container {
+    text-align: center;
+    background-color: #2d2d2d;
+    width: 100%; 
+    height: 500px; 
+    margin: 0px;
+  }
+  
+  .contact-telephon {
+    color: #f3f3f3;
+    font-size: 40px; 
+    margin: 10px 0; 
+    padding-top: 100px;
+    
+  }
+  
+  .contact-info {
+    color: #f3f3f3;
+    font-size: 40px; 
+    margin: 10px 0; 
+    
+  }
+  
+  .contact-address {
+    font-size: 16px; 
+    margin-top: 20px;  
+    color: #f3f3f3;
+  }
+
+  
