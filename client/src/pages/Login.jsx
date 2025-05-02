@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { useLoginMutation } from "../slices/api/authApi";
-import { useNavigate } from "react-router";
+import { redirect, useNavigate } from "react-router";
+import { useLazyGetFavoritesQuery } from "../slices/api/favoritesApi";
+import { useLazyGetCartQuery } from "../slices/api/cartApi";
+import { useLazyGetProductsQuery } from "../slices/api/productsApi";
 
 const Login = () => {
   const [login, { isSuccess }] = useLoginMutation();
@@ -8,19 +11,24 @@ const Login = () => {
   const [password, setPassword] = useState('');
 
   const navigate = useNavigate();
+  const [productsTrigger] = useLazyGetProductsQuery();
+  const [favoritesTrigger] = useLazyGetFavoritesQuery();
+  const [cartTrigger] = useLazyGetCartQuery();
  
   const handleForm = (e) => {
     e.preventDefault();
     login({ phone, password });
-    // navigate(-1);
   };
 
   useEffect(() => {
     if (isSuccess) {
       console.log('IS SUCCESS')
-      navigate(-1);
+      productsTrigger();
+      favoritesTrigger();
+      cartTrigger();
+      navigate('/', { replace: true });
+      window.location.reload();
     }
-    
   }, [isSuccess]);
 
   const handlePhone = ({ target: { value } }) => {

@@ -1,7 +1,7 @@
-import { NavLink, Link } from "react-router";
-import { useDispatch, useSelector } from "react-redux";
+import { NavLink, Link, useNavigate } from "react-router";
+import { useSelector } from "react-redux";
 import logo from '../assets/logo.png';
-import { logout } from "../slices/authReducer.js";
+import { logout } from "../slices/index.js";
 
 const Header = () => {
   const { favorites } = useSelector((state) => state.favorites);
@@ -51,7 +51,13 @@ const Header = () => {
 
 const AuthorizationBlock = () => {
   const { accessToken } = useSelector((state) => state.authentication);
-  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/', { replace: true });
+    window.location.reload();
+  };
 
   return (
     accessToken == null ?
@@ -67,7 +73,7 @@ const AuthorizationBlock = () => {
       </button>
     </Link>
     </> :
-    <button type="button" className="btn btn-primary" onClick={() => dispatch(logout())}>
+    <button type="button" className="btn btn-primary" onClick={handleLogout}>
       Logout
     </button>
   );

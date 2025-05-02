@@ -62,3 +62,7 @@ const store = configureStore({
 export default store;
 export const persistor = persistStore(store);
 export const getStore = () => store.getState();
+
+export const logout = () => {
+  persistor.purge();
+};

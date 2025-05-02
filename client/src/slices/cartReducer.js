@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { cartApi } from './api/cartApi';
+import { PURGE } from 'redux-persist';
 
 const initialState = {
   totalAmount: 0, 
@@ -14,10 +15,18 @@ const cartSlice = createSlice({
   name: 'cart',
   initialState,
   extraReducers: (builder) => builder
+    .addCase(PURGE, () => {
+      console.log('cartReducer() - PURGE CASE');
+      return initialState;
+    })
     .addMatcher(cartApi.endpoints.getCart.matchFulfilled, (state, { payload: { data, status } }) => {
-      const { totalAmount, elements } = data;
-      state.totalAmount = totalAmount;
-      state.products = elements;
+      if (status == 200) {
+        console.log('getCart.matchFulfilled() - start');
+        const { totalAmount, elements } = data;
+        state.totalAmount = totalAmount;
+        state.products = elements;
+        console.log('getCart.matchFulfilled() - success');
+      }
     })
     .addMatcher(cartApi.endpoints.getCart.matchRejected, (state, { payload: { data, status } }) => {
       if (status = 401) {

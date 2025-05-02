@@ -50,9 +50,9 @@ const Main = () => {
 const Catalog = ({ products = [] }) => {
   const { favorites } = useSelector((state) => state.favorites);
   const { products: productsInCart } = useSelector((state) => state.cart);
-  
+
   const syncedProducts = products.map(product => {
-    const isFavorite = favorites.find(({ productId }) => productId == product.id) !== undefined;
+    const isFavorite = product.isFavorite ? true : favorites.find(({ productId }) => productId == product.id) !== undefined;
     const isInCart = productsInCart.find(({ productId }) => productId == product.id) !== undefined;;
     return { ...product, isFavorite, isInCart }
   });
