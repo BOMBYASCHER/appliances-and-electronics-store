@@ -25,11 +25,11 @@ function updateCart() {
                 Цена: ${item.price} рублей
             </div>
             <div class="quantity-controls">
-                <button onclick="changeQuantity(${index}, -1)">-</button>
+                <button class="minus" onclick="changeQuantity(${index}, -1)">-</button>
                 <input type="text" value="${item.quantity}" readonly>
-                <button onclick="changeQuantity(${index}, 1)">+</button>
+                <button class="plus" onclick="changeQuantity(${index}, 1)">+</button>
             </div>
-            <button class="remove-item" onclick="removeFromCart(${index})">Удалить</button>
+            <button class="remove-item" onclick="removeFromCart(${index})">✖</button>
         `;
         cartItemsDiv.appendChild(itemDiv);
         totalPrice += item.price * item.quantity;
@@ -65,4 +65,12 @@ document.querySelector('.close-cart').addEventListener('click', () => {
 
 // Пример добавления товара
 addToCart({ name: 'Товар 1', price: 500, image: 'path/to/image1.jpg', quantity: 1 });
+addToCart({ name: 'Товар 2', price: 300, image: 'path/to/image2.jpg', quantity: 1 });
+addToCart({ name: 'Товар 2', price: 300, image: 'path/to/image2.jpg', quantity: 1 });
+addToCart({ name: 'Товар 2', price: 300, image: 'path/to/image2.jpg', quantity: 1 });
+addToCart({ name: 'Товар 2', price: 300, image: 'path/to/image2.jpg', quantity: 1 });
+addToCart({ name: 'Товар 2', price: 300, image: 'path/to/image2.jpg', quantity: 1 });
+addToCart({ name: 'Товар 2', price: 300, image: 'path/to/image2.jpg', quantity: 1 });
+addToCart({ name: 'Товар 2', price: 300, image: 'path/to/image2.jpg', quantity: 1 });
+addToCart({ name: 'Товар 2', price: 300, image: 'path/to/image2.jpg', quantity: 1 });
 addToCart({ name: 'Товар 2', price: 300, image: 'path/to/image2.jpg', quantity: 1 });

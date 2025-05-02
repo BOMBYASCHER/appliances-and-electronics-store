@@ -270,11 +270,11 @@ h1 {
 
 /*корзина*/
 .cart {
+  
   display: none;
   position: fixed;
   top: 20%;
   right: 20px;
-  width: 300px;
   height: auto;
   background: white;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -286,6 +286,8 @@ h1 {
 
 .cart h2 {
   margin: 0;
+  padding-bottom: 20px;
+  padding-top: 10px;
   font-size: 24px;
   text-align: center;
 }
@@ -293,13 +295,13 @@ h1 {
 .cart-item {
   display: flex;
   align-items: center;
-  padding: 15px;
+  padding: 30px;
   border-bottom: 1px solid #e0e0e0;
   transition: background-color 0.3s ease;
 }
 
 .cart-item:hover {
-  background-color: #f0f8ff;
+
   transform: scale(1.02);
 }
 
@@ -322,30 +324,37 @@ h1 {
 .quantity-controls input {
   width: 40px;
   text-align: center;
-  border: 1px solid #007bff;
+  border: 1px solid #2d2d2d;
   border-radius: 5px;
   margin: 0 5px;
   transition: border-color 0.3s ease;
 }
 
-.quantity-controls input:focus {
-  outline: none;
-  border-color: #0056b3;
-}
-
 .remove-item {
-  background-color: #dc3545;
-  color: white;
+  font-size: 17px;
+  background-color: white;
+  color: rgb(3, 3, 3);
   border: none;
-  padding: 5px 10px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+  padding: 5px 20px;
 }
 
-.remove-item:hover {
-  background-color: #c82333;
+.plus {
+  border-radius: 100px;
+  border: none;
+  background-color: white;
+  font-size: 25px;
+  font-weight: 0px;
 }
+
+.minus {
+  border-radius: 100px;
+  border: none;
+  background-color: white;
+  font-size: 25px;
+  font-weight: 30px;
+  padding-left: 50px;
+}
+
 
 #total-price {
   margin-top: 15px;
@@ -355,7 +364,7 @@ h1 {
 }
 
 .close-cart {
-  background-color: #6c757d;
+  background-color: #2d2d2d;
   color: white;
   border: none;
   padding: 5px 10px;
@@ -368,4 +377,11 @@ h1 {
 
 .close-cart:hover {
   background-color: #5a6268;
+}
+
+#cart-items {
+    max-height: 300px; 
+    overflow-y: auto; 
+    overflow-x:hidden;
+    overflow-x:hidden;
 }
