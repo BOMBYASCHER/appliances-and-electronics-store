@@ -1,17 +1,18 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { urls } from '.';
+// import { getStore } from '..';
 
 export const cartApi = createApi({
   reducerPath: 'cartApi',
   baseQuery: fetchBaseQuery({
     baseUrl: urls.data.cart,
-    // prepareHeaders: (headers, { getState }) => {
-    //   const token = getStore().authentication.accessToken;
-    //   if (token) {
-    //     headers.set('Authorization', `Bearer ${token}`);
-    //   }
-    //   return headers;
-    // },
+    prepareHeaders: (headers, { getState }) => {
+      const token = getState().authentication.accessToken;
+      if (token) {
+        headers.set('Authorization', `Bearer ${token}`);
+      }
+      return headers;
+    },
   }),
   tagTypes: ['Cart'],
   endpoints: (builder) => ({
@@ -57,4 +58,5 @@ export const {
   useAddProductToCartMutation,
   useUpdateProductInCartMutation,
   useDeleteProductFromCartMutation,
+  useLazyGetCartQuery,
 } = cartApi;

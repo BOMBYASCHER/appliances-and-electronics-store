@@ -5,30 +5,20 @@ export const productsApi = createApi({
   reducerPath: 'productsApi',
   baseQuery: fetchBaseQuery({
     baseUrl: urls.data.products,
+    prepareHeaders: (headers, { getState }) => {
+      const token = getState().authentication.accessToken;
+      if (token) {
+        headers.set('Authorization', `Bearer ${token}`);
+      }
+      return headers;
+    },
   }),
   tagTypes: ['Products'],
   endpoints: (builder) => ({
     getProducts: builder.query({
       query: () => '',
-      // query: () => '?brands=LG',
       providesTags: ['Products'],
       transformResponse: (response, meta, arg) => response,
-      // async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-      //   console.log('Fetching products...');
-      //   try {
-      //     const { data } = await queryFulfilled;
-      //     console.log('Add products to favorites...');
-      //     data.forEach(({ id, isFavorite }) => {
-      //       if (isFavorite) {
-      //         dispatch(addFavorite(id));
-      //       } else if (!isFavorite) {
-      //         dispatch(removeFavorite(id));
-      //       }
-      //     });
-      //   } catch (err) {
-      //     console.error(err);
-      //   }
-      // }
     }),
     getProductsByFilter: builder.mutation({
       query: (filter) => ({
@@ -46,11 +36,7 @@ export const productsApi = createApi({
       query: (id) => ({
         url: `${id}`,
       }),
-      transformResponse: (response, meta, arg) => {
-        // const { data } = response;
-        // return data;
-        return response
-      }
+      transformResponse: (response, meta, arg) => response,
     }),
   }),
 });
@@ -60,6 +46,7 @@ export const {
   useGetProductsByFilterMutation,
   useGetProductsMetadataQuery,
   useGetProductByIdMutation,
+  useLazyGetProductsQuery,
 } = productsApi;
 
 const getMetadata = (data = []) => {

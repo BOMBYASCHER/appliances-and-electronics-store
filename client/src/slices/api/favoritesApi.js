@@ -1,17 +1,18 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { urls } from '.';
+// import { getStore } from '..';
 
 export const favoritesApi = createApi({
   reducerPath: 'favoritesApi',
   baseQuery: fetchBaseQuery({
     baseUrl: urls.data.favorites,
-    // prepareHeaders: (headers, { getState }) => {
-    //   const token = getStore().authentication.accessToken;
-    //   if (token) {
-    //     headers.set('Authorization', `Bearer ${token}`);
-    //   }
-    //   return headers;
-    // },
+    prepareHeaders: (headers, { getState }) => {
+      const token = getState().authentication.accessToken;
+      if (token) {
+        headers.set('Authorization', `Bearer ${token}`);
+      }
+      return headers;
+    },
   }),
   tagTypes: ['Favorites'],
   endpoints: (builder) => ({
@@ -25,7 +26,7 @@ export const favoritesApi = createApi({
       query: ({ productId }) => ({
         url: '',
         method: 'POST',
-        body: productId,
+        body: {productId},
         headers: {
           "content-type": "application/json"
         }
@@ -50,4 +51,5 @@ export const {
   useGetFavoritesQuery,
   useAddFavoriteMutation,
   useDeleteFavoriteMutation,
+  useLazyGetFavoritesQuery,
 } = favoritesApi;

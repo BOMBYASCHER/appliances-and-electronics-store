@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { authApi } from './api/authApi';
+import { PURGE } from 'redux-persist';
 
 const initialState = {
   accessToken: null,
@@ -10,13 +11,17 @@ const authSlice = createSlice({
   name: 'authentication',
   initialState,
   reducers: {
-    logout: (state) => {
-      state.user = null;
-      state.accessToken = null;
-    },
+    // logout: (state) => {
+    //   state.user = null;
+    //   state.accessToken = null;
+    // },
   },
   extraReducers: (builder) => {
     builder
+      .addCase(PURGE, () => {
+        console.log('PURGE CASE');
+        return initialState;
+      })
       .addMatcher(authApi.endpoints.login.matchFulfilled, (state, { payload: { data, status } }) => {
         console.log('IN login.matchFulfilled()')
         const { accessToken, fullName } = data;
@@ -39,6 +44,6 @@ const authSlice = createSlice({
   }
 });
 
-export const { logout } = authSlice.actions;
+// export const { logout } = authSlice.actions;
 
 export default authSlice.reducer;

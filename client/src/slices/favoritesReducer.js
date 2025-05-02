@@ -1,6 +1,6 @@
-import { createSlice, isAllOf } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { favoritesApi } from './api/favoritesApi';
-import { productsApi } from './api/productsApi';
+import { PURGE } from 'redux-persist';
 
 const initialState = {
   favorites: []
@@ -11,8 +11,16 @@ const favoritesSlice = createSlice({
   initialState,
   extraReducers: (builder) => {
     builder
+      .addCase(PURGE, () => {
+        console.log('favoritesReducer() - PURGE CASE');
+        return initialState;
+      })
       .addMatcher(favoritesApi.endpoints.getFavorites.matchFulfilled, (state, { payload: { data, status } }) => {
-        state.favorites = data;
+        if (status == 200) {
+          console.log('getFavorites.matchFulfilled() - start');
+          state.favorites = data;
+          console.log('getFavorites.matchFulfilled() - success');
+        }
       })
       .addMatcher(favoritesApi.endpoints.getFavorites.matchRejected, (state, { payload: { data, status } }) => {
         if (status == 401) {
