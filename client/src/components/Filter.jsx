@@ -11,33 +11,29 @@ const Filter = ({ data, filter, setFilter }) => {
     <div className='col-md-4'>
       <div className='position-sticky' style={{top: 2 + 'rem'}}>
         <div className='border rounded p-3 mb-2'>
-          <p className='fs-5'>Brands</p>
-          <div className={checkboxClassName}>
-            <Brands brands={brands} filter={filter} setFilter={setFilter}/>
-          </div>
-        </div>
-        
-        <div className='border rounded p-3 mb-2'>
           <p className='fs-5'>Categories</p>
           <div className={checkboxClassName}>
             <Categories categories={categories} filter={filter} setFilter={setFilter}/>
           </div>
         </div>
-        
+        <div className='border rounded p-3 mb-2'>
+          <p className='fs-5'>Brands</p>
+          <div className={checkboxClassName}>
+            <Brands brands={brands} filter={filter} setFilter={setFilter}/>
+          </div>
+        </div>
         <div className='border rounded p-3 mb-2'>
           <p className='fs-5'>Price</p>
           <div className={checkboxClassName}>
             <PriceRange minPrice={minPrice} maxPrice={maxPrice} filter={filter} setFilter={setFilter} />
           </div>
         </div>
-        
         <div className='border rounded p-3 mb-2'>
           <p className='fs-5'>Color</p>
           <div className={checkboxClassName}>
             <Colors colors={colors} filter={filter} setFilter={setFilter}/>
           </div>
         </div>
-        
         <div className='border rounded p-3 mb-2'>
           <p className='fs-5'>Release year</p>
           <div className={checkboxClassName}>
@@ -67,7 +63,7 @@ const Brands = ({ brands, filter, setFilter }) => {
   };
 
   return (brands.sort().map((brand, index) => 
-    <div className='row'>
+    <div key={index} className='row'>
       <label id={index}>
         <input className='form-check-input' type='checkbox' name={brand} onChange={(e) => handleBrandCheckbox(e, brand)}/>
         {brand}
@@ -93,7 +89,7 @@ const Colors = ({ colors, filter, setFilter }) => {
     }
   };
   return (colors.map((color, index) =>
-    <div className='row'>
+    <div key={index} className='row'>
       <label id={index}>
         <input className='form-check-input' type='checkbox' name={color} onChange={(e) => handleColorCheckbox(e, color)}/>
         {color}
@@ -120,7 +116,7 @@ const Categories = ({ categories, filter, setFilter }) => {
 
   };
   return (categories.map((category, index) =>
-    <div className='row'>
+    <div key={index} className='row'>
       <label id={index}>
         <input className='form-check-input' type='checkbox' name={category} onChange={(e) => handleCategoryCheckbox(e, category)}/>
         {category}
@@ -147,7 +143,7 @@ const ReleaseYears = ({ years, filter, setFilter }) => {
   };
 
   return (years.sort((a, b) => b - a).map((year, index) =>
-    <div className='row'>
+    <div key={index} className='row'>
       <label id={index}>
         <input className='form-check-input' type='checkbox' name={year} onChange={(e) => handleReleaseYearCheckbox(e, year)}/>
         {year}
@@ -159,7 +155,7 @@ const ReleaseYears = ({ years, filter, setFilter }) => {
 const PriceRange = ({ minPrice, maxPrice, filter, setFilter }) => {
   const [currentMinPrice, setCurrentMinPrice] = useState(minPrice);
   const [currentMaxPrice, setCurrentMaxPrice] = useState(maxPrice);
-
+  
   useEffect(() => {
     const newFilter = new FilterObject(filter);
     newFilter.minPrice = currentMinPrice;
@@ -168,6 +164,14 @@ const PriceRange = ({ minPrice, maxPrice, filter, setFilter }) => {
   }, [currentMinPrice, currentMaxPrice]);
 
   const handleMinPrice = ({ target: { value } }) => {
+    setCurrentMinPrice(value);
+  };
+
+  const handleMaxPrice = ({ target: { value } }) => {
+    setCurrentMaxPrice(value);
+  };
+
+  const handleMinPriceRange = ({ target: { value } }) => {
     if (value < minPrice) {
       setCurrentMinPrice(minPrice);
     } else if (value > currentMaxPrice) {
@@ -177,7 +181,7 @@ const PriceRange = ({ minPrice, maxPrice, filter, setFilter }) => {
     }
   };
 
-  const handleMaxPrice = ({ target: { value } }) => {
+  const handleMaxPriceRange = ({ target: { value } }) => {
     if (value > maxPrice) {
       setCurrentMaxPrice(maxPrice);
     } else if (value < currentMinPrice) {
@@ -189,25 +193,24 @@ const PriceRange = ({ minPrice, maxPrice, filter, setFilter }) => {
  
   return (
     <div className="price">
-      Price:
       <label>
         <input
           type="range"
           className="form-range min range-input"
-          value={currentMinPrice}
+          value={currentMinPrice ? currentMinPrice : minPrice}
           min={minPrice}
           max={maxPrice}
-          onChange={e => handleMinPrice(e)}
+          onChange={e => handleMinPriceRange(e)}
         />
       </label>
       <label>
         <input
           type="range"
           className="form-range max range-input"
-          value={currentMaxPrice}
+          value={currentMaxPrice ? currentMaxPrice : maxPrice}
           min={minPrice}
           max={maxPrice}
-          onChange={e => handleMaxPrice(e)}
+          onChange={e => handleMaxPriceRange(e)}
         />
       </label>
       <input

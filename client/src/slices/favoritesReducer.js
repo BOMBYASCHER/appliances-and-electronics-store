@@ -16,6 +16,7 @@ const favoritesSlice = createSlice({
         return initialState;
       })
       .addMatcher(favoritesApi.endpoints.getFavorites.matchFulfilled, (state, { payload: { data, status } }) => {
+        console.log(status)
         if (status == 200) {
           console.log('getFavorites.matchFulfilled() - start');
           state.favorites = data;
@@ -27,8 +28,9 @@ const favoritesSlice = createSlice({
           state.favorites = state.favorites;
         }
       })
-      .addMatcher(favoritesApi.endpoints.addFavorite.matchFulfilled, (state, { data, status }) => {
-
+      .addMatcher(favoritesApi.endpoints.addFavorite.matchFulfilled, (state, { data: favorite, status }) => {
+        console.log('addFavorite.matchFulfilled() - favId: ' + favorite.productId)
+        state.favorites.push(favorite);
       })
       .addMatcher(favoritesApi.endpoints.deleteFavorite.matchFulfilled, (state, { payload }) => {
         const { productId } = payload;

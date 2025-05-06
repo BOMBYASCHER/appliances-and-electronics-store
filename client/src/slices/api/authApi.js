@@ -19,6 +19,7 @@ export const authApi = createApi({
         method: 'POST',
         body: { fullName, phone, password },
       }),
+      transformResponse: (response, meta, arg) => ({ data: response, status: meta.response.status }),
     }),
   }),
 })

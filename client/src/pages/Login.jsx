@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLoginMutation } from "../slices/api/authApi";
-import { redirect, useNavigate } from "react-router";
+import { Link, redirect, useNavigate } from "react-router";
 import { useLazyGetFavoritesQuery } from "../slices/api/favoritesApi";
 import { useLazyGetCartQuery } from "../slices/api/cartApi";
 import { useLazyGetProductsQuery } from "../slices/api/productsApi";
@@ -65,6 +65,9 @@ const Login = () => {
           />
           <label for="floatingPassword">Password</label>
         </div>
+        <p class="mt-5 mb-3 text-body-secondary">
+          Don't have an account? <Link to='/registration' className="text-reset">Sign-up!</Link>
+        </p>
         <button className="btn btn-primary w-100 py-2" type="submit">Sign in</button>
       </form>
     </div>
