@@ -16,9 +16,8 @@ const favoritesSlice = createSlice({
         return initialState;
       })
       .addMatcher(favoritesApi.endpoints.getFavorites.matchFulfilled, (state, { payload: { data, status } }) => {
-        console.log(status)
+        console.log('getFavorites.matchFulfilled() - start');
         if (status == 200) {
-          console.log('getFavorites.matchFulfilled() - start');
           state.favorites = data;
           console.log('getFavorites.matchFulfilled() - success');
         }
@@ -28,19 +27,23 @@ const favoritesSlice = createSlice({
           state.favorites = state.favorites;
         }
       })
-      .addMatcher(favoritesApi.endpoints.addFavorite.matchFulfilled, (state, { data: favorite, status }) => {
-        console.log('addFavorite.matchFulfilled() - favId: ' + favorite.productId)
-        state.favorites.push(favorite);
-      })
-      .addMatcher(favoritesApi.endpoints.deleteFavorite.matchFulfilled, (state, { payload }) => {
-        const { productId } = payload;
-        state.favorites = state.favorites.filter((id) => id !== productId);
+      .addMatcher(favoritesApi.endpoints.addFavorite.matchFulfilled, (state, { payload: { data: favorite, status } }) => {
+        if (status == 201) {
+          console.log('addFavorite.matchFulfilled() - favId: ' + favorite.productId)
+          state.favorites.push(favorite);
+        }
       })
       .addMatcher(favoritesApi.endpoints.addFavorite.matchRejected, (state, { payload: { data: favorite, status } }) => {
         if (status == 401) {
           console.log('addFavorite.matchRejected() : Data - ')
           console.log(favorite)
           state.favorites.push(favorite);
+        }
+      })
+      .addMatcher(favoritesApi.endpoints.deleteFavorite.matchFulfilled, (state, { payload: { data: id, status } }) => {
+        if (status == 201) {
+          console.log('deleteFavorite.matchFulfilled() : Data - ' + id)
+          state.favorites = state.favorites.filter((favorite) => favorite.productId !== id);
         }
       })
       .addMatcher(favoritesApi.endpoints.deleteFavorite.matchRejected, (state, { payload: { data: id, status } }) => {

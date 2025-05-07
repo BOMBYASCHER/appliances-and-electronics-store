@@ -25,7 +25,10 @@ export const cartApi = createApi({
     addProductToCart: builder.mutation({
       query: (product) => ({
         method: 'POST',
-        body: product
+        body: product,
+        headers: {
+          "content-type": "application/json"
+        }
       }),
       invalidatesTags: ['Cart', 'Products'],
       transformResponse: (response, meta, arg) => ({ data: response, status: meta.response.status }),
@@ -35,16 +38,19 @@ export const cartApi = createApi({
       query: ({id, quantity}) => ({
         url: id,
         method: 'PUT',
-        body: quantity
+        body: quantity,
+        headers: {
+          "content-type": "application/json"
+        }
       }),
       invalidatesTags: ['Cart'],
       transformResponse: (response, meta, arg) => ({ data: response, status: meta.response.status }),
       transformErrorResponse: (response, meta, arg) => ({ data: arg, status: meta.response.status })
     }),
     deleteProductFromCart: builder.mutation({
-      query: (product) => ({
+      query: ({ productId }) => ({
         method: 'DELETE',
-        body: product
+        url: productId
       }),
       invalidatesTags: ['Cart', 'Products'],
       transformResponse: (response, meta, arg) => ({ data: response, status: meta.response.status }),

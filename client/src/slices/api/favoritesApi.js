@@ -1,6 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { urls } from '.';
-// import { getStore } from '..';
 
 export const favoritesApi = createApi({
   reducerPath: 'favoritesApi',
@@ -26,13 +25,13 @@ export const favoritesApi = createApi({
       query: ({ productId }) => ({
         url: '',
         method: 'POST',
-        body: {productId},
+        body: { productId },
         headers: {
           "content-type": "application/json"
         }
       }),
-      // invalidatesTags: ['Favorites', 'Products'],
-      transformResponse: (response, meta, arg) => ({ data: response, status: meta.response.status }),
+      invalidatesTags: ['Favorites', 'Products'],
+      transformResponse: (response, meta, arg) => ({ data: arg, status: meta.response.status }),
       transformErrorResponse: (response, meta, arg) => ({ data: arg, status: meta.response.status }),
     }),
     deleteFavorite: builder.mutation({
@@ -40,8 +39,8 @@ export const favoritesApi = createApi({
         url: `${productId}`,
         method: 'DELETE',
       }),
-      // invalidatesTags: ['Favorites', 'Products'],
-      transformResponse: (response, meta, arg) => ({ data: response, status: meta.response.status }),
+      invalidatesTags: ['Favorites', 'Products'],
+      transformResponse: (response, meta, arg) => ({ data: arg, status: meta.response.status }),
       transformErrorResponse: (response, meta, arg) => ({ data: arg, status: meta.response.status }),
     }),
   }),

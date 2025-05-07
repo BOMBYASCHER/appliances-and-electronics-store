@@ -19,7 +19,7 @@ const Header = () => {
 
   return (
     <div className='container bg-dark'>
-      <header className='d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom'>
+      <header className='d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4'>
         <div className="col-md-3 mb-2 mb-md-0">
           <NavLink onClick={productsTrigger} to="/" className='nav-link px-2 link-secondary'>
             <img src={logo} height={70}></img>

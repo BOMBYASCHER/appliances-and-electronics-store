@@ -34,8 +34,12 @@ const cartSlice = createSlice({
         state.products = state.products;
       }
     })
-    .addMatcher(cartApi.endpoints.addProductToCart.matchFulfilled, (state, { payload: { data: product, status } }) => {
-      state.products.push(product);
+    .addMatcher(cartApi.endpoints.addProductToCart.matchFulfilled, (state, { payload: { data, status } }) => {
+      if (status == 201) {
+        console.log('addProductToCart.matchFulfilled() : Data - ');
+        const { productId } = data;
+        state.products.push({ productId });
+      }
     })
     .addMatcher(cartApi.endpoints.addProductToCart.matchRejected, (state, { payload: { data, status } }) => {
       if (status == 401) {
