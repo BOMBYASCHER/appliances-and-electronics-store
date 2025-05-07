@@ -7,7 +7,9 @@ import io.hexlet.dto.ProductParamsDTO;
 import io.hexlet.exception.ResourceNotFoundException;
 import io.hexlet.mapper.ProductMapper;
 import io.hexlet.model.entity.Product;
+import io.hexlet.model.entity.User;
 import io.hexlet.repository.ProductRepository;
+import io.hexlet.repository.UserRepository;
 import io.hexlet.specification.ProductSpecification;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,9 @@ public class ProductService {
     private ProductRepository productRepository;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private ProductSpecification productSpecification;
 
     @Autowired
@@ -35,28 +40,48 @@ public class ProductService {
     @Autowired
     private ObjectMapper objectMapper;
 
-    public List<ProductDTO> getAllProducts(ProductParamsDTO params) {
+    public List<ProductDTO> getAllProducts(ProductParamsDTO params, Integer userId) {
         Specification<Product> specification = productSpecification.build(params);
         Pageable pageable = PageRequest.of(params.getPage(), params.getLimit());
 
         Page<Product> page = productRepository.findAll(specification, pageable);
 
+        User user = userId != null ? userRepository.findById(userId).orElse(null) : null;
+
         return page.getContent()
                 .stream()
                 .map(product -> {
                     ProductDTO dto = productMapper.map(product);
-                    dto.setIsInCart(false);
-                    dto.setIsFavorite(false);
+
+                    if (user != null) {
+                        dto.setIsInCart(isProductInCart(user, product.getId()));
+                        dto.setIsFavorite(isProductInFavorites(user, product.getId()));
+                    } else {
+                        dto.setIsInCart(false);
+                        dto.setIsFavorite(false);
+                    }
                     return dto;
                 })
                 .toList();
     }
 
-    public ProductDTO getProductById(Integer productId) {
+    public ProductDTO getProductById(Integer productId, Integer userId) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + productId));
 
-        return productMapper.map(product);
+        User user = userId != null ? userRepository.findById(userId).orElse(null) : null;
+
+        ProductDTO productDTO = productMapper.map(product);
+
+        if (user != null) {
+            productDTO.setIsInCart(isProductInCart(user, productId));
+            productDTO.setIsFavorite(isProductInFavorites(user, productId));
+        } else {
+            productDTO.setIsInCart(false);
+            productDTO.setIsFavorite(false);
+        }
+
+        return productDTO;
     }
 
     @PostConstruct
@@ -68,5 +93,13 @@ public class ProductService {
 
             productRepository.saveAll(products);
         }
+    }
+
+    private boolean isProductInCart(User user, Integer productId) {
+        return user.getCart() != null && user.getCart().getProductIds().contains(productId);
+    }
+
+    private boolean isProductInFavorites(User user, Integer productId) {
+        return user.getFavorites() != null && user.getFavorites().getProductIds().contains(productId);
     }
 }

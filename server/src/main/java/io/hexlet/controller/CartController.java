@@ -62,10 +62,13 @@ public class CartController {
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/cart/{id}")
-    public ResponseEntity<Void> deleteById(@AuthenticationPrincipal CustomUserDetails user, @PathVariable Integer id) {
+    @DeleteMapping("/cart/{productId}")
+    public ResponseEntity<Void> deleteById(
+            @AuthenticationPrincipal CustomUserDetails user,
+            @PathVariable Integer productId
+    ) {
         Integer userId = user.getUserId();
-        cartService.deleteProductById(userId, id);
+        cartService.deleteProductById(userId, productId);
 
         return ResponseEntity.noContent().build();
     }
