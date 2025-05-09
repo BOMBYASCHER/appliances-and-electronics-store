@@ -23,8 +23,12 @@ const favoritesSlice = createSlice({
         }
       })
       .addMatcher(favoritesApi.endpoints.getFavorites.matchRejected, (state, { payload: { data, status } }) => {
+        console.log('getFavorites.matchRejected() - TOP')
+        console.log('getFavorites.matchRejected() - Status object:')
+        console.log(status)
         if (status == 401) {
-          state.favorites = state.favorites;
+          console.log('getFavorites.matchRejected() - Code 401')
+          state.favorites = [...state.favorites];
         }
       })
       .addMatcher(favoritesApi.endpoints.addFavorite.matchFulfilled, (state, { payload: { data: favorite, status } }) => {
@@ -36,7 +40,6 @@ const favoritesSlice = createSlice({
       .addMatcher(favoritesApi.endpoints.addFavorite.matchRejected, (state, { payload: { data: favorite, status } }) => {
         if (status == 401) {
           console.log('addFavorite.matchRejected() : Data - ')
-          console.log(favorite)
           state.favorites.push(favorite);
         }
       })
@@ -49,7 +52,6 @@ const favoritesSlice = createSlice({
       .addMatcher(favoritesApi.endpoints.deleteFavorite.matchRejected, (state, { payload: { data: id, status } }) => {
         if (status == 401) {
           console.log('deleteFavorite.matchRejected() : Data - ')
-          console.log(id)
           state.favorites = state.favorites.filter((favorite) => favorite.productId !== id);
         }
       })

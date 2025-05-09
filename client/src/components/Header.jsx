@@ -8,14 +8,16 @@ import { useGetCartQuery, useLazyGetCartQuery } from "../slices/api/cartApi.js";
 
 const Header = () => {
   const { favorites } = useSelector((state) => state.favorites);
-  const [productsTrigger] = useLazyGetProductsQuery();
-  const [favoritesTrigger] = useLazyGetFavoritesQuery();
-  const [cartTrigger] = useLazyGetCartQuery();
-  useGetProductsQuery();
-  useGetFavoritesQuery();
-  useGetCartQuery();
+  // const [productsTrigger] = useLazyGetProductsQuery();
+  // const [favoritesTrigger] = useLazyGetFavoritesQuery();
+  // const [cartTrigger] = useLazyGetCartQuery();
+  // useGetProductsQuery();
+  // useGetFavoritesQuery();
+  // useGetCartQuery();
 
-  console.log('HEADER LOG ()')
+  const productsTrigger = () => {}
+  const favoritesTrigger = () => {}
+  const cartTrigger = () => {}
 
   return (
     <div className='container bg-dark'>

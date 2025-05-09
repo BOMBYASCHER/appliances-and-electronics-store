@@ -4,8 +4,6 @@ import { useAddFavoriteMutation, useDeleteFavoriteMutation } from '../slices/api
 import { useAddProductToCartMutation, useDeleteProductFromCartMutation } from '../slices/api/cartApi';
 
 const ProductCard = ({ id, title, description, price, image, isFavorite, isInCart }) => {
-  const [isAddedToFavorite, setIsAddedToFavorite] = useState(isFavorite);
-  const [isAddedToCart, setIsAddedToCart] = useState(isInCart);
   const [isFullText, setIsFullText] = useState(false);
 
   const [addFavorite] = useAddFavoriteMutation();
@@ -17,29 +15,25 @@ const ProductCard = ({ id, title, description, price, image, isFavorite, isInCar
   const container = cn('col');
 
   const btnFavorite = cn('btn', 'btn-favorite', 'btn-sm btn-outline-secondary', {
-    active: isAddedToFavorite
+    active: isFavorite
   });
   const btnCart = cn('btn', 'btn-cart', 'btn-sm btn-outline-secondary', {
-    active: isAddedToCart
+    active: isInCart
   });
 
   const handleBtnFavorite = () => {
-    if (isAddedToFavorite) {
+    if (isFavorite) {
       deleteFavorite(id);
-      setIsAddedToFavorite(false);
-    } else if (!isAddedToFavorite) {
+    } else if (!isFavorite) {
       addFavorite({ productId: id, title, description, price, image, isFavorite, isInCart });
-      setIsAddedToFavorite(true);
     }
   };
 
   const handleBtnCart = () => {
-    if (isAddedToCart) {
+    if (isInCart) {
       deleteFromCart(id);
-      setIsAddedToCart(false);
-    } else if (!isAddedToCart) {
+    } else if (!isInCart) {
       addToCart({ productId: id, title, price, image });
-      setIsAddedToCart(true);
     }
   };
 

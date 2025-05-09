@@ -2,11 +2,13 @@ import FavoriteCard from '../components/FavoriteProductCard.jsx';
 import { useSelector } from 'react-redux';
 import Header from '../components/Header.jsx';
 import { useGetFavoritesQuery } from '../slices/api/favoritesApi.js';
+import { getCart, getFavorites } from '../stateSelectors.js';
+import { useEffect } from 'react';
 
 const Favorites = () => {
-  const { data } = useGetFavoritesQuery();
-  const { favorites } = useSelector((state) => state.favorites);
-  const { products } = useSelector((state) => state.cart);
+  const { refetch } = useGetFavoritesQuery();
+  const { favorites } = useSelector(getFavorites);
+  const { products } = useSelector(getCart);
 
   const syncedFavorites = favorites.map(favorite => {
     const isInCart = products.find(({ productId }) => productId == favorite.productId) !== undefined;

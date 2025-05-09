@@ -1,6 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { urls } from '.';
-// import { getStore } from '..';
 
 export const cartApi = createApi({
   reducerPath: 'cartApi',
@@ -18,7 +17,7 @@ export const cartApi = createApi({
   endpoints: (builder) => ({
     getCart: builder.query({
       query: () => '',
-      providesTags: 'Cart',
+      providesTags: ['Cart'],
       transformResponse: (response, meta, arg) => ({ data: response, status: meta.response.status }),
       transformErrorResponse: (response, meta, arg) => ({ data: arg, status: meta.response.status })
     }),
@@ -31,12 +30,12 @@ export const cartApi = createApi({
         }
       }),
       invalidatesTags: ['Cart', 'Products'],
-      transformResponse: (response, meta, arg) => ({ data: response, status: meta.response.status }),
+      transformResponse: (response, meta, arg) => ({ data: arg, status: meta.response.status }),
       transformErrorResponse: (response, meta, arg) => ({ data: arg, status: meta.response.status })
     }),
     updateProductInCart: builder.mutation({
-      query: ({id, quantity}) => ({
-        url: id,
+      query: ({ productId, quantity }) => ({
+        url: `${productId}`,
         method: 'PUT',
         body: quantity,
         headers: {
@@ -44,7 +43,7 @@ export const cartApi = createApi({
         }
       }),
       invalidatesTags: ['Cart'],
-      transformResponse: (response, meta, arg) => ({ data: response, status: meta.response.status }),
+      transformResponse: (response, meta, arg) => ({ data: arg, status: meta.response.status }),
       transformErrorResponse: (response, meta, arg) => ({ data: arg, status: meta.response.status })
     }),
     deleteProductFromCart: builder.mutation({
@@ -53,7 +52,7 @@ export const cartApi = createApi({
         url: productId
       }),
       invalidatesTags: ['Cart', 'Products'],
-      transformResponse: (response, meta, arg) => ({ data: response, status: meta.response.status }),
+      transformResponse: (response, meta, arg) => ({ data: arg, status: meta.response.status }),
       transformErrorResponse: (response, meta, arg) => ({ data: arg, status: meta.response.status })
     }),
   }),

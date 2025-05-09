@@ -22,12 +22,11 @@ const Login = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      console.log('IS SUCCESS')
-      productsTrigger();
-      favoritesTrigger();
-      cartTrigger();
-      navigate('/', { replace: true });
-      window.location.reload();
+      // productsTrigger();
+      // favoritesTrigger();
+      // cartTrigger();
+      // navigate('/', { replace: true });
+      location.href = '/'
     }
   }, [isSuccess]);
 

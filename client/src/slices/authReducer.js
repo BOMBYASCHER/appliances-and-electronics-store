@@ -1,6 +1,9 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, isAllOf, isAnyOf } from '@reduxjs/toolkit';
 import { authApi } from './api/authApi';
 import { PURGE } from 'redux-persist';
+import { productsApi } from './api/productsApi';
+import { favoritesApi } from './api/favoritesApi';
+import { ordersApi } from './api/ordersApi';
 
 const initialState = {
   accessToken: null,
@@ -41,6 +44,15 @@ const authSlice = createSlice({
         state.accessToken = accessToken;
         state.user = fullName;
       })
+      // .addMatcher(isAnyOf(
+      //   ordersApi.endpoints.getOrders.matchRejected,
+      //   ordersApi.endpoints.createOrder.matchRejected,
+      // ), (state, { payload: { data, status } }) => {
+      //   if (status == 401) {
+      //     state.accessToken = null;
+      //     state.user = null;
+      //   }
+      // })
   }
 });
 

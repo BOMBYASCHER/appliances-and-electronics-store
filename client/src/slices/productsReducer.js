@@ -12,12 +12,10 @@ const productsSlice = createSlice({
     builder
       .addMatcher(productsApi.endpoints.getProducts.matchFulfilled, (state, { payload }) => {
         console.log('getProducts.matchFulfilled() : ')
-        console.log(payload)
         state.products = payload;
       })
       .addMatcher(productsApi.endpoints.getProductsByFilter.matchFulfilled, (state, { payload }) => {
         console.log('getProductsByFilter.matchFulfilled() : ')
-        console.log(payload)
         state.products = payload;
       })
   }

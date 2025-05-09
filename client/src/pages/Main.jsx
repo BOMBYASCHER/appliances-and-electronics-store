@@ -5,20 +5,24 @@ import ProductCard from '../components/ProductCard.jsx';
 import Search from '../components/Search.jsx';
 import Sort from '../components/Sort.jsx';
 import { useState, useEffect } from 'react';
-import { useGetProductsByFilterMutation, useGetProductsQuery, useGetProductsMetadataQuery } from '../slices/api/productsApi.js';
+import { useGetProductsByFilterMutation, useGetProductsQuery, useGetProductsMetadataQuery, useLazyGetProductsQuery } from '../slices/api/productsApi.js';
 import { useSelector } from 'react-redux';
+import { useLazyGetFavoritesQuery } from '../slices/api/favoritesApi.js';
+import { useLazyGetCartQuery } from '../slices/api/cartApi.js';
+import { getAuthentication, getProducts } from '../stateSelectors.js';
 
 const Main = () => {
   const defaultSort = (data) => data;
   const { data } = useGetProductsQuery();
+  // const [favoritesTrigger] = useLazyGetFavoritesQuery();
+  // const [cartTrigger] = useLazyGetCartQuery();
   const metadata = getMetadata(data);
   const [filter, setFilter] = useState(new FilterObject({}));
   const [loadProductsByFilter] = useGetProductsByFilterMutation();
-  const { products } = useSelector((state) => state.products);
+
+  const { products } = useSelector(getProducts);
   const [sort, setSort] = useState(() => defaultSort);
   const processedProducts = sort(products);
-
-  const { accessToken } = useSelector((state) => state.authentication);
 
   useEffect(() => { 
     loadProductsByFilter(filter.toParameters());
@@ -51,7 +55,6 @@ const Catalog = ({ products = [] }) => {
   const { products: productsInCart } = useSelector((state) => state.cart);
 
   const syncedProducts = products.map(product => {
-    console.log(`isFavorite: ${product.isFavorite} | isInCart: ${product.isInCart}`)
     const isFavorite = product.isFavorite ? true : favorites.find(({ productId }) => productId == product.id) !== undefined;
     const isInCart = product.isInCart ? true : productsInCart.find(({ productId }) => productId == product.id) !== undefined;;
     return { ...product, isFavorite, isInCart }

@@ -7,17 +7,15 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router";
 
 const Cart = () => {
-  // const { data, refetch } = useGetCartQuery();
+  const { data, refetch } = useGetCartQuery();
   const [createOrder, { isSuccess }] = useCreateOrderMutation();
   const { totalAmount, products } = useSelector((state) => state.cart);
-
-  const [isClick, setIsClick] = useState(false);
   
   const handleSubmit = (e) => {
     e.preventDefault();
-    // const order = products.map(({ productId, quantity }) => { productId, quantity });
-    // createOrder(order);
-    setIsClick(true)
+    const order = products.map(({ productId, quantity }) => ({ productId, quantity }));
+    console.log(order)
+    createOrder(order);
   };
 
   // useEffect(() => {
@@ -30,7 +28,7 @@ const Cart = () => {
     <>
     <Header/>
     <div className='container'>
-        {isClick ?
+        {isSuccess ?
         <SuccessHero/> :
         <>
         {products.map(({ id, productId, title, price, image, quantity }) =>
