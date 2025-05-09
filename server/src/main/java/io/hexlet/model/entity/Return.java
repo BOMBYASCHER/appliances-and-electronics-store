@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -36,6 +37,13 @@ public class Return {
 
     @Column(name = "photo")
     private String photo;
+
+    @Column(name = "photo_type")
+    private String photoType;
+
+    @Lob
+    @Column(name = "photo_date")
+    private byte[] photoDate;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
