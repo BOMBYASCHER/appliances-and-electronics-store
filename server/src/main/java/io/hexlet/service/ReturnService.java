@@ -14,7 +14,9 @@ import io.hexlet.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,7 +36,7 @@ public class ReturnService {
     private ReturnMapper returnMapper;
 
     @Transactional
-    public void createReturn(int userId, ReturnRequestDTO request) {
+    public void createReturn(int userId, ReturnRequestDTO request, MultipartFile photoFile) throws IOException {
         User user = getUserOrThrow(userId);
 
         Purchase purchase = purchaseRepository.findByIdAndOrderId(request.getPurchaseId(), request.getOrderId())
@@ -45,6 +47,9 @@ public class ReturnService {
         }
 
         Return returnEntity = returnMapper.toReturnEntity(request, user);
+        returnEntity.setPhoto(photoFile.getOriginalFilename());
+        returnEntity.setPhotoType(photoFile.getContentType());
+        returnEntity.setPhotoDate(photoFile.getBytes());
 
         returnRepository.save(returnEntity);
     }
