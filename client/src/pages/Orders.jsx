@@ -6,7 +6,6 @@ import { useGetOrdersQuery } from "../slices/api/ordersApi";
 
 const Orders = () => {
   const { data: orders = [] } = useGetOrdersQuery();
-  console.log(orders)
 
   return (
     <>

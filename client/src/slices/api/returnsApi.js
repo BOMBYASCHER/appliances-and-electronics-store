@@ -1,11 +1,13 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { urls } from '.';
 
-const returnsApi = createApi({
+export const returnsApi = createApi({
+  reducerPath: 'returnsApi',
   baseQuery: fetchBaseQuery({
     baseUrl: urls.data.returns,
     prepareHeaders: (headers, { getState }) => {
       const token = getState().authentication.accessToken;
+      console.log(token);
       if (token) {
         headers.set('Authorization', `Bearer ${token}`);
       }
@@ -21,17 +23,16 @@ const returnsApi = createApi({
     }),
     createReturn: builder.mutation({
       query: ({ orderId, purchaseId, reason, photo }) => {
+        console.log('Inside createReturnAPI method() - ' + 'orderId: ' + orderId + 'purchaseId: ' + purchaseId + 'reason: ' + reason)
         const formData = new FormData();
-        formData.append('orderId', orderId);
-        formData.append('purchaseId', purchaseId);
-        formData.append('reason', reason);
-        formData.append('photo', photo);
+        formData.append('request', new Blob([JSON.stringify({ orderId, purchaseId, reason })], { type: 'application/json' }));
+        formData.append('photoFile', photo);
         return {
           url: '',
           method: 'POST',
           body: formData,
           headers: {
-            "content-type": "multipart/form-data"
+            'Content-Type': 'multipart/form-data'
           },
         }
       },

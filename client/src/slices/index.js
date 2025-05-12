@@ -8,6 +8,7 @@ import { favoritesApi } from './api/favoritesApi.js';
 import { cartApi } from './api/cartApi.js';
 import { authApi } from './api/authApi.js';
 import { ordersApi } from './api/ordersApi.js';
+import { returnsApi } from './api/returnsApi.js';
 
 import {
   persistStore,
@@ -30,6 +31,7 @@ const persistConfig = {
     favoritesApi.reducerPath,
     cartApi.reducerPath,
     ordersApi.reducerPath,
+    returnsApi.reducerPath,
   ],
 };
 
@@ -43,6 +45,7 @@ const rootReducer = combineReducers({
   [favoritesApi.reducerPath]: favoritesApi.reducer,
   [cartApi.reducerPath]: cartApi.reducer,
   [ordersApi.reducerPath]: ordersApi.reducer,
+  [returnsApi.reducerPath]: returnsApi.reducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
@@ -60,6 +63,7 @@ const store = configureStore({
       favoritesApi.middleware,
       cartApi.middleware,
       ordersApi.middleware,
+      returnsApi.middleware,
     ),
 });
 

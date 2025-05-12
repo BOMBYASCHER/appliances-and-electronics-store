@@ -54,21 +54,23 @@ const ReturnForm = () => {
 
   const handleFileChange = ({ target: { files } }) => {
     if (files) {
-      setFile(files[0]);
+      setPhoto(files[0]);
     }
   };
 
-  const formClassName = cn('d-grid gap-2 w-25');
+  const formClassName = cn('d-grid gap-2');
   
-  const reasonSelect = cn('form-select', {
+  const reasonSelect = cn('form-select', 'w-50', {
     'is-valid': isValidReason == null ? false : isValidReason,
     'is-invalid': isValidReason == null ? false : !isValidReason,
   });
 
   return (
     <div className='container py-5'>
-    <div className="d-flex align-items-center justify-content-center vh-100">
-      <form className={formClassName}>
+      {/* d-grid align-items-center gap-2 w-75
+      d-flex align-items-center justify-content-center vh-100 */}
+    <div className="d-grid align-items-center gap-2 w-75">
+      <form className={formClassName} onSubmit={handleSubmit}>
         <h1 className="h3 mb-3 fw-normal">Please fill out the form</h1>
           <div class="card">
             <div class="card-body">
@@ -92,11 +94,11 @@ const ReturnForm = () => {
             Choose one variant.
           </div>
         </div>
-        <label class="input-group-text">Upload a photo of the purchase</label>
+        <label class="w-50 input-group-text">Upload a photo of the purchase</label>
         <div class="input-group mb-3">
           <input type="file" accept='image/*' class="form-control" onChange={handleFileChange}/>
         </div>
-        <button disabled={isDisabled} className="btn btn-primary w-100 py-2" type="submit">Send</button>
+        <button disabled={isDisabled} className="btn btn-primary w-25 py-2" type="submit">Send</button>
       </form>
     </div>
     </div>
