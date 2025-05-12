@@ -17,6 +17,7 @@ import java.util.List;
 )
 public abstract class OrderMapper {
     @Mapping(target = "purchases", source = "purchases")
+    @Mapping(target = "status", expression = "java(order.getStatus().getDisplayName())")
     public abstract OrderDTO toOrderDTO(Order order, List<Purchase> purchases);
 
     public OrderDTO toOrderDTOWithPurchases(Order order, List<Purchase> purchases) {
