@@ -1,20 +1,44 @@
 import cn from 'classnames';
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router";
+import { useCreateReturnMutation } from '../slices/api/returnsApi';
 
 const ReturnForm = () => {
+  const [createReturn, { isLoading, isSuccess, isError }] = useCreateReturnMutation();
   const location = useLocation();
-  const [formInfo, setFormInfo] = useState({ purchaseId, productId, title, price, image, quantity, isReturned, date, orderTitle });
+  // const [formInfo, setFormInfo] = useState({ orderId, purchaseId, title, price, image, quantity, date, orderTitle });
 
+  const formInfo = location.state;
+
+  console.log(formInfo)
   const [reason, setReason] = useState(null);
   const [isValidReason, setIsValidReason] = useState(null);
   const [isDisabled, setIsDisabled] = useState(true);
 
   const [isDisabledOption, setIsDisabledOption] = useState(false);
 
+  const [photo, setPhoto] = useState(null);
+
+  // useEffect(()=>{
+  //   setFormInfo(location.state);
+  // }, []);
+
   useEffect(()=>{
-    setFormInfo(location.state);
-  },[]);
+    if (isSuccess) {
+      // navigate('/', { replace: true });
+      console.log('RETURN WAS CREATED');
+    }
+  }, [isSuccess]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    createReturn({
+      orderId: formInfo.orderId,
+      purchaseId: formInfo.purchaseId,
+      reason,
+      photo,
+    });
+  };
 
   const handleSelect = ({ target: { value } }) => {
     setIsDisabledOption(true)
@@ -25,6 +49,12 @@ const ReturnForm = () => {
     } else {
       setIsValidReason(false)
       setIsDisabled(true);
+    }
+  };
+
+  const handleFileChange = ({ target: { files } }) => {
+    if (files) {
+      setFile(files[0]);
     }
   };
 
@@ -64,7 +94,7 @@ const ReturnForm = () => {
         </div>
         <label class="input-group-text">Upload a photo of the purchase</label>
         <div class="input-group mb-3">
-          <input type="file" class="form-control" />
+          <input type="file" accept='image/*' class="form-control" onChange={handleFileChange}/>
         </div>
         <button disabled={isDisabled} className="btn btn-primary w-100 py-2" type="submit">Send</button>
       </form>

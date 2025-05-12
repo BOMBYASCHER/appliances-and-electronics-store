@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLoginMutation } from "../slices/api/authApi";
-import { Link, redirect, useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useLazyGetFavoritesQuery } from "../slices/api/favoritesApi";
 import { useLazyGetCartQuery } from "../slices/api/cartApi";
 import { useLazyGetProductsQuery } from "../slices/api/productsApi";
@@ -25,8 +25,8 @@ const Login = () => {
       // productsTrigger();
       // favoritesTrigger();
       // cartTrigger();
-      // navigate('/', { replace: true });
-      location.href = '/'
+      navigate('/', { replace: true });
+      // location.href = '/'
     }
   }, [isSuccess]);
 

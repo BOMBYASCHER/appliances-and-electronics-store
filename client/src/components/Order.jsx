@@ -2,7 +2,7 @@ import cn from 'classnames';
 import { useState } from "react";
 import { Link } from 'react-router';
 
-const Order = ({ id, title: orderTitle, totalAmount, date, purchases, status }) => {
+const Order = ({ id: orderId, title: orderTitle, totalAmount, date, purchases, status }) => {
   const [isShown, setIsShown] = useState(false);
   
   const toggleAccordion = () => {
@@ -17,7 +17,7 @@ const Order = ({ id, title: orderTitle, totalAmount, date, purchases, status }) 
   });
 
   return (
-    <div key={id} className="row-md-6">
+    <div key={orderId} className="row-md-6">
     <div className="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
       <div className="col p-4 d-flex flex-column position-static">
         <h4 className="pb-3 mb-0">{orderTitle}</h4>
@@ -36,7 +36,7 @@ const Order = ({ id, title: orderTitle, totalAmount, date, purchases, status }) 
           <div className="accordion-body">
             <div className='row row-cols-sm-3 row-cols-md-6 g-3'>
               {purchases.map(({ id, productId, title, price, image, quantity, isReturned }) => {
-                const formInfo = { purchaseId: id, productId, title, price, image, quantity, isReturned, date, orderTitle };
+                const formInfo = { orderId, purchaseId: id, title, price, image, quantity, date, orderTitle };
                 return (
                   <Purchase
                     key={id}
