@@ -3,7 +3,7 @@ import Return from "../components/Return";
 import { useGetReturnsQuery } from "../slices/api/returnsApi";
 
 const Returns = () => {
-  const { data: returns } = useGetReturnsQuery();
+  const { data: returns = [] } = useGetReturnsQuery();
 
   return (
     <>
@@ -11,7 +11,7 @@ const Returns = () => {
     <div className='container'>
       <h1>Returns page</h1>
       <div>
-        {returns.map(({ id, orderTitle, productTitle, image, totalAmount, price, quantity, date, reason, photo }) => {
+        {returns.map(({ id, orderTitle, productTitle, image, totalAmount, price, quantity, date, reason, photo }) => (
           <Return
             key={id}
             orderTitle={orderTitle}
@@ -24,7 +24,7 @@ const Returns = () => {
             reason={reason}
             photo={photo}
           />
-        })}
+      ))}
       </div>
     </div>
     </>

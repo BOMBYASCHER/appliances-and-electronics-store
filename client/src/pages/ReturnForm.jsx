@@ -19,10 +19,6 @@ const ReturnForm = () => {
 
   const [photo, setPhoto] = useState(null);
 
-  // useEffect(()=>{
-  //   setFormInfo(location.state);
-  // }, []);
-
   useEffect(()=>{
     if (isSuccess) {
       // navigate('/', { replace: true });

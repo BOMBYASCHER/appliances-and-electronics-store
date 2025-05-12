@@ -7,7 +7,6 @@ export const returnsApi = createApi({
     baseUrl: urls.data.returns,
     prepareHeaders: (headers, { getState }) => {
       const token = getState().authentication.accessToken;
-      console.log(token);
       if (token) {
         headers.set('Authorization', `Bearer ${token}`);
       }
@@ -31,9 +30,6 @@ export const returnsApi = createApi({
           url: '',
           method: 'POST',
           body: formData,
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          },
         }
       },
       providesTags: ['Returns'],
