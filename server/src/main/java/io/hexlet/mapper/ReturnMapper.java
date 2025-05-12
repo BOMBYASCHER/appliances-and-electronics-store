@@ -39,5 +39,6 @@ public abstract class ReturnMapper {
     @Mapping(target = "totalAmount", source = "purchase.order.totalAmount")
     @Mapping(target = "price", source = "purchase.productPrice")
     @Mapping(target = "quantity", source = "purchase.quantity")
+    @Mapping(target = "photo", source = "returnItem.photoDate")
     public abstract ReturnDTO toReturnDTO(Return returnItem, Purchase purchase);
 }
