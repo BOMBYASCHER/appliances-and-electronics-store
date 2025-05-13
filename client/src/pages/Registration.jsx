@@ -1,7 +1,7 @@
 import cn from 'classnames';
 import { useEffect, useState } from "react";
 import { useRegistrationMutation } from "../slices/api/authApi";
-import { redirect, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { useLazyGetFavoritesQuery } from "../slices/api/favoritesApi";
 import { useLazyGetCartQuery } from "../slices/api/cartApi";
 import { useLazyGetProductsQuery } from "../slices/api/productsApi";
@@ -15,8 +15,6 @@ const Registration = () => {
   const [middleName, setMiddleName] = useState('');
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
-
-  // const [submitted, setSubmitted] = useState(false);
 
   const [isValidLastName, setIsValidLastName] = useState(null);
   const [isValidFirstName, setIsValidFirstName] = useState(null);
@@ -35,10 +33,6 @@ const Registration = () => {
   const [cartTrigger] = useLazyGetCartQuery();
 
   const nameRegexp = new RegExp(/^(\p{L}+[-]{0,1}\p{L}+)$/, 'u');
-
-  const formClassName = cn('d-grid gap-2 w-25',  {
-    // 'was-validated': submitted
-  });
 
   const lastNameInput = cn('form-control', {
     'is-valid': isValidLastName == null ? false : isValidLastName,
@@ -71,22 +65,10 @@ const Registration = () => {
     `${lastName.trim()} ${firstName.trim()}` :
     `${lastName.trim()} ${firstName.trim()} ${middleName.trim()}`;
     registration({ phone: phone.trim(), fullName, password: password.trim() });
-
-    // setPhone(phone.trim());
-    // setPassword(password.trim());
-    // setRepeatPassword(repeatPassword.trim());
-    // setSubmitted(true);
   };
-
-  // useEffect(() => {
-  //   if (submitted) {
-  //     registration({ phone, fullName, password });
-  //   }
-  // }, [submitted]);
 
   useEffect(() => {
     if (isSuccess) {
-      console.log('IS SUCCESS REGISTRATION');
       productsTrigger();
       favoritesTrigger();
       cartTrigger();
@@ -98,7 +80,6 @@ const Registration = () => {
   useEffect(() => {
     if (isError) {
       if (error.originalStatus == 409) {
-        console.log('inside 409')
         setIsValidPhone(false);
         setPhoneError('This phone already in use.');
       }
@@ -112,7 +93,6 @@ const Registration = () => {
   }, [isValidFirstName, isValidLastName, isValidMiddleName, isValidPhone, isValidPassword, isValidRepeatPassword]);
 
   const handleLastName = ({ target: { value } }) => {
-    // setSubmitted(false);
     const preparedValue = value.trim();
     setLastName(preparedValue);
     const isValid = nameRegexp.test(preparedValue);
@@ -124,7 +104,6 @@ const Registration = () => {
   };
 
   const handleFirstName = ({ target: { value } }) => {
-    // setSubmitted(false);
     const preparedValue = value.trim();
     setFirstName(preparedValue);
     const isValid = nameRegexp.test(preparedValue);
@@ -136,7 +115,6 @@ const Registration = () => {
   };
 
   const handleMiddleName = ({ target: { value } }) => {
-    // setSubmitted(false);
     const preparedValue = value.trim();
     setMiddleName(preparedValue);
     if (preparedValue.length == 0) {
@@ -153,7 +131,6 @@ const Registration = () => {
   };
 
   const handlePhone = ({ target: { value } }) => {
-    // setSubmitted(false);
     const preparedValue = value.trim();
     setPhone(preparedValue);
     const regexp = /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/;
@@ -167,10 +144,10 @@ const Registration = () => {
   };
 
   const handlePassword = ({ target: { value } }) => {
-    // setSubmitted(false);
     const preparedValue = value.trim();
     setPassword(preparedValue);
-    const isValid = preparedValue.length >= 6;
+    
+    const isValid = /^[a-zA-Z0-9+)_(\-*]{6,}$/.test(preparedValue);
     if (isValid) {
       setIsValidPassword(true);
     } else {
@@ -179,7 +156,6 @@ const Registration = () => {
   };
 
   const handleRepeatPassword = ({ target: { value } }) => {
-    // setSubmitted(false);
     const preparedValue = value.trim();
     setRepeatPassword(preparedValue);
     const isValid = password === preparedValue;
@@ -193,7 +169,7 @@ const Registration = () => {
   return (
     <div className='container py-5'>
     <div className="d-flex align-items-center justify-content-center vh-100">
-      <form className={formClassName} onSubmit={(e) => handleForm(e)}>
+      <form className='d-grid gap-2 w-25' onSubmit={(e) => handleForm(e)}>
         <h1 className="h3 mb-3 fw-normal">Please sign up</h1>
         <div className="form-floating form-group required">
           <input
@@ -267,7 +243,7 @@ const Registration = () => {
           />
           <label className='opacity-75' for="floatingPassword">Password</label>
           <div class="invalid-feedback">
-            Password must be at least 6 characters.
+            Password must be at least 6 characters and include only letters, digits and special characters: + _ - * ) (
           </div>
         </div>
         <div className="form-floating">
@@ -293,12 +269,6 @@ const Registration = () => {
     </div>
     </div>
   );
-};
-
-const validateForm = (phone, fullName, password, repeatPassword) => {
-  const isValidPhone = /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/.test(phone);
-  const isValidFullName = ''
-  return password == repeatPassword;
 };
 
 export default Registration;

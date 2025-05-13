@@ -45,6 +45,7 @@ const Order = ({ id: orderId, title: orderTitle, totalAmount, date, purchases, s
                     image={image}
                     quantity={quantity}
                     formInfo={formInfo}
+                    isReturned={isReturned}
                   />
                 );
               })}
@@ -58,7 +59,12 @@ const Order = ({ id: orderId, title: orderTitle, totalAmount, date, purchases, s
   );
 };
 
-const Purchase = ({ title, price, image, quantity, formInfo }) => {
+const Purchase = ({ title, price, image, quantity, formInfo, isReturned }) => {
+  const returnBlock = isReturned ?
+    <p>The purchase returned</p> :
+    <Link state={formInfo} to='/return-form'>
+      <button disabled={isReturned} className='btn btn-primary'>Return</button>
+    </Link>
   return (
     <div className="col">
       <div className='card shadow-sm'>
@@ -71,9 +77,7 @@ const Purchase = ({ title, price, image, quantity, formInfo }) => {
             <p className="card-text fw-light">Quantity: {quantity}</p>
             <p className="">Price: {price}</p>
           </div>
-          <Link state={formInfo} to='/return-form'>
-            <button className='btn btn-primary'>Return</button>
-          </Link>
+          {returnBlock}
         </div>
       </div>
     </div>

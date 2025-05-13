@@ -3,11 +3,10 @@ import { useSelector } from "react-redux";
 import Header from '../components/Header.jsx';
 import { useGetCartQuery } from '../slices/api/cartApi.js';
 import { useCreateOrderMutation } from "../slices/api/ordersApi.js";
-import { useEffect, useState } from "react";
 import { Link } from "react-router";
 
 const Cart = () => {
-  const { data, refetch } = useGetCartQuery();
+  const { data } = useGetCartQuery();
   const [createOrder, { isSuccess }] = useCreateOrderMutation();
   const { totalAmount, products } = useSelector((state) => state.cart);
   
@@ -17,12 +16,6 @@ const Cart = () => {
     console.log(order)
     createOrder(order);
   };
-
-  // useEffect(() => {
-  //   if (isSuccess) {
-  //     refetch();
-  //   }
-  // }, [isSuccess]);
 
   return (
     <>

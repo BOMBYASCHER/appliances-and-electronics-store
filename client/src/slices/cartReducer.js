@@ -49,6 +49,8 @@ const cartSlice = createSlice({
       }
     })
     .addMatcher(cartApi.endpoints.deleteProductFromCart.matchFulfilled, (state, { payload: { data: id, status } }) => {
+      console.log('deleteProductFromCart.matchFulfilled()')
+      console.log('status: ' + status)
       if (status == 204) {
         console.log('deleteProductFromCart.matchFulfilled()')
         state.products = state.products.filter(({ productId }) => productId !== id);

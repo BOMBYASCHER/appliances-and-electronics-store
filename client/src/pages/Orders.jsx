@@ -1,6 +1,4 @@
-import { useSelector } from "react-redux";
 import Header from "../components/Header";
-import { getOrders } from "../stateSelectors";
 import Order from "../components/Order";
 import { useGetOrdersQuery } from "../slices/api/ordersApi";
 

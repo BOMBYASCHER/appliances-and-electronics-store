@@ -6,9 +6,10 @@ import { useLazyGetCartQuery } from "../slices/api/cartApi";
 import { useLazyGetProductsQuery } from "../slices/api/productsApi";
 
 const Login = () => {
-  const [login, { isSuccess }] = useLoginMutation();
+  const [login, { isSuccess, isError: isLoginError }] = useLoginMutation();
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
+  const [isError, setIsError] = useState(false);
 
   const navigate = useNavigate();
   const [productsTrigger] = useLazyGetProductsQuery();
@@ -22,19 +23,27 @@ const Login = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      // productsTrigger();
-      // favoritesTrigger();
-      // cartTrigger();
+      productsTrigger();
+      favoritesTrigger();
+      cartTrigger();
       navigate('/', { replace: true });
-      // location.href = '/'
     }
   }, [isSuccess]);
 
+  useEffect(() => {
+    if (isLoginError) {
+      setIsError(true);
+    }
+  }, [isLoginError]);
+
   const handlePhone = ({ target: { value } }) => {
-    setPhone(value);
+    setIsError(false);
+    const preparedValue = value.trim();
+    setPhone(preparedValue);
   };
 
   const handlePassword = ({ target: { value } }) => {
+    setIsError(false);
     setPassword(value);
   };
 
@@ -51,7 +60,7 @@ const Login = () => {
             value={phone}
             onChange={(e) => handlePhone(e)}
           />
-          <label for="floatingInput">Phone</label>
+          <label htmlFor="floatingInput">Phone</label>
         </div>
         <div className="form-floating">
           <input
@@ -62,11 +71,16 @@ const Login = () => {
             value={password}
             onChange={(e) => handlePassword(e)}
           />
-          <label for="floatingPassword">Password</label>
+          <label htmlFor="floatingPassword">Password</label>
         </div>
-        <p class="mt-5 mb-3 text-body-secondary">
+        {isError ?
+        <div className='text-danger'>
+          Please, check your phone and password.
+        </div> : null}
+        <p className="mt-5 mb-3 text-body-secondary">
           Don't have an account? <Link to='/registration' className="text-reset">Sign-up!</Link>
         </p>
+        
         <button className="btn btn-primary w-100 py-2" type="submit">Sign in</button>
       </form>
     </div>

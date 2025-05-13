@@ -1,17 +1,81 @@
+import cn from 'classnames';
+import { useState } from "react";
+
 const Return = ({ orderTitle, productTitle, image, totalAmount, price, quantity, date, reason, photo }) => {
-  const base64String = btoa(String.fromCharCode(...new Uint8Array(byteArray)));
-  const src = `data:image/png;base64,${base64String}`;
+  const [isShown, setIsShown] = useState(false);
+  
+  const toggleAccordion = () => {
+    setIsShown(!isShown);
+  };
+
+  const accordionBtnClass = cn('accordion-button', {
+    collapsed: !isShown,
+  });
+  const accordionClass = cn('accordion-collapse collapse', {
+    show: isShown,
+  });
+  const { data: photoData, type: photoType } = photo;
+  const src = `data:${photoType};base64,${photoData}`;
+
+
   return (
     <div className="row-md-6">
-    <div className="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-      <div className="col p-4 d-flex flex-column position-static">
-        <h3 className="mb-0">Order: {orderTitle}</h3>
-        <p className="card-text mb-auto">{productTitle}</p>
-        <h2>Total: {totalAmount}</h2>
-        <h2>Price: {price}</h2>
-      </div>
-      <div className="col-auto d-none d-lg-block">
-        <img width={'auto'} height={250} src={src} alt="Product image" />
+    <div class="col">
+      <div class="card">
+        <div class="row g-0">
+          <div class="col-md-8">
+            <div class="card-body">
+              <p class="card-title fs-4">Return for the <strong>{productTitle}</strong></p>
+              <p class="card-title fs-5">From the order <strong>{orderTitle}</strong></p>
+              <p class="card-text text-body-secondary">Returned at {new Date(date).toLocaleDateString()}</p>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                  <div class="d-flex justify-content-between">
+                    <p>Total amount of the purchase:</p>
+                    <p>{totalAmount}</p>
+                  </div>
+                </li>
+                <li class="list-group-item">
+                  <div class="d-flex justify-content-between">
+                    <p>Product price:</p>
+                    <p>{price}</p>
+                  </div>
+                </li>
+                <li class="list-group-item">
+                  <div class="d-flex justify-content-between">
+                    <p>Quantity:</p>
+                    <p>{quantity}</p>
+                  </div>
+                </li>
+                <li class="list-group-item">
+                  <div class="d-flex justify-content-between">
+                    <p>Reason of the return:</p>
+                    <p>{reason}</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <img width='100%' height='auto' src={image}/>
+          </div>
+          <div className="accordion" id="accordionExample">
+            <div className="accordion-item">
+              <h2 className="accordion-header">
+                <button onClick={toggleAccordion} className={accordionBtnClass} type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded={isShown} aria-controls="collapseOne">
+                  Photo of the return
+                </button>
+              </h2>
+              <div id="collapseOne" className={accordionClass} data-bs-parent="#accordionExample">
+                <div className="accordion-body">
+                  <div className='row row-cols-sm-3 row-cols-md-6 g-3'>
+                    <img src={src}/>
+                  </div>
+                </div>
+              </div>
+              </div>
+          </div>
+        </div>
       </div>
     </div>
     </div>
