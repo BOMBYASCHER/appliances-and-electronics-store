@@ -1,5 +1,6 @@
 package io.hexlet.mapper;
 
+import io.hexlet.dto.PhotoDTO;
 import io.hexlet.dto.ReturnDTO;
 import io.hexlet.dto.ReturnRequestDTO;
 import io.hexlet.model.entity.Purchase;
@@ -17,7 +18,7 @@ import java.time.LocalDateTime;
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
         componentModel = MappingConstants.ComponentModel.SPRING,
         unmappedTargetPolicy = ReportingPolicy.IGNORE,
-        imports = {LocalDateTime.class}
+        imports = {LocalDateTime.class, PhotoDTO.class}
 )
 public abstract class ReturnMapper {
 
@@ -39,6 +40,6 @@ public abstract class ReturnMapper {
     @Mapping(target = "totalAmount", source = "purchase.order.totalAmount")
     @Mapping(target = "price", source = "purchase.productPrice")
     @Mapping(target = "quantity", source = "purchase.quantity")
-    @Mapping(target = "photo", source = "returnItem.photoDate")
+    @Mapping(target = "photo", expression = "java(new PhotoDTO(returnItem.getPhotoDate(), returnItem.getPhotoType()))")
     public abstract ReturnDTO toReturnDTO(Return returnItem, Purchase purchase);
 }

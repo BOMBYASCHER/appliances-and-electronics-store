@@ -19,5 +19,5 @@ public class ReturnDTO {
     private Integer quantity;
     private LocalDateTime date;
     private String reason;
-    private byte[] photo;
+    private PhotoDTO photo;
 }
