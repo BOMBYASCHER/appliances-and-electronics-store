@@ -12,6 +12,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PhotoDTO {
-    public byte[] data;
-    public String type;
+    private byte[] data;
+    private String type;
 }
