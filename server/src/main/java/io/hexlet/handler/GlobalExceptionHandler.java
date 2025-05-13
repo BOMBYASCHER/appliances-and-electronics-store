@@ -3,6 +3,7 @@ package io.hexlet.handler;
 import io.hexlet.exception.AccessDeniedException;
 import io.hexlet.exception.PhoneAlreadyExistsException;
 import io.hexlet.exception.ResourceNotFoundException;
+import io.hexlet.exception.ReturnAlreadyExistsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -24,6 +25,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(PhoneAlreadyExistsException.class)
     public ResponseEntity<String> handlePhoneExists(PhoneAlreadyExistsException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(ReturnAlreadyExistsException.class)
+    public ResponseEntity<String> handleReturnAlreadyExists(ReturnAlreadyExistsException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
     }
 }

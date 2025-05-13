@@ -4,6 +4,7 @@ import io.hexlet.dto.ReturnDTO;
 import io.hexlet.dto.ReturnRequestDTO;
 import io.hexlet.exception.AccessDeniedException;
 import io.hexlet.exception.ResourceNotFoundException;
+import io.hexlet.exception.ReturnAlreadyExistsException;
 import io.hexlet.mapper.ReturnMapper;
 import io.hexlet.model.entity.Purchase;
 import io.hexlet.model.entity.Return;
@@ -44,6 +45,11 @@ public class ReturnService {
 
         if (purchase.getOrder().getUser().getId() != userId) {
             throw new AccessDeniedException("You are not allowed to create return for this purchase");
+        }
+
+        if (returnRepository.existsByPurchaseId(request.getPurchaseId())) {
+            throw new ReturnAlreadyExistsException(
+                    "Return already exists for purchase with id: " + request.getPurchaseId());
         }
 
         Return returnEntity = returnMapper.toReturnEntity(request, user);

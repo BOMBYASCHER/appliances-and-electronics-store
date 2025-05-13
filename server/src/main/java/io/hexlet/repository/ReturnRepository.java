@@ -1,6 +1,5 @@
 package io.hexlet.repository;
 
-import io.hexlet.model.entity.Purchase;
 import io.hexlet.model.entity.Return;
 import io.hexlet.model.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
