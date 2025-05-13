@@ -2,6 +2,7 @@ package io.hexlet.service;
 
 import io.hexlet.dto.OrderDTO;
 import io.hexlet.dto.OrderItemRequestDTO;
+import io.hexlet.dto.PurchaseDTO;
 import io.hexlet.model.enums.OrderStatus;
 import io.hexlet.exception.ResourceNotFoundException;
 import io.hexlet.mapper.OrderMapper;
@@ -13,6 +14,7 @@ import io.hexlet.model.entity.User;
 import io.hexlet.repository.OrderRepository;
 import io.hexlet.repository.ProductRepository;
 import io.hexlet.repository.PurchaseRepository;
+import io.hexlet.repository.ReturnRepository;
 import io.hexlet.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,6 +40,9 @@ public class OrderService {
     private UserRepository userRepository;
 
     @Autowired
+    private ReturnRepository returnRepository;
+
+    @Autowired
     private OrderMapper orderMapper;
 
     @Autowired
@@ -45,12 +50,24 @@ public class OrderService {
 
     public List<OrderDTO> getUserOrders(Integer userId) {
         User user = getUserOrThrow(userId);
+
         List<Order> orders = orderRepository.findByUser(user);
 
         return orders.stream()
                 .map(order -> {
                     List<Purchase> purchases = purchaseRepository.findAllById(order.getPurchaseIds());
-                    return orderMapper.toOrderDTO(order, purchases);
+
+                    List<PurchaseDTO> purchaseDTOs = purchases.stream()
+                            .map(purchase -> {
+                                PurchaseDTO dto = purchaseMapper.toPurchaseDTO(purchase);
+                                dto.setIsReturned(isPurchaseReturned(purchase));
+                                return dto;
+                            })
+                            .collect(Collectors.toList());
+
+                    OrderDTO orderDTO = orderMapper.toOrderDTO(order, purchases);
+                    orderDTO.setPurchases(purchaseDTOs);
+                    return orderDTO;
                 })
                 .collect(Collectors.toList());
     }
@@ -99,5 +116,9 @@ public class OrderService {
     public User getUserOrThrow(Integer userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
+    }
+
+    private boolean isPurchaseReturned(Purchase purchase) {
+        return returnRepository.existsByPurchaseId(purchase.getId());
     }
 }
