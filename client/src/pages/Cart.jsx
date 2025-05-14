@@ -3,11 +3,13 @@ import { useSelector } from "react-redux";
 import Header from '../components/Header.jsx';
 import { useGetCartQuery } from '../slices/api/cartApi.js';
 import { useCreateOrderMutation } from "../slices/api/ordersApi.js";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { useEffect } from "react";
 
 const Cart = () => {
   const { data } = useGetCartQuery();
-  const [createOrder, { isSuccess }] = useCreateOrderMutation();
+  const navigate = useNavigate();
+  const [createOrder, { isSuccess, isError, error }] = useCreateOrderMutation();
   const { totalAmount, products } = useSelector((state) => state.cart);
   
   const handleSubmit = (e) => {
@@ -17,32 +19,64 @@ const Cart = () => {
     createOrder(order);
   };
 
+  useEffect(() => {
+    if (isError) {
+      if (error.status == 401) {
+        navigate('/login');
+      }
+    }
+  }, [isError]);
+
   return (
     <>
     <Header/>
     <div className='container'>
-        {isSuccess ?
+      {
+        isSuccess ?
         <SuccessHero/> :
+        products.length == 0 ? 
+        <EmptyHero/> :
         <>
-        {products.map(({ id, productId, title, price, image, quantity }) =>
-          <CartProductCard
-            key={id}
-            productId={productId}
-            title={title}
-            price={price}
-            image={image}
-            quantity={quantity}
-          />
-        )}
-        <form onSubmit={e => handleSubmit(e)}>
-          <h2>{totalAmount}</h2>
-          <button type='submit' className='btn btn-primary'>Order</button>
-        </form>
+          {products.map(({ id, productId, title, price, image, quantity }) =>
+            <CartProductCard
+              key={id}
+              productId={productId}
+              title={title}
+              price={price}
+              image={image}
+              quantity={quantity}
+            />
+          )}
+          <form onSubmit={e => handleSubmit(e)}>
+            <h2>{totalAmount}</h2>
+            <button type='submit' className='btn btn-primary'>Order</button>
+          </form>
         </>
-        }
+      }
     </div>
     </>
   )
+};
+
+const EmptyHero = () => {
+  return (
+    <div class="px-4 py-5 my-5 text-center">
+      <h1 class="display-5 fw-bold">Nothing.</h1>
+      <div class="col-lg-6 mx-auto">
+      <p class="lead mb-4">
+        The cart is empty. You can check catalog or favorites.
+      </p>
+      <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+        <Link to='/'>
+          <button type="button" class="btn btn-primary btn-lg px-4 gap-3">Catalog</button>
+        </Link>
+        <Link to='/favorites'>
+          <button type="button" class="btn btn-outline-secondary btn-lg px-4">Favorites</button>
+        </Link>
+      </div>
+      </div>
+    </div>
+  );
 };
 
 const SuccessHero = () => (
