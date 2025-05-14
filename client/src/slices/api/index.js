@@ -1,7 +1,7 @@
 const getUrlOrigin = () => {
-  const mode = import.meta.env.APPLICATION_PROFILE;
-  const databaseUrl = import.meta.env.DATABASE_URL;
-  const baseUrl = mode == undefined ? 'http://localhost:4040' : databaseUrl;
+  const mode = import.meta.env.CLIENT_APPLICATION_PROFILE;
+  const serverUrl = import.meta.env.SERVER_URL;
+  const baseUrl = mode === 'production' ? 'http://localhost:4040' : serverUrl;
   return new URL(baseUrl);
 };
 
