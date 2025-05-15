@@ -1,10 +1,10 @@
 const getUrlOrigin = () => {
-  console.log('Inside getUrlOrigin() : ')
-  console.log('mport.meta.env.MODE : ' + import.meta.env.MODE);
+  console.log('import.meta.env.MODE : ' + import.meta.env.MODE);
   const mode = import.meta.env.VITE_APPLICATION_PROFILE;
-  const serverUrl = import.meta.env.VITE_SERVER_URL;
-  console.log(mode);
-  console.log(serverUrl);
+  // const serverUrl = import.meta.env.VITE_SERVER_URL;
+  const serverUrl = 'https://maconi-store-server.onrender.com';
+  console.log('VITE_APPLICATION_PROFILE: ' + mode);
+  console.log('VITE_SERVER_URL' + serverUrl);
   const baseUrl = mode === 'production' ? serverUrl : 'http://localhost:4040';
   return new URL(baseUrl);
 };
