@@ -66,9 +66,9 @@ public class SecurityConfig {
     }
 
     @Bean
-    @Profile("development")
+    //    @Profile("development")
     public CorsConfigurationSource corsConfigurationSource() {
-        System.out.println("DEVELOPMENT profile!");
+        System.out.println("CORS config loaded!");
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("*"));
         configuration.setAllowedMethods(List.of("*"));
