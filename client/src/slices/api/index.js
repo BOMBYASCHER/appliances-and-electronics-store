@@ -5,7 +5,7 @@ const getUrlOrigin = () => {
   const serverUrl = 'https://maconi-store-server.onrender.com';
   console.log('VITE_APPLICATION_PROFILE: ' + mode);
   console.log('VITE_SERVER_URL' + serverUrl);
-  const baseUrl = mode === 'production' ? serverUrl : 'http://localhost:4040';
+  const baseUrl = mode === undefined ? serverUrl : 'http://localhost:4040';
   return new URL(baseUrl);
 };
 
