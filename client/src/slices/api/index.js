@@ -1,6 +1,6 @@
 const getUrlOrigin = () => {
-  const mode = import.meta.env.CLIENT_APPLICATION_PROFILE;
-  const serverUrl = import.meta.env.SERVER_URL;
+  const mode = import.meta.env.VITE_APPLICATION_PROFILE;
+  const serverUrl = import.meta.env.VITE_SERVER_URL;
   const baseUrl = mode === 'production' ? 'http://localhost:4040' : serverUrl;
   return new URL(baseUrl);
 };
