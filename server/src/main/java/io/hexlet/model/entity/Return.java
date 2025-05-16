@@ -42,8 +42,8 @@ public class Return {
     private String photoType;
 
     @Lob
-    @Column(name = "photo_date")
-    private byte[] photoDate;
+    @Column(name = "photo_data")
+    private byte[] photoData;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

@@ -40,6 +40,6 @@ public abstract class ReturnMapper {
     @Mapping(target = "totalAmount", source = "purchase.order.totalAmount")
     @Mapping(target = "price", source = "purchase.productPrice")
     @Mapping(target = "quantity", source = "purchase.quantity")
-    @Mapping(target = "photo", expression = "java(new PhotoDTO(returnItem.getPhotoDate(), returnItem.getPhotoType()))")
+    @Mapping(target = "photo", expression = "java(new PhotoDTO(returnItem.getPhotoData(), returnItem.getPhotoType()))")
     public abstract ReturnDTO toReturnDTO(Return returnItem, Purchase purchase);
 }
