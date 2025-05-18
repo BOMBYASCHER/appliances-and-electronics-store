@@ -67,7 +67,6 @@ const ReturnForm = () => {
     'is-valid': isValidReason == null ? false : isValidReason,
     'is-invalid': isValidReason == null ? false : !isValidReason,
   });
-
   return (
     <div className='container py-5'>
       {/* d-grid align-items-center gap-2 w-75
@@ -79,11 +78,41 @@ const ReturnForm = () => {
         <h1 className="h3 mb-3 fw-normal">Please fill out the form</h1>
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title">Purchase info:</h5>
-            </div>
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item">{formInfo.date}</li>
-            </ul>
+            <div class="row g-0">
+              <div class="col-md-8">
+                <p class="card-title fs-5">Purchase info from the order <strong>{formInfo.orderTitle}</strong></p>
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item">
+                    <div class="d-flex justify-content-between">
+                      <p>Product title</p>
+                      <p>{formInfo.title}</p>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div class="d-flex justify-content-between">
+                      <p>Price</p>
+                      <p>{formInfo.price}</p>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div class="d-flex justify-content-between">
+                      <p>Quantity</p>
+                      <p>{formInfo.quantity}</p>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div class="d-flex justify-content-between">
+                      <p>Date of purchase</p>
+                      <p>{new Date(formInfo.date).toLocaleDateString()}</p>
+                    </div>
+                  </li>
+                </ul>
+                </div>
+                <div class="col-md-4">
+                  <img src={formInfo.image} height={200}/>
+                </div>
+              </div>
+            </div>  
           </div>
         <div className="form-floating form-group required">
           <select defaultValue='' required className={reasonSelect} onChange={e => handleSelect(e)}>
@@ -127,26 +156,5 @@ const SuccessHero = () => (
     </div>
   </div>
 );
-
-<div class="col">
-  <div class="card">
-    <div class="row g-0">
-      <div class="col-md-4">
-        <svg aria-label="Placeholder: Image" class="bd-placeholder-img " height="auto" preserveAspectRatio="xMidYMid slice" role="img" width="100%" xmlns="http://www.w3.org/2000/svg"><title>Placeholder</title><rect width="100%" height="100%" fill="#868e96"></rect><text x="50%" y="50%" fill="#dee2e6" dy=".3em">Image</text></svg>
-      </div>
-      <div class="col-md-8">
-        <div class="card-body">
-          <h5 class="card-title">Samsung WW7400</h5>
-          
-          <p class="card-text"><small class="text-body-secondary">Purchased at 3.03.2025</small></p>
-        <ul class="list-group list-group-flush">
-      <li class="list-group-item"><div class="d-flex justify-content-between"><p>Price:</p><p>56000</p></div></li>
-      <li class="list-group-item">A second item</li>
-      <li class="list-group-item">A third item</li>
-    </ul></div>
-      </div>
-    </div>
-  </div>
-</div>
 
 export default ReturnForm;
