@@ -55,7 +55,7 @@ public class ReturnService {
         Return returnEntity = returnMapper.toReturnEntity(request, user);
         returnEntity.setPhoto(photoFile.getOriginalFilename());
         returnEntity.setPhotoType(photoFile.getContentType());
-        returnEntity.setPhotoDate(photoFile.getBytes());
+        returnEntity.setPhotoData(photoFile.getBytes());
 
         returnRepository.save(returnEntity);
     }
