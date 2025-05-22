@@ -66,13 +66,17 @@ public class SecurityConfig {
     }
 
     @Bean
-    //    @Profile("development")
     public CorsConfigurationSource corsConfigurationSource() {
-        System.out.println("CORS config loaded!");
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("*"));
-        configuration.setAllowedMethods(List.of("*"));
-        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowedOrigins(List.of(
+                "https://maconi-store-client.onrender.com"
+        ));
+        configuration.setAllowedMethods(List.of(
+                "GET", "POST", "PUT", "DELETE"
+        ));
+        configuration.setAllowedHeaders(List.of(
+                "Authorization", "Content-Type"
+        ));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
