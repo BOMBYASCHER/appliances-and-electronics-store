@@ -18,15 +18,16 @@ const Main = () => {
   // const [cartTrigger] = useLazyGetCartQuery();
   const metadata = getMetadata(data);
   const [filter, setFilter] = useState(new FilterObject({}));
-  const [loadProductsByFilter] = useGetProductsByFilterMutation();
+  const [getProductsByFilter, { data: filteredProducts }] = useGetProductsByFilterMutation();
 
-  const { products } = useSelector(getProducts);
   const [sort, setSort] = useState(() => defaultSort);
-  const processedProducts = sort(products);
 
   useEffect(() => { 
-    loadProductsByFilter(filter.toParameters());
-  }, [filter]);
+    getProductsByFilter(filter.toParameters());
+  }, [filter, getProductsByFilter]);
+  
+  const productsToShow = Object.keys(filter).length === 0 ? data : filteredProducts;
+  const processedProducts = sort(productsToShow);
 
   return (
     <>
