@@ -2,9 +2,10 @@ import cn from 'classnames';
 import { useState } from 'react';
 import { useAddFavoriteMutation, useDeleteFavoriteMutation } from '../slices/api/favoritesApi';
 import { useAddProductToCartMutation, useDeleteProductFromCartMutation } from '../slices/api/cartApi';
+import ProductModal from './ProductModal';
 
 const ProductCard = ({ id, title, description, price, image, isFavorite, isInCart }) => {
-  const [isFullText, setIsFullText] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const [addFavorite] = useAddFavoriteMutation();
   const [deleteFavorite] = useDeleteFavoriteMutation();
@@ -21,7 +22,8 @@ const ProductCard = ({ id, title, description, price, image, isFavorite, isInCar
     active: isInCart
   });
 
-  const handleBtnFavorite = () => {
+  const handleBtnFavorite = (e) => {
+    e.stopPropagation();
     if (isFavorite) {
       deleteFavorite(id);
     } else if (!isFavorite) {
@@ -29,7 +31,8 @@ const ProductCard = ({ id, title, description, price, image, isFavorite, isInCar
     }
   };
 
-  const handleBtnCart = () => {
+  const handleBtnCart = (e) => {
+    e.stopPropagation();
     if (isInCart) {
       deleteFromCart(id);
     } else if (!isInCart) {
@@ -38,25 +41,39 @@ const ProductCard = ({ id, title, description, price, image, isFavorite, isInCar
   };
 
   return (
-    <div className={container}>
-      <div>
-        <img className='img-fluid img-thumbnail' src={image} alt="Product image" />
-      </div>
-      <div className='card-body'>
-        <h3>{title}</h3>
-        <p className='card-text fw-light'>
-          {isFullText ? description : description.slice(0, 150).concat('...', '\n')}
-          <a className='text-reset' onClick={() => setIsFullText(!isFullText)}>read more</a>
-        </p>
-        <div className='d-flex justify-content-between align-items-center'>
-          <div className='btn-group'>
-            <button className={btnFavorite} onClick={handleBtnFavorite}>To Favorites</button>
-            <button className={btnCart} onClick={handleBtnCart}>To Cart</button>
+    <>
+      <div className={container} onClick={() => setShowModal(true)}>
+        <div>
+          <img className='img-fluid img-thumbnail' src={image} alt="Product image" />
+        </div>
+        <div className='card-body'>
+          <h3>{title}</h3>
+          <p style={{ display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+            {description}
+          </p>
+          <div className='d-flex justify-content-between align-items-center'>
+            <div className='btn-group'>
+              <button className={btnFavorite} onClick={handleBtnFavorite}>To Favorites</button>
+              <button className={btnCart} onClick={handleBtnCart}>To Cart</button>
+            </div>
+            <div className='p-2 mb-2 text-bg-success rounded-2'>{price}</div>
           </div>
-          <div className='p-2 mb-2 text-bg-success rounded-2'>{price}</div>
         </div>
       </div>
-    </div>
+
+      {showModal && (
+        <ProductModal
+          id={id}
+          title={title}
+          description={description}
+          price={price}
+          image={image}
+          isFavorite={isFavorite}
+          isInCart={isInCart}
+          onClose={() => setShowModal(false)}
+        />
+      )}
+    </>
   );
 };
 
