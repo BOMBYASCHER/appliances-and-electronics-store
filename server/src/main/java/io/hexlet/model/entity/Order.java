@@ -40,11 +40,6 @@ public class Order {
     @Column(name = "date")
     private LocalDateTime date;
 
-    @ElementCollection
-    @CollectionTable(name = "order_purchases", joinColumns = @JoinColumn(name = "order_id"))
-    @Column(name = "purchase_id")
-    private List<Integer> purchaseIds;
-
     @Column(name = "total_amount")
     private Integer totalAmount;
 
