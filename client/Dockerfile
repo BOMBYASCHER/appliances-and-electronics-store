@@ -3,7 +3,10 @@ WORKDIR /app
 COPY package.json .
 RUN npm install
 COPY . .
-RUN env
+ARG VITE_APPLICATION_PROFILE=default_value
+ARG VITE_SERVER_URL=https://maconi.store.com
+RUN echo "Value of VITE_APPLICATION_PROFILE: ${VITE_APPLICATION_PROFILE}"
+RUN echo "Value of VITE_SERVER_URL: ${VITE_SERVER_URL}"
 RUN npm run build
 EXPOSE 5173
 CMD ["npm", "run", "preview"]
