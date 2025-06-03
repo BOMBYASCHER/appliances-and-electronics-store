@@ -1,9 +1,4 @@
 const getUrlOrigin = () => {
-  console.log('import.meta.env.MODE : ' + import.meta.env.MODE);
-  const mode = import.meta.env.VITE_APPLICATION_PROFILE;
-  const url = import.meta.env.VITE_SERVER_URL;
-  console.log('VITE_APPLICATION_PROFILE: ' + mode);
-  console.log('VITE_SERVER_URL' + url);
   const baseUrl = import.meta.env.VITE_SERVER_URL;
   return new URL(baseUrl);
 };
