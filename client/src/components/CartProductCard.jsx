@@ -43,7 +43,7 @@ const CartProductCard = ({ productId, title, price, image, isFavorite, quantity 
         <img width={'auto'} height={200} src={image} alt="Product image" />
       </div>
       <div className="col-auto d-flex">
-        <button className="btn btn-danger" onClick={() => deleteProduct(productId)}>X</button>
+        <button className="btn btn-danger" onClick={() => deleteProduct({ productId })}>X</button>
       </div>
     </div>
   );
