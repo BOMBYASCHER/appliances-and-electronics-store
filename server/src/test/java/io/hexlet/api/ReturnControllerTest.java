@@ -17,6 +17,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,8 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -92,10 +92,25 @@ public class ReturnControllerTest {
                 "photo1.png"
         );
 
-        mockMvc.perform(post(RETURNS_PATH)
+        MockMultipartFile filePart = new MockMultipartFile(
+                "photoFile",
+                "photo1.png",
+                MediaType.IMAGE_PNG_VALUE,
+                "photo1.png".getBytes()
+        );
+
+        MockMultipartFile jsonPart = new MockMultipartFile(
+                "request",
+                "",
+                MediaType.APPLICATION_JSON_VALUE,
+                objectMapper.writeValueAsBytes(request)
+        );
+
+        mockMvc.perform(multipart(RETURNS_PATH)
+                        .file(filePart)
+                        .file(jsonPart)
                         .header("Authorization", "Bearer " + jwtToken)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
+                        .contentType(MediaType.MULTIPART_FORM_DATA))
                 .andExpect(status().isNotFound());
     }
 
@@ -142,10 +157,25 @@ public class ReturnControllerTest {
 
         var returnRequest = new ReturnRequestDTO(orderId, purchaseId, "defective product", "photo.jpg");
 
-        mockMvc.perform(post(RETURNS_PATH)
+        MockMultipartFile filePart = new MockMultipartFile(
+                "photoFile",
+                "photo.jpg",
+                MediaType.IMAGE_JPEG_VALUE,
+                "test-image-content".getBytes()
+        );
+
+        MockMultipartFile jsonPart = new MockMultipartFile(
+                "request",
+                "",
+                MediaType.APPLICATION_JSON_VALUE,
+                objectMapper.writeValueAsBytes(returnRequest)
+        );
+
+        mockMvc.perform(multipart(RETURNS_PATH)
+                        .file(filePart)
+                        .file(jsonPart)
                         .header("Authorization", "Bearer " + jwtToken)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(returnRequest)))
+                        .contentType(MediaType.MULTIPART_FORM_DATA))
                 .andExpect(status().isCreated());
 
         var returnsResponse = mockMvc.perform(get(RETURNS_PATH)
