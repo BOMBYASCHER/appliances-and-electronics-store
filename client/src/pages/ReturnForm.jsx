@@ -65,14 +65,12 @@ const ReturnForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (isValidPhoto && isValidReason) {
-        createReturn({
-        orderId: formInfo.orderId,
-        purchaseId: formInfo.purchaseId,
-        reason,
-        photo,
-      });
-    }
+    createReturn({
+      orderId: formInfo.orderId,
+      purchaseId: formInfo.purchaseId,
+      reason,
+      photo,
+    });
   };
 
   const handleSelect = ({ target: { value } }) => {

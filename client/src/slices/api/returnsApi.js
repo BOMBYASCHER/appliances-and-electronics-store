@@ -22,7 +22,6 @@ export const returnsApi = createApi({
     }),
     createReturn: builder.mutation({
       query: ({ orderId, purchaseId, reason, photo }) => {
-        console.log('Inside createReturnAPI method() - ' + 'orderId: ' + orderId + 'purchaseId: ' + purchaseId + 'reason: ' + reason)
         const formData = new FormData();
         formData.append('request', new Blob([JSON.stringify({ orderId, purchaseId, reason })], { type: 'application/json' }));
         formData.append('photoFile', photo);
