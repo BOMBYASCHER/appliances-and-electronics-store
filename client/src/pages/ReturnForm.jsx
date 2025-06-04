@@ -12,17 +12,23 @@ const ReturnForm = () => {
   const [favoritesTrigger] = useLazyGetFavoritesQuery();
   const [cartTrigger] = useLazyGetCartQuery();
   const location = useLocation();
-
   const formInfo = location.state;
-
-  console.log(formInfo)
   const [reason, setReason] = useState(null);
   const [isValidReason, setIsValidReason] = useState(null);
   const [isDisabled, setIsDisabled] = useState(true);
-
   const [isDisabledOption, setIsDisabledOption] = useState(false);
-
   const [photo, setPhoto] = useState(null);
+  const [isValidPhoto, setIsValidPhoto] = useState(null);
+
+  const photoInput = cn('form-control', {
+    'is-valid': isValidPhoto == null ? false : isValidPhoto,
+    'is-invalid': isValidPhoto == null ? false : !isValidPhoto,
+  });
+
+  const reasonSelect = cn('form-select', 'w-50', {
+    'is-valid': isValidReason == null ? false : isValidReason,
+    'is-invalid': isValidReason == null ? false : !isValidReason,
+  });
 
   useEffect(()=>{
     if (isSuccess) {
@@ -33,82 +39,109 @@ const ReturnForm = () => {
     }
   }, [isSuccess]);
 
+  useEffect(() => {
+    if (reason == null && photo == null) {
+      setIsValidReason(null);
+      setIsValidPhoto(null);
+      setIsDisabled(true);
+    }
+    if (reason != null) {
+      setIsValidReason(true);
+    }
+    if (photo != null) {
+      setIsValidPhoto(true);
+    }
+    if (reason != null && photo != null) {
+      setIsValidReason(true);
+      setIsValidPhoto(true);
+      setIsDisabled(false);
+    }
+    if (reason === 'defect/damage' && photo == null) {
+      setIsValidReason(true);
+      setIsValidPhoto(false);
+      setIsDisabled(true);
+    }
+  }, [reason, photo]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    createReturn({
-      orderId: formInfo.orderId,
-      purchaseId: formInfo.purchaseId,
-      reason,
-      photo,
-    });
+    if (isValidPhoto && isValidReason) {
+        createReturn({
+        orderId: formInfo.orderId,
+        purchaseId: formInfo.purchaseId,
+        reason,
+        photo,
+      });
+    }
   };
 
   const handleSelect = ({ target: { value } }) => {
     setIsDisabledOption(true)
     setReason(value);
-    if (value !== '') {
+    if (value === 'defect/damage') {
       setIsValidReason(true);
+      if (photo == null) {
+        setIsValidPhoto(photo != null);
+        setIsDisabled(true);
+      }
+    } else if (value !== '') {
+      setIsValidReason(true)
+      setIsValidPhoto(null);
       setIsDisabled(false);
-    } else {
-      setIsValidReason(false)
-      setIsDisabled(true);
     }
   };
 
   const handleFileChange = ({ target: { files } }) => {
-    if (files) {
+    if (files[0]) {
       setPhoto(files[0]);
+    } else {
+      setPhoto(null);
+      setIsValidPhoto(null);
     }
   };
 
   const formClassName = cn('d-grid gap-2');
-  
-  const reasonSelect = cn('form-select', 'w-50', {
-    'is-valid': isValidReason == null ? false : isValidReason,
-    'is-invalid': isValidReason == null ? false : !isValidReason,
-  });
+
   return (
     <div className='container py-5'>
-      {/* d-grid align-items-center gap-2 w-75
-      d-flex align-items-center justify-content-center vh-100 */}
     {isSuccess ? 
     <SuccessHero/> :
     <div className="d-grid align-items-center gap-2 w-75">
       <form className={formClassName} onSubmit={handleSubmit}>
         <h1 className="h3 mb-3 fw-normal">Please fill out the form</h1>
-          <div class="card">
-            <div class="card-body">
-            <div class="row g-0">
-              <div class="col-md-8">
-                <p class="card-title fs-5">Purchase info from the order <strong>{formInfo.orderTitle}</strong></p>
-                <ul class="list-group list-group-flush">
-                  <li class="list-group-item">
-                    <div class="d-flex justify-content-between">
+          <div className="card">
+            <div className="card-body">
+            <div className="row g-0">
+              <div className="col-md-8">
+                <p className="card-title fs-5">Purchase info from the order <strong>{formInfo.orderTitle}</strong></p>
+                <ul className="list-group list-group-flush">
+                  <li className="list-group-item">
+                    <div className="d-flex justify-content-between">
                       <p>Product title</p>
                       <p>{formInfo.title}</p>
                     </div>
                   </li>
-                  <li class="list-group-item">
-                    <div class="d-flex justify-content-between">
+                  <li className="list-group-item">
+                    <div className="d-flex justify-content-between">
                       <p>Price</p>
                       <p>{formInfo.price}</p>
                     </div>
                   </li>
-                  <li class="list-group-item">
-                    <div class="d-flex justify-content-between">
+                  <li className="list-group-item">
+                    <div className="d-flex justify-content-between">
                       <p>Quantity</p>
                       <p>{formInfo.quantity}</p>
                     </div>
                   </li>
-                  <li class="list-group-item">
-                    <div class="d-flex justify-content-between">
+                  <li className="list-group-item">
+                    <div className="d-flex justify-content-between">
                       <p>Date of purchase</p>
                       <p>{new Date(formInfo.date).toLocaleDateString()}</p>
                     </div>
                   </li>
                 </ul>
                 </div>
-                <div class="col-md-4">
+                <div className="col-md-4">
                   <img src={formInfo.image} height={200}/>
                 </div>
               </div>
@@ -126,9 +159,9 @@ const ReturnForm = () => {
             Choose one variant.
           </div>
         </div>
-        <label class="w-50 input-group-text">Upload a photo of the purchase</label>
-        <div class="input-group mb-3">
-          <input type="file" accept='image/*' class="form-control" onChange={handleFileChange}/>
+        <label className="w-50 input-group-text">Upload a photo of the purchase</label>
+        <div className="input-group mb-3">
+          <input type="file" accept='image/*' className={photoInput} onChange={handleFileChange}/>
         </div>
         <button disabled={isDisabled} className="btn btn-primary w-25 py-2" type="submit">Send</button>
       </form>
@@ -139,18 +172,18 @@ const ReturnForm = () => {
 };
 
 const SuccessHero = () => (
-  <div class="px-4 py-5 my-5 text-center">
-    <h1 class="display-5 fw-bold  text-success">Success!</h1>
-    <div class="col-lg-6 mx-auto">
-    <p class="lead mb-4">
+  <div className="px-4 py-5 my-5 text-center">
+    <h1 className="display-5 fw-bold  text-success">Success!</h1>
+    <div className="col-lg-6 mx-auto">
+    <p className="lead mb-4">
       The return was successfully done. You can go to the returns page or continue checking orders.
     </p>
-    <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+    <div className="d-grid gap-2 d-sm-flex justify-content-sm-center">
       <Link to='/returns'>
-        <button type="button" class="btn btn-primary btn-lg px-4 gap-3">Returns page</button>
+        <button type="button" className="btn btn-primary btn-lg px-4 gap-3">Returns page</button>
       </Link>
       <Link to='/orders'>
-        <button type="button" class="btn btn-outline-secondary btn-lg px-4">Orders page</button>
+        <button type="button" className="btn btn-outline-secondary btn-lg px-4">Orders page</button>
       </Link>
     </div>
     </div>
