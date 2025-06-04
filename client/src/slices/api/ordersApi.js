@@ -21,6 +21,7 @@ export const ordersApi = createApi({
       providesTags: ['Orders'],
       transformResponse: (response, meta, arg) => response,
       transformErrorResponse: (response, meta, arg) => ({ data: arg, status: meta.response.status }),
+      keepUnusedDataFor: 0,
     }),
     createOrder: builder.mutation({
       query: (order) => ({

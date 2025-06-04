@@ -7,15 +7,12 @@ import Sort from '../components/Sort.jsx';
 import { useState, useEffect } from 'react';
 import { useGetProductsByFilterMutation, useGetProductsQuery, useGetProductsMetadataQuery, useLazyGetProductsQuery } from '../slices/api/productsApi.js';
 import { useSelector } from 'react-redux';
-import { useLazyGetFavoritesQuery } from '../slices/api/favoritesApi.js';
-import { useLazyGetCartQuery } from '../slices/api/cartApi.js';
-import { getAuthentication, getProducts } from '../stateSelectors.js';
+import { useSyncTab } from '../SyncTabHook.js';
 
 const Main = () => {
   const defaultSort = (data) => data;
   const { data } = useGetProductsQuery();
-  // const [favoritesTrigger] = useLazyGetFavoritesQuery();
-  // const [cartTrigger] = useLazyGetCartQuery();
+  useSyncTab();
   const metadata = getMetadata(data);
   const [filter, setFilter] = useState(new FilterObject({}));
   const [getProductsByFilter, { data: filteredProducts }] = useGetProductsByFilterMutation();
