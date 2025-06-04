@@ -66,7 +66,7 @@ public class ProductSpecification {
                 return cb.conjunction();
             }
 
-            Expression<Integer> yearExpr = cb.function("YEAR", Integer.class, root.get("releaseDate"));
+            Expression<Integer> yearExpr = cb.function("EXTRACT", Integer.class, root.get("releaseDate"));
             return yearExpr.in(years);
         };
     }
