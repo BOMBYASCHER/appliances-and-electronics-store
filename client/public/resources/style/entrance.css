@@ -54,62 +54,87 @@ body {
     background-color: #2d2d2d; 
     
 }
-/*Форма возврата*/
+
+/*вход*/
+
 .container {
-    background: #ffffff;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
     padding: 40px;
-    border-radius: 12px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 600px;
-    transition: transform 0.2s;
+    width: 90%;
+    max-width: 400px;
+    margin: 40px auto;
     border: 1px solid #2d2d2d;
-    margin: 20px auto;
 }
 
 h2 {
     text-align: center;
-    color: #2d2d2d;
-    margin-bottom: 30px;
-    font-size: 24px;
-    font-weight: 700;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 20px;
 }
 
 label {
-    margin-bottom: 10px;
+    display: block;
+    margin-bottom: 5px;
     color: #555;
-    font-weight: 600;
-        }
-
-input[type="tel"], textarea, input[type="file"] {
-    width: 100%;
-    padding: 14px;
-    border: 1px solid #ced4da;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    box-sizing: border-box;
-    font-size: 16px;
-    transition: border-color 0.3s;
-    background-color: #f8f9fa;
 }
 
-textarea {
-    resize: vertical;
+input[type="tel"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    transition: border 0.3s;
+}
+
+input[type="tel"]:focus,
+input[type="password"]:focus {
+    border-color: #288fce;
+    outline: none;
 }
 
 input[type="submit"] {
-    background-color: #2d2d2d;
+    background-color: #288fce;
     color: white;
     border: none;
-    padding: 14px;
-    border-radius: 8px;
+    border-radius: 4px;
+    padding: 10px;
     cursor: pointer;
-    width: 100%;
     font-size: 16px;
-    transition: background-color 0.3s, transform 0.2s;
+    transition: background-color 0.3s;
+}
+
+input[type="submit"]:hover {
+    background-color: #2278ad;
+}
+
+.footer {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 14px;
+    color: #777;
+}
+
+.footer a {
+    color: #288fce;
+    text-decoration: none;
+    transition: text-decoration 0.3s;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
+
+.icon {
     font-weight: bold;
-    margin-top: 15px;
-    box-shadow: 0 4px 10px #2d2d2d
+    margin-right: 8px;
 }
 
 .contact-container {

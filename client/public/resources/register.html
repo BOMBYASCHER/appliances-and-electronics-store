@@ -1,14 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>return Maconi</title>
-    <link rel="stylesheet" href="./style/return.css">
+    <title>Форма Регистрации</title>
+   <link rel="stylesheet" href="./style/register.css"> 
 </head>
 <body>
-
-        <div class="main-container"> 
+    <div class="main-container"> 
     <ul class="main-text">
         <li class="text-main"><img src="/client/public/logo.png" class="logo"></li>
         <li class="text-main"><a href="#">Главная</a></li>
@@ -26,29 +24,38 @@
          <!-- Либо кнопка выхода для зарегистрированных пользователей -->
             <!-- <li class="text-main"><a href="#" class="auth-button">Выйти</a> -->
     </ul>
-        </div>
-
-    <div class="container">
-    <h2>Форма возврата товара</h2>
-    <form action="submit_return.php" method="post" enctype="multipart/form-data">
-        <label for="phone">Телефон:</label>
-        <input type="tel" id="phone" name="phone" required placeholder="Ваш телефон" title="Введите ваш номер телефона">
-
-        <label for="reason">Причина возврата:</label>
-        <textarea id="reason" name="reason" rows="4" required placeholder="Опишите причину возврата"></textarea>
-
-        <label for="photo">Прикрепить фото:</label>
-        <input type="file" id="photo" name="photo" accept="image/*" required>
-
-        <input type="submit" value="Отправить возврат">
-    </form>
     </div>
+
+<div class="registration-form">
+    <h2>Регистрация</h2>
+    <form id="regForm">
+        <div class="form-group">
+            <label for="name">Имя</label>
+            <input type="text" id="name" required>
+        </div>
+        <div class="form-group">
+            <label for="phone">Номер телефона</label>
+            <input type="tel" id="phone" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Пароль</label>
+            <input type="password" id="password" required>
+        </div>
+        <div class="form-group">
+            <label for="confirm-password">Повторите пароль</label>
+            <input type="password" id="confirm-password" required>
+            <div class="error" id="password-error"></div>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Зарегистрироваться">
+        </div>
+    </form>
+</div>
+
     <div class="contact-container">
         <p class="contact-telephon">+7 (999) 999-99-99</p>
         <p class="contact-info">info@maconi.ru</p>
         <p class="contact-address">Санкт-Петербург, Садистская ул., 21</p>
     </div>
-
-</div>
 </body>
 </html>
