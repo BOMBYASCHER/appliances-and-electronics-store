@@ -49,18 +49,14 @@ const cartSlice = createSlice({
       }
     })
     .addMatcher(cartApi.endpoints.deleteProductFromCart.matchFulfilled, (state, { payload: { data: id, status } }) => {
-      console.log('deleteProductFromCart.matchFulfilled()')
-      console.log('status: ' + status)
       if (status == 204) {
-        console.log('deleteProductFromCart.matchFulfilled()')
         state.products = state.products.filter(({ productId }) => productId !== id);
         state.totalAmount = calculateTotalAmount(state.products);
       }
     })
-    .addMatcher(cartApi.endpoints.deleteProductFromCart.matchRejected, (state, { payload: { data: id, status } }) => {
-      console.log('deleteProductFromCart.matchRejected()')
+    .addMatcher(cartApi.endpoints.deleteProductFromCart.matchRejected, (state, { payload: { data, status } }) => {
       if (status == 401) {
-        state.products = state.products.filter(({ productId }) => productId !== id);
+        state.products = state.products.filter(({ productId }) => productId !== data.productId);
         state.totalAmount = calculateTotalAmount(state.products);
       }
     })

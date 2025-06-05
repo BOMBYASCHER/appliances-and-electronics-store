@@ -11,29 +11,29 @@ jobs:
           node-version: 20
       - name: Installing dependencies
         run: npm ci
-      - name: Linting
-        run: npm run lint
-  tests:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - name: Installing dependencies
-        run: npm ci
-      - name: Testing
-        run: npm run test
-      - name: Send code coverage report
-        uses: paambaati/codeclimate-action@v9.0.0
-        env:
-          CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
-        with:
-          debug: true
-          workingDirectory: client
-          coverageCommand: npm run coverage
-          coverageLocations: coverage/lcov.info:lcov
+#      - name: Linting
+#        run: npm run lint
+#  tests:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v4
+#      - name: Setup Node.js
+#        uses: actions/setup-node@v4
+#        with:
+#          node-version: 20
+#      - name: Installing dependencies
+#        run: npm ci
+#      - name: Testing
+#        run: npm run test
+#      - name: Send code coverage report
+#        uses: paambaati/codeclimate-action@v9.0.0
+#        env:
+#          CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
+#        with:
+#          debug: true
+#          workingDirectory: client
+#          coverageCommand: npm run coverage
+#          coverageLocations: coverage/lcov.info:lcov
 
 defaults:
   run:

@@ -55,7 +55,7 @@ public class OrderService {
 
         return orders.stream()
                 .map(order -> {
-                    List<Purchase> purchases = purchaseRepository.findAllById(order.getPurchaseIds());
+                    List<Purchase> purchases = order.getPurchases();
 
                     List<PurchaseDTO> purchaseDTOs = purchases.stream()
                             .map(purchase -> {
@@ -91,10 +91,7 @@ public class OrderService {
         List<Purchase> savedPurchases = purchaseRepository.saveAll(purchases);
 
         order.setTotalAmount(calculateTotalAmount(savedPurchases));
-        order.setPurchaseIds(savedPurchases.stream()
-                .map(Purchase::getId)
-                .collect(Collectors.toList()));
-
+        order.getPurchases().addAll(savedPurchases);
         orderRepository.save(order);
     }
 

@@ -3,10 +3,8 @@ package io.hexlet.model.entity;
 import io.hexlet.model.enums.OrderStatus;
 import io.hexlet.model.enums.converter.OrderStatusConverter;
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -39,11 +37,6 @@ public class Order {
 
     @Column(name = "date")
     private LocalDateTime date;
-
-    @ElementCollection
-    @CollectionTable(name = "order_purchases", joinColumns = @JoinColumn(name = "order_id"))
-    @Column(name = "purchase_id")
-    private List<Integer> purchaseIds;
 
     @Column(name = "total_amount")
     private Integer totalAmount;

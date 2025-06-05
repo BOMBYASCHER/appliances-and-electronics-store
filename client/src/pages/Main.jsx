@@ -7,26 +7,24 @@ import Sort from '../components/Sort.jsx';
 import { useState, useEffect } from 'react';
 import { useGetProductsByFilterMutation, useGetProductsQuery, useGetProductsMetadataQuery, useLazyGetProductsQuery } from '../slices/api/productsApi.js';
 import { useSelector } from 'react-redux';
-import { useLazyGetFavoritesQuery } from '../slices/api/favoritesApi.js';
-import { useLazyGetCartQuery } from '../slices/api/cartApi.js';
-import { getAuthentication, getProducts } from '../stateSelectors.js';
+import { useSyncTab } from '../SyncTabHook.js';
 
 const Main = () => {
   const defaultSort = (data) => data;
   const { data } = useGetProductsQuery();
-  // const [favoritesTrigger] = useLazyGetFavoritesQuery();
-  // const [cartTrigger] = useLazyGetCartQuery();
+  useSyncTab();
   const metadata = getMetadata(data);
   const [filter, setFilter] = useState(new FilterObject({}));
-  const [loadProductsByFilter] = useGetProductsByFilterMutation();
+  const [getProductsByFilter, { data: filteredProducts }] = useGetProductsByFilterMutation();
 
-  const { products } = useSelector(getProducts);
   const [sort, setSort] = useState(() => defaultSort);
-  const processedProducts = sort(products);
 
   useEffect(() => { 
-    loadProductsByFilter(filter.toParameters());
-  }, [filter]);
+    getProductsByFilter(filter.toParameters());
+  }, [filter, getProductsByFilter]);
+  
+  const productsToShow = Object.keys(filter).length === 0 ? data : filteredProducts;
+  const processedProducts = sort(productsToShow);
 
   return (
     <>

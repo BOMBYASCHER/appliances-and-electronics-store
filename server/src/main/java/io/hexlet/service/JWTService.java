@@ -19,7 +19,7 @@ import java.util.function.Function;
 @Service
 public class JWTService {
 
-    private static final int MINUTES = 10;
+    private static final int MINUTES = 28800;
     private static final int SECONDS = 60;
     private static final int MILLISECONDS = 1000;
     private static final String ALGORITHM_KEY = "HmacSHA256";

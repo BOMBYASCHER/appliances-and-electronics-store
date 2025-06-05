@@ -1,11 +1,5 @@
 const getUrlOrigin = () => {
-  console.log('import.meta.env.MODE : ' + import.meta.env.MODE);
-  const mode = import.meta.env.VITE_APPLICATION_PROFILE;
-  // const serverUrl = import.meta.env.VITE_SERVER_URL;
-  const serverUrl = 'https://maconi-store-server.onrender.com';
-  console.log('VITE_APPLICATION_PROFILE: ' + mode);
-  console.log('VITE_SERVER_URL' + serverUrl);
-  const baseUrl = mode === undefined ? serverUrl : 'http://localhost:4040';
+  const baseUrl = import.meta.env.VITE_SERVER_URL;
   return new URL(baseUrl);
 };
 
