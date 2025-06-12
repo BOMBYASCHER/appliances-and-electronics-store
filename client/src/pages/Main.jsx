@@ -5,24 +5,22 @@ import ProductCard from '../components/ProductCard.jsx';
 import Search from '../components/Search.jsx';
 import Sort from '../components/Sort.jsx';
 import { useState, useEffect } from 'react';
-import { useGetProductsByFilterMutation, useGetProductsQuery, useGetProductsMetadataQuery, useLazyGetProductsQuery } from '../slices/api/productsApi.js';
+import { useGetProductsByFilterMutation, useGetProductsQuery } from '../slices/api/productsApi.js';
 import { useSelector } from 'react-redux';
 import { useSyncTab } from '../SyncTabHook.js';
 
 const Main = () => {
+  useSyncTab();
+  const [limit, setLimit] = useState(9);
   const defaultSort = (data) => data;
   const { data } = useGetProductsQuery();
-  useSyncTab();
   const metadata = getMetadata(data);
   const [filter, setFilter] = useState(new FilterObject({}));
   const [getProductsByFilter, { data: filteredProducts }] = useGetProductsByFilterMutation();
-
   const [sort, setSort] = useState(() => defaultSort);
-
   useEffect(() => { 
-    getProductsByFilter(filter.toParameters());
-  }, [filter, getProductsByFilter]);
-  
+    getProductsByFilter({ filter: filter.toParameters(), limit });
+  }, [filter, getProductsByFilter, limit]);
   const productsToShow = Object.keys(filter).length === 0 ? data : filteredProducts;
   const processedProducts = sort(productsToShow);
 
@@ -41,14 +39,14 @@ const Main = () => {
         </div>
         <div className='row g-5'>
           <Filter data={metadata} filter={filter} setFilter={setFilter}></Filter>
-          <Catalog products={processedProducts}/>
+          <Catalog products={processedProducts} totalProductsQuantity={metadata.totalProductsQuantity} limit={limit} setLimit={setLimit}/>
         </div>
       </div>
     </>
   )
 };
 
-const Catalog = ({ products = [] }) => {
+const Catalog = ({ products = [], totalProductsQuantity, limit, setLimit }) => {
   const { favorites } = useSelector((state) => state.favorites);
   const { products: productsInCart } = useSelector((state) => state.cart);
 
@@ -57,7 +55,8 @@ const Catalog = ({ products = [] }) => {
     const isInCart = product.isInCart ? true : productsInCart.find(({ productId }) => productId == product.id) !== undefined;;
     return { ...product, isFavorite, isInCart }
   });
-
+  console.log(totalProductsQuantity)
+  const btnIsHidden = limit >= totalProductsQuantity;
   return (
     <div className='col-md-8'>
       <div className='row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3'>
@@ -75,6 +74,9 @@ const Catalog = ({ products = [] }) => {
         }
         )}
       </div>
+      <div className='d-flex justify-content-center row row-cols-3 py-5'>
+        <button hidden={btnIsHidden} className='btn btn-primary' onClick={() => setLimit(limit + 9)}>Load more</button>
+      </div>
     </div>
   );
 };
@@ -88,6 +90,7 @@ const getMetadata = (data = []) => {
       releaseYears: [],
       minPrice: null,
       maxPrice: null,
+      totalProductsQuantity: 0
     }
   }
   const brands = [...new Set(
@@ -105,14 +108,15 @@ const getMetadata = (data = []) => {
   const prices = data.map(({ price }) => price);
   const minPrice = Math.min(...prices);
   const maxPrice = Math.max(...prices);
-
+  const totalProductsQuantity = data.length;
   return {
     brands,
     categories,
     colors,
     releaseYears,
     minPrice,
-    maxPrice
+    maxPrice,
+    totalProductsQuantity,
   };
 };
 
