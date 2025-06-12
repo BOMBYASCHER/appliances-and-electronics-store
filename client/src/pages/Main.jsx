@@ -18,9 +18,15 @@ const Main = () => {
   const [filter, setFilter] = useState(new FilterObject({}));
   const [getProductsByFilter, { data: filteredProducts }] = useGetProductsByFilterMutation();
   const [sort, setSort] = useState(() => defaultSort);
+
+  useEffect(() => { 
+    setLimit(9);
+  }, [filter]);
+
   useEffect(() => { 
     getProductsByFilter({ filter: filter.toParameters(), limit });
   }, [filter, getProductsByFilter, limit]);
+
   const productsToShow = Object.keys(filter).length === 0 ? data : filteredProducts;
   const processedProducts = sort(productsToShow);
 
@@ -39,24 +45,23 @@ const Main = () => {
         </div>
         <div className='row g-5'>
           <Filter data={metadata} filter={filter} setFilter={setFilter}></Filter>
-          <Catalog products={processedProducts} totalProductsQuantity={metadata.totalProductsQuantity} limit={limit} setLimit={setLimit}/>
+          <Catalog products={processedProducts} limit={limit} setLimit={setLimit}/>
         </div>
       </div>
     </>
   )
 };
 
-const Catalog = ({ products = [], totalProductsQuantity, limit, setLimit }) => {
+const Catalog = ({ products = [], limit, setLimit }) => {
   const { favorites } = useSelector((state) => state.favorites);
   const { products: productsInCart } = useSelector((state) => state.cart);
 
   const syncedProducts = products.map(product => {
     const isFavorite = product.isFavorite ? true : favorites.find(({ productId }) => productId == product.id) !== undefined;
-    const isInCart = product.isInCart ? true : productsInCart.find(({ productId }) => productId == product.id) !== undefined;;
+    const isInCart = product.isInCart ? true : productsInCart.find(({ productId }) => productId == product.id) !== undefined;
     return { ...product, isFavorite, isInCart }
   });
-  console.log(totalProductsQuantity)
-  const btnIsHidden = limit >= totalProductsQuantity;
+  const btnIsHidden = products.length < limit;
   return (
     <div className='col-md-8'>
       <div className='row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3'>
@@ -90,7 +95,6 @@ const getMetadata = (data = []) => {
       releaseYears: [],
       minPrice: null,
       maxPrice: null,
-      totalProductsQuantity: 0
     }
   }
   const brands = [...new Set(
@@ -108,7 +112,6 @@ const getMetadata = (data = []) => {
   const prices = data.map(({ price }) => price);
   const minPrice = Math.min(...prices);
   const maxPrice = Math.max(...prices);
-  const totalProductsQuantity = data.length;
   return {
     brands,
     categories,
@@ -116,7 +119,6 @@ const getMetadata = (data = []) => {
     releaseYears,
     minPrice,
     maxPrice,
-    totalProductsQuantity,
   };
 };
 

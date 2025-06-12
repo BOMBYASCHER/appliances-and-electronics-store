@@ -1,8 +1,8 @@
 class Filter {
-  constructor({ search, brands = [], categories = [], colors = [], minPrice, maxPrice, releaseYears = [] }) {
+  constructor({ search, brands = [], category, colors = [], minPrice, maxPrice, releaseYears = [] }) {
     this.search = search;
     this.brands = [...new Set(brands)];
-    this.categories = [...new Set(categories)];
+    this.category = category;
     this.colors = [...new Set(colors)];
     this.minPrice = minPrice;
     this.maxPrice = maxPrice;
@@ -13,7 +13,7 @@ class Filter {
     const o = {};
     if (this.search) { o.search = this.search }
     if (this.brands.length != 0) { o.brands = this.brands }
-    if (this.categories.length != 0) { o.categories = this.categories }
+    if (this.category) { o.category = this.category }
     if (this.colors.length != 0) { o.colors = this.colors }
     if (this.minPrice) { o.minPrice = this.minPrice }
     if (this.maxPrice) { o.maxPrice = this.maxPrice }

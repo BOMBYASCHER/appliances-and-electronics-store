@@ -66,7 +66,7 @@ const Brands = ({ brands, filter, setFilter }) => {
     <div key={index} className='row'>
       <label id={index}>
         <input className='form-check-input' type='checkbox' name={brand} onChange={(e) => handleBrandCheckbox(e, brand)}/>
-        {brand}
+        {" " + brand}
       </label>
     </div>
   ));
@@ -92,34 +92,35 @@ const Colors = ({ colors, filter, setFilter }) => {
     <div key={index} className='row'>
       <label id={index}>
         <input className='form-check-input' type='checkbox' name={color} onChange={(e) => handleColorCheckbox(e, color)}/>
-        {color}
+        {" " + color}
       </label>
     </div>
   ));
 };
 
 const Categories = ({ categories, filter, setFilter }) => {
-  const [checkedCategories, setCheckedCategories] = useState([]);
+  const [checkedCategory, setCheckedCategory] = useState(null);
 
   useEffect(() => {
     const newFilter = new FilterObject(filter);
-    newFilter.categories = checkedCategories;
+    newFilter.category = checkedCategory;
     setFilter(newFilter);
-  }, [checkedCategories]);
+  }, [checkedCategory]);
 
-  const handleCategoryCheckbox = ({ target: { checked } }, category) => {
-    if (checked) {
-      setCheckedCategories(checkedCategories.concat(category));
-    } else {
-      setCheckedCategories(checkedCategories.filter(c => c !== category));
-    }
-
+  const handleCategoryCheckbox = (category) => {
+    setCheckedCategory(category);
   };
+
   return (categories.map((category, index) =>
     <div key={index} className='row'>
       <label id={index}>
-        <input className='form-check-input' type='checkbox' name={category} onChange={(e) => handleCategoryCheckbox(e, category)}/>
-        {category}
+        <input className='form-check-input'
+          checked={checkedCategory === category}
+          type='radio'
+          name={category}
+          onChange={() => handleCategoryCheckbox(category)}
+        />
+        {" " + category}
       </label>
     </div>
   ));
@@ -146,7 +147,7 @@ const ReleaseYears = ({ years, filter, setFilter }) => {
     <div key={index} className='row'>
       <label id={index}>
         <input className='form-check-input' type='checkbox' name={year} onChange={(e) => handleReleaseYearCheckbox(e, year)}/>
-        {year}
+        {" " + year}
       </label> 
     </div>
   ));
