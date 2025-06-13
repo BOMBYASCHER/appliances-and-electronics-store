@@ -161,7 +161,16 @@ const ReturnForm = () => {
         <div className="input-group mb-3">
           <input type="file" accept='image/*' className={photoInput} onChange={handleFileChange}/>
         </div>
-        <button disabled={isDisabled} className="btn btn-primary w-25 py-2" type="submit">Send</button>
+        <button disabled={isDisabled} className="btn btn-primary w-25 py-2" type="submit">
+          {
+            isLoading ?
+            <>
+              <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+              <span role="status">Loading...</span>
+            </> :
+            'Issue an return'
+          }
+        </button>
       </form>
     </div>
     }

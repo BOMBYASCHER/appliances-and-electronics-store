@@ -11,7 +11,7 @@ const Cart = () => {
   useSyncTab();
   const { data } = useGetCartQuery();
   const navigate = useNavigate();
-  const [createOrder, { isSuccess, isError, error }] = useCreateOrderMutation();
+  const [createOrder, { isSuccess, isError, error, isLoading }] = useCreateOrderMutation();
   const { totalAmount, products } = useSelector((state) => state.cart);
   
   const handleSubmit = (e) => {
@@ -52,7 +52,16 @@ const Cart = () => {
           )}
           <form onSubmit={e => handleSubmit(e)}>
             <h2>{totalAmount}</h2>
-            <button type='submit' className='btn btn-primary'>Order</button>
+            <button type='submit' className='btn btn-primary'>
+              {
+                isLoading ?
+                <>
+                  <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                  <span role="status">Loading...</span>
+                </> :
+                'Place an order'
+              }
+            </button>
           </form>
         </>
       }
