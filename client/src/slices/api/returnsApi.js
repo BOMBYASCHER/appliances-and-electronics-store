@@ -18,13 +18,22 @@ export const returnsApi = createApi({
     getReturns: builder.query({
       query: () => '',
       providesTags: ['Returns'],
-      transformResponse: (response, meta, arg) => response,
+      transformResponse: (response, meta, arg) => {
+        return response.map(purchase => {
+          const { price, quantity } = purchase;
+          return { ...purchase, totalAmount: price * quantity };
+        });
+      },
     }),
     createReturn: builder.mutation({
       query: ({ orderId, purchaseId, reason, photo }) => {
         const formData = new FormData();
         formData.append('request', new Blob([JSON.stringify({ orderId, purchaseId, reason })], { type: 'application/json' }));
-        formData.append('photoFile', photo);
+        if (photo === null) {
+          formData.append('photoFile', new File([], ''));
+        } else {
+          formData.append('photoFile', photo);
+        }
         return {
           url: '',
           method: 'POST',
