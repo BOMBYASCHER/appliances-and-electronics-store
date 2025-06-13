@@ -60,6 +60,7 @@ public class ReturnService {
         returnRepository.save(returnEntity);
     }
 
+    @Transactional
     public List<ReturnDTO> getReturnsForUser(int userId) {
         User user = getUserOrThrow(userId);
         List<Return> returns = returnRepository.findByUser(user);
