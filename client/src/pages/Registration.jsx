@@ -8,7 +8,7 @@ import { useLazyGetProductsQuery } from "../slices/api/productsApi";
 import { Link } from 'react-router';
 
 const Registration = () => {
-  const [registration, { isSuccess, isError, error }] = useRegistrationMutation();
+  const [registration, { isSuccess, isError, error, isLoading }] = useRegistrationMutation();
   const [phone, setPhone] = useState('');
   const [lastName, setLastName] = useState('');
   const [firstName, setFirstName] = useState('');
@@ -264,7 +264,16 @@ const Registration = () => {
         <p class="mt-5 mb-3 text-body-secondary">
           Already have an account? <Link to='/login' className="text-reset">Sign-in!</Link>
         </p>
-        <button disabled={isDisabled} className="btn btn-primary w-100 py-2" type="submit">Sign up</button>
+        <button disabled={isDisabled} className="btn btn-primary w-100 py-2" type="submit">
+          {
+            isLoading ?
+            <>
+              <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+              <span role="status">Loading...</span>
+            </> :
+            'Sign up'
+          }
+        </button>
       </form>
     </div>
     </div>

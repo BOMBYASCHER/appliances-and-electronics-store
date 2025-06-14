@@ -9,14 +9,17 @@ export const productsApi = createApi({
   tagTypes: ['Products'],
   endpoints: (builder) => ({
     getProducts: builder.query({
-      query: () => '',
+      query: () => ({
+        url: '',
+        params: { limit: 1000 },
+      }),
       providesTags: ['Products'],
       transformResponse: (response, meta, arg) => response,
     }),
     getProductsByFilter: builder.mutation({
-      query: (filter) => ({
+      query: ({ filter, limit }) => ({
         url: '',
-        params: filter,
+        params: { ...filter, limit },
       }),
       transformResponse: (response, meta, arg) => response,
       invalidatesTags: ['Products'],

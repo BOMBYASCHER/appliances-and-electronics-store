@@ -6,7 +6,7 @@ import { useLazyGetCartQuery } from "../slices/api/cartApi";
 import { useLazyGetProductsQuery } from "../slices/api/productsApi";
 
 const Login = () => {
-  const [login, { isSuccess, isError: isLoginError }] = useLoginMutation();
+  const [login, { isSuccess, isError: isLoginError, isLoading }] = useLoginMutation();
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [isError, setIsError] = useState(false);
@@ -80,8 +80,16 @@ const Login = () => {
         <p className="mt-5 mb-3 text-body-secondary">
           Don't have an account? <Link to='/registration' className="text-reset">Sign-up!</Link>
         </p>
-        
-        <button className="btn btn-primary w-100 py-2" type="submit">Sign in</button>
+        <button className="btn btn-primary w-100 py-2" type="submit">
+          {
+            isLoading ?
+            <>
+              <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+              <span role="status">Loading...</span>
+            </> :
+            'Sign in'
+          }
+        </button>
       </form>
     </div>
   );

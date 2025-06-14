@@ -17,6 +17,7 @@ const Return = ({ orderTitle, productTitle, image, totalAmount, price, quantity,
   const { data: photoData, type: photoType } = photo;
   const src = `data:${photoType};base64,${photoData}`;
 
+  const accordionIsShown = src === 'data:application/octet-stream;base64,';
 
   return (
     <div className="row-md-6">
@@ -59,22 +60,26 @@ const Return = ({ orderTitle, productTitle, image, totalAmount, price, quantity,
           <div class="col-md-4">
             <img width='100%' height='auto' src={image}/>
           </div>
-          <div className="accordion" id="accordionExample">
-            <div className="accordion-item">
-              <h2 className="accordion-header">
-                <button onClick={toggleAccordion} className={accordionBtnClass} type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded={isShown} aria-controls="collapseOne">
-                  Photo of the return
-                </button>
-              </h2>
-              <div id="collapseOne" className={accordionClass} data-bs-parent="#accordionExample">
-                <div className="accordion-body">
-                  <div className='row row-cols-sm-3 row-cols-md-6 g-3'>
-                    <img src={src}/>
+          {
+            accordionIsShown ?
+            null :
+            <div className="accordion" id="accordionExample">
+              <div className="accordion-item">
+                <h2 className="accordion-header">
+                  <button onClick={toggleAccordion} className={accordionBtnClass} type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded={isShown} aria-controls="collapseOne">
+                    Photo of the return
+                  </button>
+                </h2>
+                <div id="collapseOne" className={accordionClass} data-bs-parent="#accordionExample">
+                  <div className="accordion-body">
+                    <div className='row row-cols-sm-3 row-cols-md-6 g-3'>
+                      <img src={src}/>
+                    </div>
                   </div>
                 </div>
               </div>
-              </div>
-          </div>
+            </div>
+          }
         </div>
       </div>
     </div>
