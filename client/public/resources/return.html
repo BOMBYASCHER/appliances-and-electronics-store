@@ -28,21 +28,39 @@
     </ul>
         </div>
 
-    <div class="container">
-    <h2>Форма возврата товара</h2>
-    <form action="submit_return.php" method="post" enctype="multipart/form-data">
-        <label for="phone">Телефон:</label>
-        <input type="tel" id="phone" name="phone" required placeholder="Ваш телефон" title="Введите ваш номер телефона">
-
-        <label for="reason">Причина возврата:</label>
-        <textarea id="reason" name="reason" rows="4" required placeholder="Опишите причину возврата"></textarea>
-
-        <label for="photo">Прикрепить фото:</label>
-        <input type="file" id="photo" name="photo" accept="image/*" required>
-
-        <input type="submit" value="Отправить возврат">
-    </form>
+    <div class="return-form">
+        <h2>Форма возврата</h2>
+        <div class="product-info">
+            <img src="https://leaba.ru/wp-content/uploads/d/c/2/dc234a10b5faeb4cecd85bbb13daf2b5.jpeg" alt="Товар">
+            <div>
+                <p><strong>Информация о покупке из заказа №1b560586</strong></p>
+                <p><strong>Название товара:</strong> Candy Nova C33W4 07MBW-07</p>
+                <p><strong>Цена:</strong> 36999 руб.</p>
+                <p><strong>Количество:</strong> 3</p>
+                <p><strong>Дата покупки:</strong> 13.06.2025</p>
+            </div>
+        </div>
+        
+    <div class="form-group">
+        <label for="return-reason">Причина возврата:</label>
+        <select id="return-reason">
+            <option value="">Выберите причину</option>
+            <option value="не подошел">Не подошел</option>
+            <option value="брак">Брак</option>
+            <option value="другие причины">Другие причины</option>
+        </select>
     </div>
+
+    <div class="form-group">
+        <label for="photo-upload" class="custom-file-upload">Загрузите фото покупки</label>
+        <input type="file" id="photo-upload" class="file-input" accept="image/*">
+    </div>
+
+    <div class="form-group">
+            <button type="submit">Отправить</button>
+        </div>
+    </div>
+
     <div class="contact-container">
         <p class="contact-telephon">+7 (999) 999-99-99</p>
         <p class="contact-info">info@maconi.ru</p>

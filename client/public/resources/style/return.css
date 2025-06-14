@@ -55,62 +55,73 @@ body {
     
 }
 /*Форма возврата*/
-.container {
-    background: #ffffff;
-    padding: 40px;
-    border-radius: 12px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 600px;
-    transition: transform 0.2s;
-    border: 1px solid #2d2d2d;
-    margin: 20px auto;
-}
-
-h2 {
-    text-align: center;
-    color: #2d2d2d;
-    margin-bottom: 30px;
-    font-size: 24px;
-    font-weight: 700;
-}
-
-label {
-    margin-bottom: 10px;
-    color: #555;
-    font-weight: 600;
+        .return-form {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            width: 500px;
+            text-align: left;
+            border: 1px solid #2d2d2d;
+            margin: 20px auto;
+        }
+        h2{
+            text-align:center;
+        }
+        .product-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .product-info img {
+            width: 200px;
+            margin-right: 30px;
+        }
+        .product-info div {
+            flex: 1;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        select, input[type="file"], button {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #288fce;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #2276aa;
         }
 
-input[type="tel"], textarea, input[type="file"] {
-    width: 100%;
-    padding: 14px;
-    border: 1px solid #ced4da;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    box-sizing: border-box;
-    font-size: 16px;
-    transition: border-color 0.3s;
-    background-color: #f8f9fa;
-}
+    .custom-file-upload {
+        display: inline-block;
+        padding: 10px 20px;
+        cursor: pointer;
+        border-radius: 4px;
+        background-color: #288fce;
+        color: white;
+        border: none;
+        transition: background-color 0.3s, transform 0.2s;
+    }
 
-textarea {
-    resize: vertical;
-}
+    .custom-file-upload:hover {
+        background-color: #2276aa;
+    }
 
-input[type="submit"] {
-    background-color: #2d2d2d;
-    color: white;
-    border: none;
-    padding: 14px;
-    border-radius: 8px;
-    cursor: pointer;
-    width: 100%;
-    font-size: 16px;
-    transition: background-color 0.3s, transform 0.2s;
-    font-weight: bold;
-    margin-top: 15px;
-    box-shadow: 0 4px 10px #2d2d2d
-}
+    .file-input {
+        display: none; /* Скрываем стандартный input file */
+    }
 
 .contact-container {
     text-align: center;

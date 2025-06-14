@@ -27,49 +27,40 @@
     </ul>
         </div>
         
-    <div class="container">
-        <h1>История заказов</h1>
-        <table>
-            <thead>
-                <tr>
-                    <th>Дата заказа</th>
-                    <th>Номер заказа</th>
-                    <th>Товары</th>
-                    <th>Статус</th>
-                    <th>Итоговая стоимость</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>10 марта 2024</td>
-                    <td>#12345</td>
-                    <td>Товар A, Товар B</td>
-                    <td class="status Dostavlen">Доставлен</td>
-                    <td>250.00 руб.</td>
-                </tr>
-                <tr>
-                    <td>15 марта 2024</td>
-                    <td>#12346</td>
-                    <td>Товар C</td>
-                    <td class="status VPuty">В пути</td>
-                    <td>75.00 руб.</td>
-                </tr>
-                <tr>
-                    <td>20 марта 2024</td>
-                    <td>#12347</td>
-                    <td>Товар D, Товар E, Товар F</td>
-                    <td class="status Otmenen">Отменён</td>
-                    <td>150.00 руб.</td>
-                </tr>
-            </tbody>
-        </table>
+<div class="order-container">
+    <div class="order-header">
+        <h1>Заказ №94fc5003d</h1>
+        <p>Общая сумма: 36999</p>
+        <p>Дата заказа: 13.06.2025</p>
+        <p>Статус: получен</p>
     </div>
+    <div class="purchase-header" onclick="togglePurchaseDetails()">
+        Покупки
+    </div>
+    <div class="purchase-content" id="purchaseContent">
+        <div class="purchase-details">
+            <img src="https://cdn-irec.r-99.com/sites/default/files/imagecache/300o/product-images/6328/5WF0U71Dq2cc3uftMlQVw.jpg" alt="Candy Nova C33W4 07MBW-07">
+            <div>
+                <p><strong>Candy Nova C33W4 07MBW-07</strong></p>
+                <p>Количество: 1 Цена: 36999</p>
+                <p>Покупка возвращена</p>
+                <button class="return-button">Вернуть</button>
+            </div>
+        </div>
+    </div>
+</div>
 
     <div class="contact-container">
         <p class="contact-telephon">+7 (999) 999-99-99</p>
         <p class="contact-info">info@maconi.ru</p>
         <p class="contact-address">Санкт-Петербург, Садистская ул., 21</p>
     </div>
+<script>
+    function togglePurchaseDetails() {
+        const content = document.getElementById('purchaseContent');
+        content.style.display = content.style.display === "none" || content.style.display === "" ? "block" : "none";
+    }
+</script>
 
 </body>
 </html>

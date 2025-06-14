@@ -28,46 +28,67 @@
     </ul>
         </div>
 
-    <div class="container">
-        <header>
-            <h1>История возвратов</h1>
-            <p>Здесь вы можете просмотреть свои возвраты и узнать об их статусе.</p>
-        </header>
-        
-        <section class="return-list">
-            <h2>Список возвратов</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Номер заказа</th>
-                        <th>Дата возврата</th>
-                        <th>Причина</th>
-                        <th>Статус</th>
-                        <th>Сумма</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>12345</td>
-                        <td>15.03.2023</td>
-                        <td>Дефект</td>
-                        <td>Обработан</td>
-                        <td>1000</td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
-        
-        <section class="return-info">
-            <h2>Процесс возврата</h2>
-            <p>Чтобы инициировать возврат, пожалуйста, убедитесь, что товар не использован и сохранен в оригинальной упаковке. Заполните форму для возврата и отправьте ее на наш адрес.</p>
-            <a href="#" class="btn">Заполнить форму возврата</a>
-        </section>
-        
-        <footer>
-            <p>Если у вас есть вопросы, свяжитесь с нашей поддержкой по электронной почте: info@maconi.ru</p>
-        </footer>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Возврат товара</title>
+    <style>
+
+    </style>
+</head>
+<body>
+
+    <div class="return-container">
+        <div class="info">
+            <h1 style="font-size: 1.5em; color: #333;">Информация о возврате</h1>
+            <p class="info-p">Клиент: <strong>Иванов Иван</strong></p>
+            <p class="info-p">Номер заказа: <strong>Заказ № a54493b8</strong></p>
+            <p class="info-p">Дата возврата: <strong>05.06.2025</strong></p>
+            <p class="info-p">Общая сумма покупки: <strong>136998</strong></p>
+            <p class="info-p">Цена товара: <strong>54999</strong></p>
+            <p class="info-p">Количество: <strong>1</strong></p>
+
+            <div class="return-reason">
+                <strong>Причина возврата:</strong> Дефект/повреждение
+            </div>
+
+            <div class="toggle-button" onclick="toggleImages()">Посмотреть фотографии возврата</div>
+            <div class="images-container" id="imageBlock">
+                <img src="https://leaba.ru/wp-content/uploads/d/c/2/dc234a10b5faeb4cecd85bbb13daf2b5.jpeg" alt="Фото 1">
+                <img src="https://leaba.ru/wp-content/uploads/d/c/2/dc234a10b5faeb4cecd85bbb13daf2b5.jpeg" alt="Фото 2">
+                <img src="https://leaba.ru/wp-content/uploads/d/c/2/dc234a10b5faeb4cecd85bbb13daf2b5.jpeg" alt="Фото 3">
+            </div>
+        </div>
+        <div class="product-image">
+            <img src="https://leaba.ru/wp-content/uploads/d/c/2/dc234a10b5faeb4cecd85bbb13daf2b5.jpeg" alt="Изображение товара">
+        </div>
     </div>
+
+    <!-- Модальное окно -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span onclick="document.getElementById('modal').style.display='none'">Закрыть</span>
+            <p>Дополнительная информация о возврате.</p>
+            <p>Фотографии и детали будут загружены здесь...</p>
+        </div>
+    </div>
+
+    <script>
+        function toggleImages() {
+            const imageBlock = document.getElementById('imageBlock');
+            imageBlock.style.display = imageBlock.style.display === "none" || imageBlock.style.display === "" ? "flex" : "none";
+        }
+
+        // Открытие модального окна
+        function openModal() {
+            document.getElementById('modal').style.display = 'block';
+        }
+    </script>
+
+</body>
+</html>
 
     <div class="contact-container">
         <p class="contact-telephon">+7 (999) 999-99-99</p>

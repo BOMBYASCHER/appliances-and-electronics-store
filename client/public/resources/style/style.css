@@ -106,7 +106,7 @@ h1 {
 }
 
 .applyFilterButton{
-  background: #007bff;
+  background: #288fce;
   color: white;
   border: none;
   border-radius: 5px;
@@ -115,7 +115,7 @@ h1 {
 }
 
 .applyFilterButton:hover {
-  background: #005abb;
+  background: #1d628d;
 }
 
 /*Карточки товаров*/
@@ -148,7 +148,7 @@ h1 {
 }
 
 .product-button {
-  background: #2d2d2d;
+  background: #288fce;
   color: white;
   border: none;
   border-radius: 5px;
@@ -157,7 +157,7 @@ h1 {
 }
 
 .product-button:hover {
-  background: #4d4d4d;
+  background: #1d628d;
 }
 
 /*Сортировка*/
