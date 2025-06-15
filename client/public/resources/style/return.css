@@ -101,7 +101,7 @@ body {
             cursor: pointer;
         }
         button:hover {
-            background-color: #2276aa;
+            background-color: #005abb;
         }
 
     .custom-file-upload {
@@ -116,7 +116,7 @@ body {
     }
 
     .custom-file-upload:hover {
-        background-color: #2276aa;
+        background-color: #005abb;
     }
 
     .file-input {
