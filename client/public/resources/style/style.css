@@ -160,6 +160,31 @@ h1 {
   background: #1d628d;
 }
 
+.product-buy-button{
+  border-radius: 5px;
+  cursor: pointer;
+  background: #288fce;
+  width: 50px;
+  border: none;
+  margin: 5px 30px;
+}
+
+.product-buy-button:hover {
+  background: #1d628d;
+}
+
+.product-favorites-button{
+  border-radius: 5px;
+  cursor: pointer;
+  background: #288fce;
+  width: 50px;
+  border: none;
+  margin: 5px 30px;
+}
+
+.product-favorites-button:hover {
+  background: #1d628d;
+}
 /*Сортировка*/
 
 .search-container {
