@@ -56,7 +56,7 @@ const ReturnForm = () => {
       setIsValidPhoto(true);
       setIsDisabled(false);
     }
-    if (reason === 'defect/damage' && photo == null) {
+    if (reason === 'дефект/повреждение' && photo == null) {
       setIsValidReason(true);
       setIsValidPhoto(false);
       setIsDisabled(true);
@@ -76,7 +76,7 @@ const ReturnForm = () => {
   const handleSelect = ({ target: { value } }) => {
     setIsDisabledOption(true)
     setReason(value);
-    if (value === 'defect/damage') {
+    if (value === 'дефект/повреждение') {
       setIsValidReason(true);
       if (photo == null) {
         setIsValidPhoto(photo != null);
@@ -154,7 +154,7 @@ const ReturnForm = () => {
           </select>
           <label className='opacity-75'>Причина возврата:</label>
           <div className="invalid-feedback">
-            Choose one variant.
+            Выберите один вариант.
           </div>
         </div>
         <label className="w-50 input-group-text">Прикрепите фотографию покупки</label>
@@ -183,7 +183,7 @@ const SuccessHero = () => (
     <h1 className="display-5 fw-bold  text-success">Успех!</h1>
     <div className="col-lg-6 mx-auto">
     <p className="lead mb-4">
-      Возврат успешно оформлен. Вы можете перейти на страницу возвратов или продолжить проверку заказов
+      Возврат успешно оформлен. Вы можете перейти на страницу возвратов или продолжить проверку заказов.
     </p>
     <div className="d-grid gap-2 d-sm-flex justify-content-sm-center">
       <Link to='/returns'>

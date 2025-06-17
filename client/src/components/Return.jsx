@@ -20,7 +20,7 @@ const Return = ({ orderTitle, productTitle, image, totalAmount, price, quantity,
   const accordionIsShown = src === 'data:application/octet-stream;base64,';
 
   return (
-    <div className="row-md-6">
+    <div className="row-md-6 pb-4">
     <div class="col">
       <div class="card">
         <div class="row g-0">
