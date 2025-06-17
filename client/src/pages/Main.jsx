@@ -29,8 +29,6 @@ const Main = () => {
   const [getProductsByFilter, { data: filteredProducts }] = useGetProductsByFilterMutation();
   const [sort, setSort] = useState(() => defaultSort);
 
-  const [products, setProducts] = useState([]);
-
   useEffect(() => { 
     setLimit(9);
   }, [filter]);
@@ -38,10 +36,6 @@ const Main = () => {
   useEffect(() => { 
     getProductsByFilter({ filter: filter.toParameters(), limit });
   }, [filter, getProductsByFilter, limit]);
-
-  useEffect(() => {
-    setProducts(filteredProducts);
-  }, [filteredProducts]);
 
   const productsToShow = Object.keys(filter).length === 0 ? data : filteredProducts;
   const processedProducts = sort(productsToShow);
