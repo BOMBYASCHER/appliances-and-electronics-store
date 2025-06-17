@@ -129,7 +129,11 @@ const Categories = ({ categories, filter, setFilter }) => {
   }, [checkedCategory]);
 
   const handleCategoryCheckbox = (category) => {
-    setCheckedCategory(category);
+    if (checkedCategory === category) {
+      setCheckedCategory(null);
+    } else {
+      setCheckedCategory(category);
+    }
   };
 
   return (categories.map((category, index) =>
@@ -139,7 +143,7 @@ const Categories = ({ categories, filter, setFilter }) => {
           checked={checkedCategory === category}
           type='radio'
           name={category}
-          onChange={() => handleCategoryCheckbox(category)}
+          onClick={() => handleCategoryCheckbox(category)}
         />
         {" " + toLocalCategoryName(category)}
       </label>
