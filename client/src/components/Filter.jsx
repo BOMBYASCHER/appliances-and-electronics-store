@@ -236,47 +236,55 @@ const PriceRange = ({ minPrice, maxPrice, filter, setFilter }) => {
   };
  
   return (
-    <div className="price">
-      <label>
-        <input
-          type="range"
-          className="form-range min range-input"
-          value={tempMinPrice ? tempMinPrice : minPrice}
-          min={minPrice}
-          max={maxPrice}
-          onChange={e => handleMinPriceRange(e)}
-          onMouseUp={handleSliderRelease}
-        />
-      </label>
-      <label>
-        <input
-          type="range"
-          className="form-range max range-input"
-          value={tempMaxPrice ? tempMaxPrice : maxPrice}
-          min={minPrice}
-          max={maxPrice}
-          onChange={e => handleMaxPriceRange(e)}
-          onMouseUp={handleSliderRelease}
-        />
-      </label>
-      <input
-        type='number'
-        className="form-control min input"
-        value={tempMinPrice}
-        placeholder={minPrice}
-        min={minPrice}
-        max={maxPrice}
-        onChange={e => handleMinPrice(e)}
-      />
-      <input
-        type='number'
-        className="form-control max input"
-        value={tempMaxPrice}
-        placeholder={maxPrice}
-        min={minPrice}
-        max={maxPrice}
-        onChange={e => handleMaxPrice(e)}
-      />
+    <div className="price d-grid">
+      <div className='col'>
+        <div className='row pb-4'>
+          <label>
+          Минимальная цена:
+          <input
+            type='number'
+            className="form-control min input my-2"
+            value={tempMinPrice}
+            placeholder={minPrice}
+            min={minPrice}
+            max={maxPrice}
+            onChange={e => handleMinPrice(e)}
+          />
+          <input
+            type="range"
+            className="form-range min range-input"
+            value={tempMinPrice ? tempMinPrice : minPrice}
+            min={minPrice}
+            max={maxPrice}
+            onChange={e => handleMinPriceRange(e)}
+            onMouseUp={handleSliderRelease}
+          />
+          </label>
+        </div>
+        <div className='row'>
+          <label>
+          Максимальная цена:
+          <input
+            type='number'
+            className="form-control max input my-2"
+            value={tempMaxPrice}
+            placeholder={maxPrice}
+            min={minPrice}
+            max={maxPrice}
+            onChange={e => handleMaxPrice(e)}
+          />
+          <input
+            type="range"
+            className="form-range max range-input"
+            value={tempMaxPrice ? tempMaxPrice : maxPrice}
+            min={minPrice}
+            max={maxPrice}
+            onChange={e => handleMaxPriceRange(e)}
+            onMouseUp={handleSliderRelease}
+          />
+          </label>
+        </div>
+      </div>
     </div>
   );
 };
