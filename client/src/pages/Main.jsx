@@ -29,6 +29,8 @@ const Main = () => {
   const [getProductsByFilter, { data: filteredProducts }] = useGetProductsByFilterMutation();
   const [sort, setSort] = useState(() => defaultSort);
 
+  const [products, setProducts] = useState([]);
+
   useEffect(() => { 
     setLimit(9);
   }, [filter]);
@@ -36,6 +38,10 @@ const Main = () => {
   useEffect(() => { 
     getProductsByFilter({ filter: filter.toParameters(), limit });
   }, [filter, getProductsByFilter, limit]);
+
+  useEffect(() => {
+    setProducts(filteredProducts);
+  }, [filteredProducts]);
 
   const productsToShow = Object.keys(filter).length === 0 ? data : filteredProducts;
   const processedProducts = sort(productsToShow);
@@ -45,7 +51,8 @@ const Main = () => {
       <Header/>
       <div className='position-relative'>
         <img className='position-relative' src={photo} style={style.photo}/>
-        <h1 className='position-absolute top-50 start-50 translate-middle text-white fs-1'>MACONI</h1>
+        <h1 className='position-absolute top-50 start-50 translate-middle text-white  fs-1'>MACONI</h1>
+        <p className='position-absolute bottom-50 start-50 translate-middle text-white fw-light fs-5'>Интернет-магазин бытовой техники и электроники</p>
       </div>
       <div className='container'>
         <div className='row py-3'>
