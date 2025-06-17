@@ -2,55 +2,46 @@ import { NavLink, Link, useNavigate } from "react-router";
 import { useSelector } from "react-redux";
 import logo from '../assets/logo.png';
 import { logout } from "../slices/index.js";
-import { useGetFavoritesQuery, useLazyGetFavoritesQuery } from "../slices/api/favoritesApi.js";
-import { useGetProductsQuery, useLazyGetProductsQuery } from "../slices/api/productsApi.js";
-import { useGetCartQuery, useLazyGetCartQuery } from "../slices/api/cartApi.js";
 
 const Header = () => {
   const { favorites } = useSelector((state) => state.favorites);
-  // const [productsTrigger] = useLazyGetProductsQuery();
-  // const [favoritesTrigger] = useLazyGetFavoritesQuery();
-  // const [cartTrigger] = useLazyGetCartQuery();
-  // useGetProductsQuery();
-  // useGetFavoritesQuery();
-  // useGetCartQuery();
-
   const productsTrigger = () => {}
   const favoritesTrigger = () => {}
   const cartTrigger = () => {}
 
   return (
-    <div className='container bg-dark'>
-      <header className='d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4'>
+    <div className='bg-dark'>
+      <div className='container bg-dark'>
+      <header className='d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3'>
         <div className="col-md-3 mb-2 mb-md-0">
-          <NavLink onClick={productsTrigger} to="/" className='nav-link px-2 link-secondary'>
+          <NavLink onClick={productsTrigger} to="/" className='nav-link px-2 link-secondary link-light'>
             <img src={logo} height={70}></img>
           </NavLink>
         </div>
         <ul className="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
           <li>
-            <NavLink onClick={productsTrigger} to="/" className='nav-link px-2 link-secondary'>
-              Home
+            <NavLink onClick={productsTrigger} to="/" className='nav-link px-2 link-secondary fs-5 link-light'>
+              Каталог
             </NavLink>
           </li>
           <li>
-            <NavLink onClick={favoritesTrigger} to="/favorites" className='nav-link px-2 link-secondary'>
-              Favorites ({favorites.length})
+            <NavLink onClick={favoritesTrigger} to="/favorites" className='nav-link px-2 link-secondary fs-5 link-light'>
+              Избранное ({favorites.length})
             </NavLink>
           </li>
           <li>
-            <NavLink onClick={cartTrigger} to="/cart" className='nav-link px-2 link-secondary'>
-              Cart
+            <NavLink onClick={cartTrigger} to="/cart" className='nav-link px-2 link-secondary fs-5 link-light'>
+              Корзина
             </NavLink>
           </li>
           <li>
-            <NavLink to="/orders" className='nav-link px-2 link-secondary'>
-              Orders
+            <NavLink to="/orders" className='nav-link px-2 link-secondary fs-5 link-light'>
+              Заказы
             </NavLink>
           </li>
           <li>
-            <NavLink to="/returns" className='nav-link px-2 link-secondary'>
-              Returns
+            <NavLink to="/returns" className='nav-link px-2 link-secondary fs-5 link-light'>
+              Возвраты
             </NavLink>
           </li>
         </ul>
@@ -58,6 +49,7 @@ const Header = () => {
           <AuthorizationBlock/>
         </div>
       </header>
+    </div>
     </div>
     
   );
@@ -78,12 +70,12 @@ const AuthorizationBlock = () => {
     <>
     <Link to="/login">
     <button type="button" className="btn btn-outline-primary me-2">
-      Login
+      Вход
     </button>
     </Link>
     <Link to="/registration">
       <button type="button" className="btn btn-primary">
-        Sign-up
+        Регистрация
       </button>
     </Link>
     </> :

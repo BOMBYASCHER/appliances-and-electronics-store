@@ -1,0 +1,153 @@
+body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: #f3f3f3;
+    overflow-x: hidden;
+}
+
+.logo {
+    width: 12%; 
+    height: 20%; 
+    object-fit: cover;
+    padding-top: 10px;
+    padding-left: 10px; 
+}
+
+.main-text {
+  list-style-type: none;
+  margin: 0;
+  overflow: hidden;
+  background-color: #2d2d2d00;
+  position:absolute;
+  top: 0;
+  width: 100%;
+
+
+}
+
+.text-main {
+  float: left;
+}
+
+.text-main a {
+  display: block;
+  color: #f3f3f3;
+  padding-left: 10px; 
+  padding-right: 60px; 
+  padding-top: 40px;
+  text-decoration: none;
+  
+ 
+}
+
+.text-main a:hover:not(.active) {
+ color: #288fce;
+}
+
+.main-container {
+    width: 100%; 
+    height: 100px; 
+    overflow: hidden; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    background-color: #2d2d2d; 
+    
+}
+/*Форма возврата*/
+        .return-form {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            width: 500px;
+            text-align: left;
+            border: 1px solid #2d2d2d;
+            margin: 20px auto;
+        }
+        h2{
+            text-align:center;
+        }
+        .product-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .product-info img {
+            width: 200px;
+            margin-right: 30px;
+        }
+        .product-info div {
+            flex: 1;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        select, input[type="file"], button {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #288fce;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #005abb;
+        }
+
+    .custom-file-upload {
+        display: inline-block;
+        padding: 10px 20px;
+        cursor: pointer;
+        border-radius: 4px;
+        background-color: #288fce;
+        color: white;
+        border: none;
+        transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .custom-file-upload:hover {
+        background-color: #005abb;
+    }
+
+    .file-input {
+        display: none; /* Скрываем стандартный input file */
+    }
+
+.contact-container {
+    text-align: center;
+    background-color: #2d2d2d;
+    width: 100%; 
+    height: 500px; 
+    margin: 0px;
+  }
+  
+  .contact-telephon {
+    color: #f3f3f3;
+    font-size: 40px; 
+    margin: 10px 0; 
+    padding-top: 100px;
+    
+  }
+  
+  .contact-info {
+    color: #f3f3f3;
+    font-size: 40px; 
+    margin: 10px 0; 
+    
+  }
+  
+  .contact-address {
+    font-size: 16px; 
+    margin-top: 20px;  
+    color: #f3f3f3;
+  }

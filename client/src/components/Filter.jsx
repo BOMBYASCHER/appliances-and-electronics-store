@@ -11,31 +11,31 @@ const Filter = ({ data, filter, setFilter }) => {
     <div className='col-md-4'>
       <div className='position-sticky' style={{top: 2 + 'rem'}}>
         <div className='border rounded p-3 mb-2'>
-          <p className='fs-5'>Categories</p>
+          <p className='fs-5'>Категория</p>
           <div className={checkboxClassName}>
             <Categories categories={categories} filter={filter} setFilter={setFilter}/>
           </div>
         </div>
         <div className='border rounded p-3 mb-2'>
-          <p className='fs-5'>Brands</p>
+          <p className='fs-5'>Бренд</p>
           <div className={checkboxClassName}>
             <Brands brands={brands} filter={filter} setFilter={setFilter}/>
           </div>
         </div>
         <div className='border rounded p-3 mb-2'>
-          <p className='fs-5'>Price</p>
+          <p className='fs-5'>Цена</p>
           <div className={checkboxClassName}>
             <PriceRange minPrice={minPrice} maxPrice={maxPrice} filter={filter} setFilter={setFilter} />
           </div>
         </div>
         <div className='border rounded p-3 mb-2'>
-          <p className='fs-5'>Color</p>
+          <p className='fs-5'>Цвет</p>
           <div className={checkboxClassName}>
             <Colors colors={colors} filter={filter} setFilter={setFilter}/>
           </div>
         </div>
         <div className='border rounded p-3 mb-2'>
-          <p className='fs-5'>Release year</p>
+          <p className='fs-5'>Год выпуска</p>
           <div className={checkboxClassName}>
             <ReleaseYears years={releaseYears} filter={filter} setFilter={setFilter}/>
           </div>

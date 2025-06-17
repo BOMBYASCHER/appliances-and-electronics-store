@@ -24,13 +24,13 @@ const Sort = ({ setSort }) => {
 
   return (
     <select defaultValue={0} onChange={e => handleSort(e)} className={selectSortClassName}>
-      <option value={0} >By default</option>
-      <option value={1} >Price: Low to High</option>
-      <option value={2} >Price: High to Low</option>
-      <option value={3} >Name: A-Z</option>
-      <option value={4} >Name: Z-A</option>
-      <option value={5} >Release date: New to Old</option>
-      <option value={6} >Release date: Old to New</option>
+      <option value={0} >По умолчанию</option>
+      <option value={1} >Цена: от низкой к высокой</option>
+      <option value={2} >Цена: от высокой к низкой</option>
+      <option value={3} >По алфавиту: A-Z</option>
+      <option value={4} >По алфавиту: Z-A</option>
+      <option value={5} >Год выпуска: от новых к старым</option>
+      <option value={6} >Год выпуска: от старых к новым</option>
     </select>
   );
 };

@@ -39,7 +39,7 @@ const Cart = () => {
         products.length == 0 ? 
         <EmptyHero/> :
         <>
-          <h1 className='pb-4'>Your cart</h1>
+          <h1 className='pb-4'>Ваша корзина</h1>
           {products.map(({ id, productId, title, price, image, quantity }) =>
             <CartProductCard
               key={id}
@@ -57,7 +57,7 @@ const Cart = () => {
                 isLoading ?
                 <>
                   <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-                  <span role="status">Loading...</span>
+                  <span role="status">Оформление...</span>
                 </> :
                 'Place an order'
               }
@@ -73,17 +73,17 @@ const Cart = () => {
 const EmptyHero = () => {
   return (
     <div class="px-4 py-5 my-5 text-center">
-      <h1 class="display-5 fw-bold">The cart is empty.</h1>
+      <h1 class="display-5 fw-bold">Ваша корзина пуста.</h1>
       <div class="col-lg-6 mx-auto">
       <p class="lead mb-4">
-        The cart is empty. You can look at the catalog or favorites if you want to order something.
+        Корзина пуста. Можете посмотреть каталог или свои избранные если хотите заказать что-то.
       </p>
       <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
         <Link to='/'>
-          <button type="button" class="btn btn-primary btn-lg px-4 gap-3">Catalog</button>
+          <button type="button" class="btn btn-primary btn-lg px-4 gap-3">Каталог</button>
         </Link>
         <Link to='/favorites'>
-          <button type="button" class="btn btn-outline-secondary btn-lg px-4">Favorites</button>
+          <button type="button" class="btn btn-outline-secondary btn-lg px-4">Избранные</button>
         </Link>
       </div>
       </div>
@@ -93,17 +93,17 @@ const EmptyHero = () => {
 
 const SuccessHero = () => (
   <div class="px-4 py-5 my-5 text-center">
-    <h1 class="display-5 fw-bold  text-success">Success!</h1>
+    <h1 class="display-5 fw-bold  text-success">Успех!</h1>
     <div class="col-lg-6 mx-auto">
     <p class="lead mb-4">
-      Thank you for choosing our store! The order was successfully placed. You can go to the orders page or continue shopping.
+      Спасибо за выбор нашего магаина! Ваш заказ успешно оформлен. Можете посмотреть его статус на странице заказов или продолжить покупки.
     </p>
     <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
       <Link to='/orders'>
-        <button type="button" class="btn btn-primary btn-lg px-4 gap-3">Orders page</button>
+        <button type="button" class="btn btn-primary btn-lg px-4 gap-3">Заказы</button>
       </Link>
       <Link to='/'>
-        <button type="button" class="btn btn-outline-secondary btn-lg px-4">Catalog</button>
+        <button type="button" class="btn btn-outline-secondary btn-lg px-4">Каталог</button>
       </Link>
     </div>
     </div>

@@ -8,6 +8,16 @@ import { useState, useEffect } from 'react';
 import { useGetProductsByFilterMutation, useGetProductsQuery } from '../slices/api/productsApi.js';
 import { useSelector } from 'react-redux';
 import { useSyncTab } from '../SyncTabHook.js';
+import photo from '../assets/photo.jpg';
+
+const style = {
+  photo: {
+    filter: 'brightness(40%)',
+    width: '100%',
+    height: '300px',
+    'object-fit': 'cover',
+  }
+};
 
 const Main = () => {
   useSyncTab();
@@ -33,8 +43,11 @@ const Main = () => {
   return (
     <>
       <Header/>
+      <div className='position-relative'>
+        <img className='position-relative' src={photo} style={style.photo}/>
+        <h1 className='position-absolute top-50 start-50 translate-middle text-white fs-1'>MACONI</h1>
+      </div>
       <div className='container'>
-        <h1>Main page</h1>
         <div className='row py-3'>
           <div className='col'>
             <Search filter={filter} setFilter={setFilter}></Search>

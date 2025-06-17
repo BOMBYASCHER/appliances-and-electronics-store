@@ -53,8 +53,8 @@ const ProductCard = ({ id, title, description, price, image, isFavorite, isInCar
           </p>
           <div className='d-flex justify-content-between align-items-center'>
             <div className='btn-group'>
-              <button className={btnFavorite} onClick={handleBtnFavorite}>To Favorites</button>
-              <button className={btnCart} onClick={handleBtnCart}>To Cart</button>
+              <button className={btnFavorite} onClick={handleBtnFavorite}>В избранное</button>
+              <button className={btnCart} onClick={handleBtnCart}>В корзину</button>
             </div>
             <div className='p-2 mb-2 text-bg-success rounded-2'>{price}</div>
           </div>

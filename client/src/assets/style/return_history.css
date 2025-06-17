@@ -1,0 +1,206 @@
+body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: #f3f3f3;
+    overflow-x: hidden;
+}
+
+.logo {
+    width: 12%; 
+    height: 20%; 
+    object-fit: cover;
+    padding-top: 10px;
+    padding-left: 10px; 
+}
+
+.main-text {
+  list-style-type: none;
+  margin: 0;
+  overflow: hidden;
+  background-color: #2d2d2d00;
+  position:absolute;
+  top: 0;
+  width: 100%;
+
+
+}
+
+.text-main {
+  float: left;
+}
+
+.text-main a {
+  display: block;
+  color: #f3f3f3;
+  padding-left: 10px; 
+  padding-right: 60px; 
+  padding-top: 40px;
+  text-decoration: none;
+  
+ 
+}
+
+.text-main a:hover:not(.active) {
+ color: #288fce;
+}
+
+.main-container {
+    width: 100%; 
+    height: 100px; 
+    overflow: hidden; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    background-color: #2d2d2d; 
+    
+}
+
+/* История возвратов*/
+        .return-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            background-color: #ffffff;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 20px auto;
+        }
+
+        .info {
+            flex: 1;
+            margin-right: 20px;   
+        }
+        .info-p{
+          border-top: 1px solid #ccc;
+        }
+        .product-image {
+            max-width: 200px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border: 1px solid #ccc;
+        }
+        .product-image img {
+            width: 100%;
+            height: auto;
+            transition: transform 0.3s;
+            
+            
+        }
+        .product-image img:hover {
+            transform: scale(1.05);
+        }
+        .images-container {
+            display: none;
+            flex-wrap: wrap;
+            margin-top: 10px;
+            
+        }
+        .images-container img {
+            max-width: 30%;
+            border-radius: 5px;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            transition: transform 0.3s;
+            border: 1px solid #ccc;
+        }
+        .images-container img:hover {
+            transform: scale(1.05);
+        }
+        .return-reason {
+            margin-top: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+            border: 3px solid #91c5e6;
+            border-left: 6px solid #288fce;
+            background-color: #91c5e6;
+        }
+        .toggle-button {
+            cursor: pointer;
+            color: #fff;
+            text-decoration: underline;
+            margin-top: 10px;
+            transition: color 0.2s;
+            background-color: #288fce;
+            text-align: center;
+            border-radius: 5px;
+            text-decoration: none;
+            padding: 7px;
+        }
+        .toggle-button:hover {
+            background-color: #005abb;
+        }
+        /* Стили для модального окна */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+        .modal-content {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            max-width: 500px;
+            animation: slide-in 0.3s ease-out forwards;
+        }
+        @keyframes slide-in {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -60%);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+        .modal-content span {
+            color: #FF0000;
+            float: right;
+            cursor: pointer;
+        }
+        .modal-content span:hover {
+            text-decoration: underline;
+        }
+
+.contact-container {
+    text-align: center;
+    background-color: #2d2d2d;
+    width: 100%; 
+    height: 500px; 
+    margin: 0px;
+  }
+  
+  .contact-telephon {
+    color: #f3f3f3;
+    font-size: 40px; 
+    margin: 10px 0; 
+    padding-top: 100px;
+    
+  }
+  
+  .contact-info {
+    color: #f3f3f3;
+    font-size: 40px; 
+    margin: 10px 0; 
+    
+  }
+  
+  .contact-address {
+    font-size: 16px; 
+    margin-top: 20px;  
+    color: #f3f3f3;
+  }

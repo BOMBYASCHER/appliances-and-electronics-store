@@ -20,9 +20,9 @@ const Search = ({ filter, setFilter }) => {
         type='search'
         value={searchString}
         onChange={(e) => setSearchString(e.target.value)}
-        placeholder='search string...'
+        placeholder='строка поиска...'
       />
-      <button className='btn btn-secondary' onClick={() => onInput(searchString)}>Find</button>
+      <button className='btn btn-secondary' onClick={() => onInput(searchString)}>Найти</button>
     </div>
   );
 };

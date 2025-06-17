@@ -50,7 +50,7 @@ const Login = () => {
   return (
     <div className="d-flex align-items-center justify-content-center vh-100">
       <form className="d-grid gap-2 w-25" onSubmit={(e) => handleForm(e)}>
-        <h1 className="h3 mb-3 fw-normal">Please sign in</h1>
+        <h1 className="h3 mb-3 fw-normal">Пожалуйста войдите</h1>
         <div className="form-floating">
           <input
             type="tel"
@@ -60,7 +60,7 @@ const Login = () => {
             value={phone}
             onChange={(e) => handlePhone(e)}
           />
-          <label htmlFor="floatingInput">Phone</label>
+          <label htmlFor="floatingInput">Телефон</label>
         </div>
         <div className="form-floating">
           <input
@@ -71,21 +71,21 @@ const Login = () => {
             value={password}
             onChange={(e) => handlePassword(e)}
           />
-          <label htmlFor="floatingPassword">Password</label>
+          <label htmlFor="floatingPassword">Пароль</label>
         </div>
         {isError ?
         <div className='text-danger'>
-          Please, check your phone and password.
+          Пожалуйста, проверьте ваш телефон и пароль.
         </div> : null}
         <p className="mt-5 mb-3 text-body-secondary">
-          Don't have an account? <Link to='/registration' className="text-reset">Sign-up!</Link>
+          Don't have an account? <Link to='/registration' className="text-reset">Зарегистрироваться!</Link>
         </p>
         <button className="btn btn-primary w-100 py-2" type="submit">
           {
             isLoading ?
             <>
               <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-              <span role="status">Loading...</span>
+              <span role="status">Загрузка...</span>
             </> :
             'Sign in'
           }
