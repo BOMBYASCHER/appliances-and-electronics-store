@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { cartApi } from './api/cartApi';
 import { PURGE } from 'redux-persist';
+import { ordersApi } from './api/ordersApi';
 
 const initialState = {
   totalAmount: 0, 
@@ -16,16 +17,19 @@ const cartSlice = createSlice({
   initialState,
   extraReducers: (builder) => builder
     .addCase(PURGE, () => {
-      console.log('cartReducer() - PURGE CASE');
       return initialState;
+    })
+    .addMatcher(ordersApi.endpoints.createOrder.matchFulfilled, (state, { payload: { data, status } }) => {
+      if (status == 201) {
+        state.totalAmount = 0;
+        state.products = [];
+      }
     })
     .addMatcher(cartApi.endpoints.getCart.matchFulfilled, (state, { payload: { data, status } }) => {
       if (status == 200) {
-        console.log('getCart.matchFulfilled() - start');
         const { totalAmount, elements } = data;
         state.totalAmount = totalAmount;
         state.products = elements;
-        console.log('getCart.matchFulfilled() - success');
       }
     })
     .addMatcher(cartApi.endpoints.getCart.matchRejected, (state, { payload: { data, status } }) => {
@@ -36,7 +40,6 @@ const cartSlice = createSlice({
     })
     .addMatcher(cartApi.endpoints.addProductToCart.matchFulfilled, (state, { payload: { data, status } }) => {
       if (status == 201) {
-        console.log('addProductToCart.matchFulfilled() : Data - ');
         const { productId } = data;
         state.products.push({ productId });
       }
