@@ -93,7 +93,7 @@ const Catalog = ({ products = [], limit, setLimit }) => {
         )}
       </div>
       <div className='d-flex justify-content-center row row-cols-3 py-5'>
-        <button hidden={btnIsHidden} className='btn btn-primary' onClick={() => setLimit(limit + 9)}>Load more</button>
+        <button hidden={btnIsHidden} className='btn btn-primary' onClick={() => setLimit(limit + 9)}>Показать больше</button>
       </div>
     </div>
   );

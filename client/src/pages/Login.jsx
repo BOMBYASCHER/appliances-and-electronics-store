@@ -78,7 +78,7 @@ const Login = () => {
           Пожалуйста, проверьте ваш телефон и пароль.
         </div> : null}
         <p className="mt-5 mb-3 text-body-secondary">
-          Don't have an account? <Link to='/registration' className="text-reset">Зарегистрироваться!</Link>
+          У вас нет учетной записи? <Link to='/registration' className="text-reset">Зарегистрироваться!</Link>
         </p>
         <button className="btn btn-primary w-100 py-2" type="submit">
           {
@@ -87,7 +87,7 @@ const Login = () => {
               <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
               <span role="status">Загрузка...</span>
             </> :
-            'Sign in'
+            'войти в систему'
           }
         </button>
       </form>

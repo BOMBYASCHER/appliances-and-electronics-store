@@ -25,7 +25,7 @@ const Registration = () => {
 
   const [isDisabled, setIsDisabled] = useState(true);
 
-  const [phoneError, setPhoneError] = useState('Phone number must be valid (e.g., +1234567890, (123) 456-7890).');
+  const [phoneError, setPhoneError] = useState('Укажите корректный номер телефона (допустимые форматы: +1234567890, (123) 456-7890).');
 
   const navigate = useNavigate();
   const [productsTrigger] = useLazyGetProductsQuery();
@@ -138,7 +138,7 @@ const Registration = () => {
     if (isValid) {
       setIsValidPhone(true);
     } else {
-      setPhoneError('Phone number must be valid (e.g., +1234567890, (123) 456-7890).');
+      setPhoneError('Укажите корректный номер телефона (допустимые форматы: +1234567890, (123) 456-7890).');
       setIsValidPhone(false);
     }
   };
@@ -170,7 +170,7 @@ const Registration = () => {
     <div className='container py-5'>
     <div className="d-flex align-items-center justify-content-center vh-100">
       <form className='d-grid gap-2 w-25' onSubmit={(e) => handleForm(e)}>
-        <h1 className="h3 mb-3 fw-normal">Please sign up</h1>
+        <h1 className="h3 mb-3 fw-normal">Пожалуйста зарегистрируйтесь</h1>
         <div className="form-floating form-group required">
           <input
             required={true}
@@ -181,9 +181,9 @@ const Registration = () => {
             value={lastName}
             onChange={(e) => handleLastName(e)}
           />
-          <label className='opacity-75' for="floatingInput">Last name</label>
+          <label className='opacity-75' for="floatingInput">Фамилия</label>
           <div class="invalid-feedback">
-            Last name must be include only letters and possible to have special characters (- , ').
+            Фамилия должна содержать только буквы и может включать специальные символы (- , ').
           </div>
         </div>
         <div className="form-floating">
@@ -196,9 +196,9 @@ const Registration = () => {
             value={firstName}
             onChange={(e) => handleFirstName(e)}
           />
-          <label className='opacity-75' for="floatingInput">First name</label>
+          <label className='opacity-75' for="floatingInput">Имя</label>
           <div class="invalid-feedback">
-            First name must be include only letters and possible to have special characters (- , ').
+            Имя должно содержать только буквы и может включать специальные символы (- , ').
           </div>
         </div>
         <div className="form-floating">
@@ -210,9 +210,9 @@ const Registration = () => {
             value={middleName}
             onChange={(e) => handleMiddleName(e)}
           />
-          <label className='opacity-50' for="floatingInput">Middle name (optional)</label>
+          <label className='opacity-50' for="floatingInput">Отчество (необязательно)</label>
           <div class="invalid-feedback">
-            Middle name must be include only letters and possible to have special characters (- , ').
+            Отчество должно содержать только буквы и может включать специальные символы (- , ').
           </div>
         </div>
         <div className="form-floating">
@@ -225,7 +225,7 @@ const Registration = () => {
             value={phone}
             onChange={(e) => handlePhone(e)}
           />
-          <label className='opacity-75' for="floatingInput">Phone</label>
+          <label className='opacity-75' for="floatingInput">Номер телефона</label>
           <div class="invalid-feedback">
             {phoneError}
           </div>
@@ -241,9 +241,9 @@ const Registration = () => {
             onChange={(e) => handlePassword(e)}
             minLength={6}
           />
-          <label className='opacity-75' for="floatingPassword">Password</label>
+          <label className='opacity-75' for="floatingPassword">Пароль</label>
           <div class="invalid-feedback">
-            Password must be at least 6 characters and include only letters, digits and special characters: + _ - * ) (
+            Пароль должен содержать минимум 6 символов и состоять только из букв, цифр и специальных символов: + _ - * ) (
           </div>
         </div>
         <div className="form-floating">
@@ -256,22 +256,22 @@ const Registration = () => {
             value={repeatPassword}
             onChange={(e) => handleRepeatPassword(e)}
           />
-          <label className='opacity-75' for="floatingPassword">Repeat password</label>
+          <label className='opacity-75' for="floatingPassword">Повторите пароль</label>
           <div class="invalid-feedback">
-            Passwords should be match.
+            Пароли должны совпадать.
           </div>
         </div>
         <p class="mt-5 mb-3 text-body-secondary">
-          Already have an account? <Link to='/login' className="text-reset">Sign-in!</Link>
+          У вас уже есть учетная запись? <Link to='/login' className="text-reset">Войдите в систему!</Link>
         </p>
         <button disabled={isDisabled} className="btn btn-primary w-100 py-2" type="submit">
           {
             isLoading ?
             <>
               <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-              <span role="status">Loading...</span>
+              <span role="status">Загрузка...</span>
             </> :
-            'Sign up'
+            'Зарегистрировать'
           }
         </button>
       </form>

@@ -46,8 +46,8 @@ const FavoriteCard = ({ productId, title, description, price, image, isInCart })
         <p className="card-text mb-auto">{description}</p>
         <h2>{price}</h2>
         <div className='row gap-2'>
-          <button className={btnFavorite} onClick={handleBtnFavorite}>To Favorites</button>
-          <button className={btnCart} onClick={handleBtnCart}>To Cart</button>
+          <button className={btnFavorite} onClick={handleBtnFavorite}>В избранное</button>
+          <button className={btnCart} onClick={handleBtnCart}>В корзину</button>
         </div>
       </div>
       <div className="col-auto d-none d-lg-block">

@@ -26,31 +26,31 @@ const Return = ({ orderTitle, productTitle, image, totalAmount, price, quantity,
         <div class="row g-0">
           <div class="col-md-8">
             <div class="card-body">
-              <p class="card-title fs-4">Return for the <strong>{productTitle}</strong></p>
-              <p class="card-title fs-5">From the order <strong>{orderTitle}</strong></p>
-              <p class="card-text text-body-secondary">Returned at {new Date(date).toLocaleDateString()}</p>
+              <p class="card-title fs-4">Вернитесь за <strong>{productTitle}</strong></p>
+              <p class="card-title fs-5">Из заказа <strong>{orderTitle}</strong></p>
+              <p class="card-text text-body-secondary">Возврат осуществлён {new Date(date).toLocaleDateString()}</p>
               <ul class="list-group list-group-flush">
                 <li class="list-group-item">
                   <div class="d-flex justify-content-between">
-                    <p>Total amount of the purchase:</p>
+                    <p>Итоговая сумма покупки:</p>
                     <p>{totalAmount}</p>
                   </div>
                 </li>
                 <li class="list-group-item">
                   <div class="d-flex justify-content-between">
-                    <p>Product price:</p>
+                    <p>Цена продукта:</p>
                     <p>{price}</p>
                   </div>
                 </li>
                 <li class="list-group-item">
                   <div class="d-flex justify-content-between">
-                    <p>Quantity:</p>
+                    <p>Количество:</p>
                     <p>{quantity}</p>
                   </div>
                 </li>
                 <li class="list-group-item">
                   <div class="d-flex justify-content-between">
-                    <p>Reason of the return:</p>
+                    <p>Причина возврата:</p>
                     <p>{reason}</p>
                   </div>
                 </li>
@@ -67,7 +67,7 @@ const Return = ({ orderTitle, productTitle, image, totalAmount, price, quantity,
               <div className="accordion-item">
                 <h2 className="accordion-header">
                   <button onClick={toggleAccordion} className={accordionBtnClass} type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded={isShown} aria-controls="collapseOne">
-                    Photo of the return
+                    Фото возврата
                   </button>
                 </h2>
                 <div id="collapseOne" className={accordionClass} data-bs-parent="#accordionExample">

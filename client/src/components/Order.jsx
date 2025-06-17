@@ -21,15 +21,15 @@ const Order = ({ id: orderId, title: orderTitle, totalAmount, date, purchases, s
     <div className="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
       <div className="col p-4 d-flex flex-column position-static">
         <h4 className="pb-3 mb-0">{orderTitle}</h4>
-        <p className="fs-5 mb-auto">Total amount: <strong>{totalAmount}</strong></p>
-        <p className="fs-5 mb-auto">Date of order: <strong>{new Date(date).toLocaleDateString()}</strong></p>
-        <p className="fs-5 mb-auto">Status: <strong>{status}</strong></p>
+        <p className="fs-5 mb-auto">Общая сумма: <strong>{totalAmount}</strong></p>
+        <p className="fs-5 mb-auto">Дата заказа: <strong>{new Date(date).toLocaleDateString()}</strong></p>
+        <p className="fs-5 mb-auto">Статус: <strong>{status}</strong></p>
       </div>
       <div className="accordion" id="accordionExample">
       <div className="accordion-item">
         <h2 className="accordion-header">
           <button onClick={toggleAccordion} className={accordionBtnClass} type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded={isShown} aria-controls="collapseOne">
-            Purchases
+            Покупки
           </button>
         </h2>
         <div id="collapseOne" className={accordionClass} data-bs-parent="#accordionExample">
@@ -61,9 +61,9 @@ const Order = ({ id: orderId, title: orderTitle, totalAmount, date, purchases, s
 
 const Purchase = ({ title, price, image, quantity, formInfo, isReturned }) => {
   const returnBlock = isReturned ?
-    <p>The purchase returned</p> :
+    <p>Покупка возвращена</p> :
     <Link state={formInfo} to='/return-form'>
-      <button disabled={isReturned} className='btn btn-primary'>Return</button>
+      <button disabled={isReturned} className='btn btn-primary'>Вернуть</button>
     </Link>
   return (
     <div className="col">
@@ -74,8 +74,8 @@ const Purchase = ({ title, price, image, quantity, formInfo, isReturned }) => {
             <img width={'auto'} height={100} alt="Product image" src={image} />
           </div>
           <div className="d-flex justify-content-between align-items-center">
-            <p className="card-text fw-light">Quantity: {quantity}</p>
-            <p className="">Price: {price}</p>
+            <p className="card-text fw-light">Количество: {quantity}</p>
+            <p className="">Цена: {price}</p>
           </div>
           {returnBlock}
         </div>

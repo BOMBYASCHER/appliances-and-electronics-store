@@ -59,7 +59,7 @@ const Cart = () => {
                   <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
                   <span role="status">Оформление...</span>
                 </> :
-                'Place an order'
+                'Оформить заказ'
               }
             </button>
           </form>

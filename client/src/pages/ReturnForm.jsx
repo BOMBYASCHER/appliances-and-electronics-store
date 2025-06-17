@@ -106,34 +106,34 @@ const ReturnForm = () => {
     <SuccessHero/> :
     <div className="d-grid align-items-center gap-2 w-75">
       <form className={formClassName} onSubmit={handleSubmit}>
-        <h1 className="h3 mb-3 fw-normal">Please fill out the form</h1>
+        <h1 className="h3 mb-3 fw-normal">Пожалуйста, заполните форму</h1>
           <div className="card">
             <div className="card-body">
             <div className="row g-0">
               <div className="col-md-8">
-                <p className="card-title fs-5">Purchase info from the order <strong>{formInfo.orderTitle}</strong></p>
+                <p className="card-title fs-5">Информация о покупке из заказа - <strong>{formInfo.orderTitle}</strong></p>
                 <ul className="list-group list-group-flush">
                   <li className="list-group-item">
                     <div className="d-flex justify-content-between">
-                      <p>Product title</p>
+                      <p>Название продукта</p>
                       <p>{formInfo.title}</p>
                     </div>
                   </li>
                   <li className="list-group-item">
                     <div className="d-flex justify-content-between">
-                      <p>Price</p>
+                      <p>Цена</p>
                       <p>{formInfo.price}</p>
                     </div>
                   </li>
                   <li className="list-group-item">
                     <div className="d-flex justify-content-between">
-                      <p>Quantity</p>
+                      <p>Количество</p>
                       <p>{formInfo.quantity}</p>
                     </div>
                   </li>
                   <li className="list-group-item">
                     <div className="d-flex justify-content-between">
-                      <p>Date of purchase</p>
+                      <p>Дата покупки</p>
                       <p>{new Date(formInfo.date).toLocaleDateString()}</p>
                     </div>
                   </li>
@@ -148,16 +148,16 @@ const ReturnForm = () => {
         <div className="form-floating form-group required">
           <select defaultValue='' required className={reasonSelect} onChange={e => handleSelect(e)}>
             {isDisabledOption ? null : <option value=''></option>}
-            <option value="defect/damage">defect/damage</option>
-            <option value="did not fit">did not fit</option>
-            <option value="product does not match description">product does not match description</option>
+            <option value="дефект/повреждение">дефект/повреждение</option>
+            <option value="не подходит">не подходит</option>
+            <option value="товар не соответствует описанию">товар не соответствует описанию</option>
           </select>
-          <label className='opacity-75'>Reason of the return:</label>
+          <label className='opacity-75'>Причина возврата:</label>
           <div className="invalid-feedback">
             Choose one variant.
           </div>
         </div>
-        <label className="w-50 input-group-text">Upload a photo of the purchase</label>
+        <label className="w-50 input-group-text">Прикрепите фотографию покупки</label>
         <div className="input-group mb-3">
           <input type="file" accept='image/*' className={photoInput} onChange={handleFileChange}/>
         </div>
@@ -166,9 +166,9 @@ const ReturnForm = () => {
             isLoading ?
             <>
               <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-              <span role="status">Loading...</span>
+              <span role="status">Загрузка...</span>
             </> :
-            'Issue an return'
+            'Оформить возврат'
           }
         </button>
       </form>
@@ -180,17 +180,17 @@ const ReturnForm = () => {
 
 const SuccessHero = () => (
   <div className="px-4 py-5 my-5 text-center">
-    <h1 className="display-5 fw-bold  text-success">Success!</h1>
+    <h1 className="display-5 fw-bold  text-success">Успех!</h1>
     <div className="col-lg-6 mx-auto">
     <p className="lead mb-4">
-      The return was successfully done. You can go to the returns page or continue checking orders.
+      Возврат успешно оформлен. Вы можете перейти на страницу возвратов или продолжить проверку заказов
     </p>
     <div className="d-grid gap-2 d-sm-flex justify-content-sm-center">
       <Link to='/returns'>
-        <button type="button" className="btn btn-primary btn-lg px-4 gap-3">Returns page</button>
+        <button type="button" className="btn btn-primary btn-lg px-4 gap-3">Возвраты</button>
       </Link>
       <Link to='/orders'>
-        <button type="button" className="btn btn-outline-secondary btn-lg px-4">Orders page</button>
+        <button type="button" className="btn btn-outline-secondary btn-lg px-4">Заказы</button>
       </Link>
     </div>
     </div>
