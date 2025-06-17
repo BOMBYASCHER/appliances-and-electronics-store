@@ -92,10 +92,31 @@ const Colors = ({ colors, filter, setFilter }) => {
     <div key={index} className='row'>
       <label id={index}>
         <input className='form-check-input' type='checkbox' name={color} onChange={(e) => handleColorCheckbox(e, color)}/>
-        {" " + color}
+        {" " + toLocalColorName(color)}
       </label>
     </div>
   ));
+};
+
+const toLocalColorName = (color) => {
+  switch(color) {
+    case 'white':
+      return 'Белый';
+    case 'black':
+      return 'Чёрный';
+    case 'silver':
+      return 'Серебристый';
+    case 'gray':
+      return 'Серый';
+    case 'metallic':
+      return 'Металлик';
+    case 'blue':
+      return 'Синий';
+    case 'yellow':
+      return 'Жёлтый';
+    case 'violet':
+      return 'Фиолетовый';
+  }
 };
 
 const Categories = ({ categories, filter, setFilter }) => {
@@ -120,10 +141,19 @@ const Categories = ({ categories, filter, setFilter }) => {
           name={category}
           onChange={() => handleCategoryCheckbox(category)}
         />
-        {" " + category}
+        {" " + toLocalCategoryName(category)}
       </label>
     </div>
   ));
+};
+
+const toLocalCategoryName = (category) => {
+  switch(category) {
+    case 'washing machine':
+      return 'Стиральные машины';
+    case 'vacuum':
+      return 'Пылесосы';
+  }
 };
 
 const ReleaseYears = ({ years, filter, setFilter }) => {
