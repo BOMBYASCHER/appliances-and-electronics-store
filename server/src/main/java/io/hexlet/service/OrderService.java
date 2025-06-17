@@ -43,6 +43,9 @@ public class OrderService {
     private ReturnRepository returnRepository;
 
     @Autowired
+    private CartService cartService;
+
+    @Autowired
     private OrderMapper orderMapper;
 
     @Autowired
@@ -93,6 +96,8 @@ public class OrderService {
         order.setTotalAmount(calculateTotalAmount(savedPurchases));
         order.getPurchases().addAll(savedPurchases);
         orderRepository.save(order);
+
+        cartService.clearCart(userId);
     }
 
     private int calculateTotalAmount(List<Purchase> purchases) {
