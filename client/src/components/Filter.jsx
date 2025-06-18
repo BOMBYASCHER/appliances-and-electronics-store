@@ -9,7 +9,7 @@ const Filter = ({ data, filter, setFilter }) => {
 
   return (
     <div className='col-md-4'>
-      <div className='position-sticky' style={{top: 2 + 'rem'}}>
+      <div style={{top: 2 + 'rem'}}>
         <div className='border rounded p-3 mb-2'>
           <p className='fs-5'>Категория</p>
           <div className={checkboxClassName}>
