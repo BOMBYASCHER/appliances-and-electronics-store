@@ -14,6 +14,7 @@ import Login from './pages/Login.jsx';
 import { PersistGate } from 'redux-persist/integration/react';
 import Registration from './pages/Registration.jsx';
 import ReturnForm from './pages/ReturnForm.jsx';
+import Product from './pages/Product.jsx';
 
 
 createRoot(document.getElementById('root')).render(
@@ -30,6 +31,7 @@ createRoot(document.getElementById('root')).render(
         <Route path='/orders' element={<AuthenticatedRoute element={<Orders />} />}/>
         <Route path='/returns' element={<AuthenticatedRoute element={<Returns />} />}/>
         <Route path='/return-form' element={<AuthenticatedRoute element={<ReturnForm/>} />}/>
+        <Route path='/product/:id' element={<Product/>}/>
       </Routes>
       </PersistGate>
     </Provider>

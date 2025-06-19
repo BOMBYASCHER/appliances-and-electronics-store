@@ -1,26 +1,14 @@
-import cn from 'classnames';
-import { useState } from 'react';
 import { useAddFavoriteMutation, useDeleteFavoriteMutation } from '../slices/api/favoritesApi';
 import { useAddProductToCartMutation, useDeleteProductFromCartMutation } from '../slices/api/cartApi';
-import ProductModal from './ProductModal';
+import { NavLink } from 'react-router';
+import '../assets/style/style.css';
 
 const ProductCard = ({ id, title, description, price, image, isFavorite, isInCart }) => {
-  const [showModal, setShowModal] = useState(false);
-
   const [addFavorite] = useAddFavoriteMutation();
   const [deleteFavorite] = useDeleteFavoriteMutation();
 
   const [addToCart] = useAddProductToCartMutation();
   const [deleteFromCart] = useDeleteProductFromCartMutation();
-
-  const container = cn('col');
-
-  const btnFavorite = cn('btn', 'btn-favorite', 'btn-sm btn-outline-secondary', {
-    active: isFavorite
-  });
-  const btnCart = cn('btn', 'btn-cart', 'btn-sm btn-outline-secondary', {
-    active: isInCart
-  });
 
   const handleBtnFavorite = (e) => {
     e.stopPropagation();
@@ -41,39 +29,16 @@ const ProductCard = ({ id, title, description, price, image, isFavorite, isInCar
   };
 
   return (
-    <>
-      <div className={container} onClick={() => setShowModal(true)}>
-        <div>
-          <img className='img-fluid img-thumbnail' src={image} alt="Product image" />
-        </div>
-        <div className='card-body'>
-          <h3>{title}</h3>
-          <p style={{ display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-            {description}
-          </p>
-          <div className='d-flex justify-content-between align-items-center'>
-            <div className='btn-group'>
-              <button className={btnFavorite} onClick={handleBtnFavorite}>В избранное</button>
-              <button className={btnCart} onClick={handleBtnCart}>В корзину</button>
-            </div>
-            <div className='p-2 mb-2 text-bg-success rounded-2'>{price}</div>
-          </div>
-        </div>
-      </div>
-
-      {showModal && (
-        <ProductModal
-          id={id}
-          title={title}
-          description={description}
-          price={price}
-          image={image}
-          isFavorite={isFavorite}
-          isInCart={isInCart}
-          onClose={() => setShowModal(false)}
-        />
-      )}
-    </>
+    <div className="product-card">
+      <img src={image} alt="Product image" />
+        <h4>{title}</h4>
+        <p>{price}</p>
+        <button className="product-favorites-button" onClick={handleBtnFavorite}>В избранное</button>
+        <button className="product-buy-button" onClick={handleBtnCart}>В корзину</button>
+        <NavLink to={`/product/${id}`}>
+          <button className="product-button">Подробнее</button>
+        </NavLink>
+    </div>
   );
 };
 

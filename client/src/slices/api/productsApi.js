@@ -29,7 +29,7 @@ export const productsApi = createApi({
       transformResponse: (response, meta, arg) => getMetadata(response),
     }),
     getProductById: builder.mutation({
-      query: (id) => ({
+      query: ({ id }) => ({
         url: `${id}`,
       }),
       transformResponse: (response, meta, arg) => response,

@@ -2,22 +2,12 @@ import Filter from '../components/Filter.jsx';
 import FilterObject from '../Filter.js';
 import Header from '../components/Header.jsx';
 import ProductCard from '../components/ProductCard.jsx';
-import Search from '../components/Search.jsx';
 import Sort from '../components/Sort.jsx';
 import { useState, useEffect } from 'react';
 import { useGetProductsByFilterMutation, useGetProductsQuery } from '../slices/api/productsApi.js';
 import { useSelector } from 'react-redux';
 import { useSyncTab } from '../SyncTabHook.js';
-import photo from '../assets/photo.jpg';
-
-const style = {
-  photo: {
-    filter: 'brightness(40%)',
-    width: '100%',
-    height: '300px',
-    'object-fit': 'cover',
-  }
-};
+import '../assets/style/style.css';
 
 const Main = () => {
   useSyncTab();
@@ -42,26 +32,10 @@ const Main = () => {
 
   return (
     <>
-      <Header/>
-      <div className='position-relative'>
-        <img className='position-relative' src={photo} style={style.photo}/>
-        <h1 className='position-absolute top-50 start-50 translate-middle text-white  fs-1'>MACONI</h1>
-        <p className='position-absolute bottom-50 start-50 translate-middle text-white fw-light fs-5'>Интернет-магазин бытовой техники и электроники</p>
-      </div>
-      <div className='container'>
-        <div className='row py-3'>
-          <div className='col'>
-            <Search filter={filter} setFilter={setFilter}></Search>
-          </div>
-          <div className='col'>
-            <Sort defaultSort={defaultSort} setSort={setSort}></Sort>
-          </div>
-        </div>
-        <div className='row g-5'>
-          <Filter data={metadata} filter={filter} setFilter={setFilter}></Filter>
-          <Catalog products={processedProducts} limit={limit} setLimit={setLimit}/>
-        </div>
-      </div>
+      <Header isMainPage={true}/>
+      <Sort defaultSort={defaultSort} setSort={setSort}></Sort>
+      <Filter data={metadata} filter={filter} setFilter={setFilter}></Filter>
+      <Catalog products={processedProducts} limit={limit} setLimit={setLimit}/>
     </>
   )
 };
@@ -77,8 +51,7 @@ const Catalog = ({ products = [], limit, setLimit }) => {
   });
   const btnIsHidden = products.length < limit;
   return (
-    <div className='col-md-8'>
-      <div className='row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3'>
+    <main className='product-list'>
         {syncedProducts.map(p =>  {
           return (<ProductCard
             key={p.id}
@@ -92,11 +65,10 @@ const Catalog = ({ products = [], limit, setLimit }) => {
           />)
         }
         )}
-      </div>
       <div className='d-flex justify-content-center row row-cols-3 py-5'>
         <button hidden={btnIsHidden} className='btn btn-primary' onClick={() => setLimit(limit + 9)}>Показать больше</button>
       </div>
-    </div>
+    </main>
   );
 };
 

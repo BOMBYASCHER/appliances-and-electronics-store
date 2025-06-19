@@ -1,4 +1,3 @@
-import cn from 'classnames';
 import { 
   sortByNameAsc,
   sortByNameDesc,
@@ -7,10 +6,11 @@ import {
   sortByReleaseDateAsc,
   sortByReleaseDateDesc
 } from '../SortFunctions.js';
+import Search from './Search.jsx';
+import '../assets/style/style.css';
 
 const Sort = ({ setSort }) => {
   const defaultSort = (products) => products;
-  const selectSortClassName = cn('form-select');
 
   const handleSort = ({ target: { value } }) => {
     if (value == 0) { setSort(() => defaultSort) }
@@ -23,15 +23,18 @@ const Sort = ({ setSort }) => {
   };
 
   return (
-    <select defaultValue={0} onChange={e => handleSort(e)} className={selectSortClassName}>
-      <option value={0} >По умолчанию</option>
-      <option value={1} >Цена: от низкой к высокой</option>
-      <option value={2} >Цена: от высокой к низкой</option>
-      <option value={3} >По алфавиту: A-Z</option>
-      <option value={4} >По алфавиту: Z-A</option>
-      <option value={5} >Год выпуска: от новых к старым</option>
-      <option value={6} >Год выпуска: от старых к новым</option>
-    </select>
+    <div className='search-container'>
+      <Search/>
+      <select defaultValue={0} onChange={e => handleSort(e)} className="sort-select">
+        <option value={0} >По умолчанию</option>
+        <option value={1} >Цена: от низкой к высокой</option>
+        <option value={2} >Цена: от высокой к низкой</option>
+        <option value={3} >По алфавиту: A-Z</option>
+        <option value={4} >По алфавиту: Z-A</option>
+        <option value={5} >Год выпуска: от новых к старым</option>
+        <option value={6} >Год выпуска: от старых к новым</option>
+      </select>
+    </div>
   );
 };
 

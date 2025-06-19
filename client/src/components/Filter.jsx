@@ -1,46 +1,25 @@
-import cn from 'classnames';
-
 import { useState, useEffect } from 'react';
 import FilterObject from '../Filter.js';
+import '../assets/style/style.css';
 
 const Filter = ({ data, filter, setFilter }) => {
-  const checkboxClassName = cn('col');
   const { brands, categories, colors, releaseYears, minPrice, maxPrice } = data;
 
   return (
-    <div className='col-md-4'>
-      <div style={{top: 2 + 'rem'}}>
-        <div className='border rounded p-3 mb-2'>
-          <p className='fs-5'>Категория</p>
-          <div className={checkboxClassName}>
-            <Categories categories={categories} filter={filter} setFilter={setFilter}/>
-          </div>
-        </div>
-        <div className='border rounded p-3 mb-2'>
-          <p className='fs-5'>Бренд</p>
-          <div className={checkboxClassName}>
-            <Brands brands={brands} filter={filter} setFilter={setFilter}/>
-          </div>
-        </div>
-        <div className='border rounded p-3 mb-2'>
-          <p className='fs-5'>Цена</p>
-          <div className={checkboxClassName}>
-            <PriceRange minPrice={minPrice} maxPrice={maxPrice} filter={filter} setFilter={setFilter} />
-          </div>
-        </div>
-        <div className='border rounded p-3 mb-2'>
-          <p className='fs-5'>Цвет</p>
-          <div className={checkboxClassName}>
-            <Colors colors={colors} filter={filter} setFilter={setFilter}/>
-          </div>
-        </div>
-        <div className='border rounded p-3 mb-2'>
-          <p className='fs-5'>Год выпуска</p>
-          <div className={checkboxClassName}>
-            <ReleaseYears years={releaseYears} filter={filter} setFilter={setFilter}/>
-          </div>
-        </div>
-      </div>
+    <div className='container'>
+      <aside className='sidebar'>
+        <h2>ФИЛЬТРЫ</h2>
+        <h3>Категории</h3>
+        <Categories categories={categories} filter={filter} setFilter={setFilter}/>
+        <h3>Бренды</h3>
+        <Brands brands={brands} filter={filter} setFilter={setFilter}/>
+        <h3>Цена</h3>
+        <PriceRange minPrice={minPrice} maxPrice={maxPrice} filter={filter} setFilter={setFilter}/>
+        <h3>Цвета</h3>
+        <Colors colors={colors} filter={filter} setFilter={setFilter}/>
+        <h3>Годы выпуска</h3>
+        <ReleaseYears years={releaseYears} filter={filter} setFilter={setFilter}/>
+      </aside>
     </div>
   )
 };
@@ -63,12 +42,12 @@ const Brands = ({ brands, filter, setFilter }) => {
   };
 
   return (brands.sort().map((brand, index) => 
-    <div key={index} className='row'>
+    <p key={index}>
       <label id={index}>
-        <input className='form-check-input' type='checkbox' name={brand} onChange={(e) => handleBrandCheckbox(e, brand)}/>
+        <input type='checkbox' name={brand} onChange={(e) => handleBrandCheckbox(e, brand)}/>
         {" " + brand}
       </label>
-    </div>
+    </p>
   ));
 };
 
@@ -88,13 +67,14 @@ const Colors = ({ colors, filter, setFilter }) => {
       setCheckedColors(checkedColors.filter(c => c !== color));
     }
   };
+
   return (colors.map((color, index) =>
-    <div key={index} className='row'>
+    <p key={index}>
       <label id={index}>
-        <input className='form-check-input' type='checkbox' name={color} onChange={(e) => handleColorCheckbox(e, color)}/>
+        <input type='checkbox' name={color} onChange={(e) => handleColorCheckbox(e, color)}/>
         {" " + toLocalColorName(color)}
       </label>
-    </div>
+    </p>
   ));
 };
 
@@ -137,9 +117,9 @@ const Categories = ({ categories, filter, setFilter }) => {
   };
 
   return (categories.map((category, index) =>
-    <div key={index} className='row'>
+    <p key={index}>
       <label id={index}>
-        <input className='form-check-input'
+        <input
           checked={checkedCategory === category}
           type='radio'
           name={category}
@@ -147,7 +127,7 @@ const Categories = ({ categories, filter, setFilter }) => {
         />
         {" " + toLocalCategoryName(category)}
       </label>
-    </div>
+    </p>
   ));
 };
 
@@ -178,12 +158,12 @@ const ReleaseYears = ({ years, filter, setFilter }) => {
   };
 
   return (years.sort((a, b) => b - a).map((year, index) =>
-    <div key={index} className='row'>
+    <p key={index}>
       <label id={index}>
-        <input className='form-check-input' type='checkbox' name={year} onChange={(e) => handleReleaseYearCheckbox(e, year)}/>
+        <input type='checkbox' name={year} onChange={(e) => handleReleaseYearCheckbox(e, year)}/>
         {" " + year}
       </label> 
-    </div>
+    </p>
   ));
 };
 

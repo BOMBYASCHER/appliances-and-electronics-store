@@ -1,29 +1,27 @@
-import cn from 'classnames';
 import Filter from '../Filter';
 import { useState } from 'react';
+import '../assets/style/style.css';
 
 const Search = ({ filter, setFilter }) => {
   const [searchString, setSearchString] = useState('');
 
-  const inputSearchClassName = cn('input-group');
-
-  const onInput = (s) => {
-    const newFilter = new Filter(filter);
-    newFilter.search = s;
-    setFilter(newFilter);
+  const onEnterPress = ({ key }) => {
+    if (key === 'enter') {
+      const newFilter = new Filter(filter);
+      newFilter.search = searchString;
+      setFilter(newFilter);
+    }
   }
 
   return (
-    <div className={inputSearchClassName}>
-      <input
-        className='form-control'
-        type='search'
-        value={searchString}
-        onChange={(e) => setSearchString(e.target.value)}
-        placeholder='Поиск...'
-      />
-      <button className='btn btn-secondary' onClick={() => onInput(searchString)}>Найти</button>
-    </div>
+    <input
+      className='search-input'
+      type='search'
+      value={searchString}
+      onChange={(e) => setSearchString(e.target.value)}
+      placeholder='Поиск...'
+      onKeyUp={(e) => onEnterPress(e)}
+    />
   );
 };
 
