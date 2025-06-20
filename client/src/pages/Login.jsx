@@ -4,6 +4,8 @@ import { Link, useNavigate } from "react-router";
 import { useLazyGetFavoritesQuery } from "../slices/api/favoritesApi";
 import { useLazyGetCartQuery } from "../slices/api/cartApi";
 import { useLazyGetProductsQuery } from "../slices/api/productsApi";
+import Footer from "../components/Footer";
+import style from '../assets/style/Login.css?inline';
 
 const Login = () => {
   const [login, { isSuccess, isError: isLoginError, isLoading }] = useLoginMutation();
@@ -48,50 +50,37 @@ const Login = () => {
   };
 
   return (
-    <div className="d-flex align-items-center justify-content-center vh-100">
-      <form className="d-grid gap-2 w-25" onSubmit={(e) => handleForm(e)}>
-        <h1 className="h3 mb-3 fw-normal">Пожалуйста войдите</h1>
-        <div className="form-floating">
-          <input
-            type="tel"
-            className="form-control"
-            id="floatingInput"
-            placeholder="+22 607 123 4567"
-            value={phone}
-            onChange={(e) => handlePhone(e)}
-          />
-          <label htmlFor="floatingInput">Телефон</label>
+    <>
+    <style type='text/css'>{style}</style>
+    <div className="container">
+      <h2>Вход в аккаунт</h2>
+      <form id="loginForm" onSubmit={(e) => handleForm(e)}>
+        <div class="form-group">
+          <label htmlFor="phone"><i class="fas fa-phone icon"></i> Номер телефона</label>
+          <input type="tel" value={phone} onChange={(e) => handlePhone(e)} id="phone" name="phone" required placeholder="Введите номер телефона"/>
         </div>
-        <div className="form-floating">
-          <input
-            type="password"
-            className="form-control"
-            id="floatingPassword"
-            placeholder="password"
-            value={password}
-            onChange={(e) => handlePassword(e)}
-          />
-          <label htmlFor="floatingPassword">Пароль</label>
+        <div class="form-group">
+          <label htmlFor="password"><i class="fas fa-lock icon"></i> Пароль</label>
+          <input onChange={(e) => handlePassword(e)} value={password} type="password" id="password" name="password" required placeholder="Введите пароль"/>
+        </div>
+        <div className="form-group">
+          {
+            isLoading ?
+            <input type="submit" value="Вход..."/> :
+            <input type="submit" value="Войти"/>
+          }
         </div>
         {isError ?
         <div className='text-danger'>
           Пожалуйста, проверьте ваш телефон и пароль.
         </div> : null}
-        <p className="mt-5 mb-3 text-body-secondary">
-          У вас нет учетной записи? <Link to='/registration' className="text-reset">Зарегистрироваться!</Link>
-        </p>
-        <button className="btn btn-primary w-100 py-2" type="submit">
-          {
-            isLoading ?
-            <>
-              <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-              <span role="status">Загрузка...</span>
-            </> :
-            'войти в систему'
-          }
-        </button>
+        <div className="footer">
+          Нет учетной записи? <Link to='/registration'>Зарегистрироваться!</Link>
+        </div>
       </form>
     </div>
+    <Footer/>
+    </>
   );
 };
 

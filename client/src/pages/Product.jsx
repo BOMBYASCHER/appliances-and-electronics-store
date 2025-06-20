@@ -3,8 +3,7 @@ import { useAddProductToCartMutation, useDeleteProductFromCartMutation } from '.
 import { useGetProductByIdMutation } from '../slices/api/productsApi';
 import { useParams } from 'react-router';
 import { useEffect, useState } from 'react';
-import '../assets/style/product-page.css';
-import '../assets/style/style.css';
+import style from '../assets/style/Product.css?inline';
 
 const Product = () => {
   const { id } = useParams();
@@ -55,6 +54,8 @@ const Product = () => {
   };
 
   return (
+    <>
+    <style type='text/css'>{style}</style>
     <div className="container">
       <div className="product-image">
         <img src={image} alt="Изображение товара" />
@@ -70,6 +71,7 @@ const Product = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

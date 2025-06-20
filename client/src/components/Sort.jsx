@@ -7,7 +7,6 @@ import {
   sortByReleaseDateDesc
 } from '../SortFunctions.js';
 import Search from './Search.jsx';
-import '../assets/style/style.css';
 
 const Sort = ({ setSort }) => {
   const defaultSort = (products) => products;

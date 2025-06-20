@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import logo from '../assets/logo.png';
 import photo from '../assets/photo.jpg';
 import { logout } from "../slices/index.js";
-import '../assets/style/style.css';
 
 const Header = ({ isMainPage = false }) => {
   const { favorites } = useSelector((state) => state.favorites);
@@ -16,9 +15,9 @@ const Header = ({ isMainPage = false }) => {
       { isMainPage ? <img src={photo} className="main"/> : null }
       <ul className="main-text">
         <li className="text-main">
-          <NavLink to="/" onClick={productsTrigger}>
+          {/* <NavLink to="/" onClick={productsTrigger}> */}
             <img src={logo} className="logo"/>
-          </NavLink>
+          {/* </NavLink> */}
         </li>
         <li className="text-main">
             <Link onClick={productsTrigger} to="/">

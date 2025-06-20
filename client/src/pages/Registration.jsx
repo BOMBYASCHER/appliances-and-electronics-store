@@ -1,11 +1,11 @@
-import cn from 'classnames';
 import { useEffect, useState } from "react";
 import { useRegistrationMutation } from "../slices/api/authApi";
 import { useNavigate } from "react-router";
 import { useLazyGetFavoritesQuery } from "../slices/api/favoritesApi";
 import { useLazyGetCartQuery } from "../slices/api/cartApi";
 import { useLazyGetProductsQuery } from "../slices/api/productsApi";
-import { Link } from 'react-router';
+import style from '../assets/style/Registration.css?inline';
+import Footer from '../components/Footer';
 
 const Registration = () => {
   const [registration, { isSuccess, isError, error, isLoading }] = useRegistrationMutation();
@@ -34,31 +34,31 @@ const Registration = () => {
 
   const nameRegexp = new RegExp(/^(\p{L}+[-]{0,1}\p{L}+)$/, 'u');
 
-  const lastNameInput = cn('form-control', {
-    'is-valid': isValidLastName == null ? false : isValidLastName,
-    'is-invalid': isValidLastName == null ? false : !isValidLastName,
-  });
-  const firstNameInput = cn('form-control', {
-    'is-valid': isValidFirstName == null ? false : isValidFirstName,
-    'is-invalid': isValidFirstName == null ? false : !isValidFirstName,
-  });
-  const middleNameInput = cn('form-control', {
-    'is-valid': isValidMiddleName == null ? false : isValidMiddleName,
-    'is-invalid': isValidMiddleName == null ? false : !isValidMiddleName,
-  });
-  const phoneInput = cn('form-control', {
-    'is-valid': isValidPhone == null ? false : isValidPhone,
-    'is-invalid': isValidPhone == null ? false : !isValidPhone,
-  });
-  const passwordInput = cn('form-control', {
-    'is-valid': isValidPassword == null ? false : isValidPassword,
-    'is-invalid': isValidPassword == null ? false : !isValidPassword,
-  });
-  const repeatPasswordInput = cn('form-control', {
-    'is-valid': isValidRepeatPassword == null ? false : isValidRepeatPassword,
-    'is-invalid': isValidRepeatPassword == null ? false : !isValidRepeatPassword,
-  });
- 
+  const lastNameInput = {
+    isValid: isValidLastName == null ? false : isValidLastName,
+    isInvalid: isValidLastName == null ? false : !isValidLastName,
+  };
+  const firstNameInput = {
+    isValid: isValidFirstName == null ? false : isValidFirstName,
+    isInvalid: isValidFirstName == null ? false : !isValidFirstName,
+  };
+  const middleNameInput = {
+    isValid: isValidMiddleName == null ? false : isValidMiddleName,
+    isInvalid: isValidMiddleName == null ? false : !isValidMiddleName,
+  };
+  const phoneInput = {
+    isValid: isValidPhone == null ? false : isValidPhone,
+    isInvalid: isValidPhone == null ? false : !isValidPhone,
+  };
+  const passwordInput = {
+    isValid: isValidPassword == null ? false : isValidPassword,
+    isInvalid: isValidPassword == null ? false : !isValidPassword,
+  };
+  const repeatPasswordInput = {
+    isValid: isValidRepeatPassword == null ? false : isValidRepeatPassword,
+    isInvalid: isValidRepeatPassword == null ? false : !isValidRepeatPassword,
+  };
+
   const handleForm = (e) => {
     e.preventDefault();
     const fullName = middleName.trim().length == 0 ?
@@ -81,7 +81,7 @@ const Registration = () => {
     if (isError) {
       if (error.originalStatus == 409) {
         setIsValidPhone(false);
-        setPhoneError('This phone already in use.');
+        setPhoneError('Этот номер телефона уже используется.');
       }
     }
   }, [isError]);
@@ -167,116 +167,130 @@ const Registration = () => {
   };
 
   return (
-    <div className='container py-5'>
-    <div className="d-flex align-items-center justify-content-center vh-100">
-      <form className='d-grid gap-2 w-25' onSubmit={(e) => handleForm(e)}>
-        <h1 className="h3 mb-3 fw-normal">Пожалуйста зарегистрируйтесь</h1>
-        <div className="form-floating form-group required">
+    <>
+    <style type='text/css'>{style}</style>
+    <div className='registration-form'>
+    <h2>Регистрация</h2>
+      <form id="regForm" onSubmit={(e) => handleForm(e)}>
+        <div className="form-group">
+          <label htmlFor="floatingLastNameInput">Фамилия</label>
           <input
             required={true}
             type="text"
-            className={lastNameInput}
             id="floatingLastNameInput"
-            placeholder="Smith"
+            placeholder="Иванов"
             value={lastName}
             onChange={(e) => handleLastName(e)}
           />
-          <label className='opacity-75' for="floatingInput">Фамилия</label>
-          <div class="invalid-feedback">
-            Фамилия должна содержать только буквы и может включать специальные символы (- , ').
+          <div className="error" id="password-error">
+            {
+              lastNameInput.isInvalid ?
+              "Фамилия должна содержать только буквы и может включать специальные символы (- , ')." :
+              null
+            }
           </div>
         </div>
-        <div className="form-floating">
+        <div className="form-group">
+          <label htmlFor="floatingFirstNameInput">Имя</label>
           <input
             required={true}
             type="text"
-            className={firstNameInput}
             id="floatingFirstNameInput"
-            placeholder="Smith"
+            placeholder="Иван"
             value={firstName}
             onChange={(e) => handleFirstName(e)}
           />
-          <label className='opacity-75' for="floatingInput">Имя</label>
-          <div class="invalid-feedback">
-            Имя должно содержать только буквы и может включать специальные символы (- , ').
+          <div className="error" id="password-error">
+            {
+              firstNameInput.isInvalid ?
+              "Имя должно содержать только буквы и может включать специальные символы (- , ')." :
+              null
+            }
           </div>
         </div>
-        <div className="form-floating">
+        <div className="form-group">
+          <label htmlFor="floatingMiddleNameInput">Отчество (необязательно)</label>
           <input
             type="text"
-            className={middleNameInput}
             id="floatingMiddleNameInput"
-            placeholder="Smith"
+            placeholder="Иванович"
             value={middleName}
             onChange={(e) => handleMiddleName(e)}
           />
-          <label className='opacity-50' for="floatingInput">Отчество (необязательно)</label>
-          <div class="invalid-feedback">
-            Отчество должно содержать только буквы и может включать специальные символы (- , ').
+          <div className="error" id="password-error">
+            {
+              middleNameInput.isInvalid ?
+              "Отчество должно содержать только буквы и может включать специальные символы (- , ')." :
+              null
+            }
           </div>
         </div>
-        <div className="form-floating">
+        <div className="form-group">
+          <label htmlFor="floatingPhoneInput">Номер телефона</label>
           <input
             required={true}
             type="tel"
-            className={phoneInput}
             id="floatingPhoneInput"
-            placeholder="+22 607 123 4567"
+            placeholder="+78128128112"
             value={phone}
             onChange={(e) => handlePhone(e)}
           />
-          <label className='opacity-75' for="floatingInput">Номер телефона</label>
-          <div class="invalid-feedback">
-            {phoneError}
+          <div className="error" id="phone-error">
+            {
+              phoneInput.isInvalid ?
+              phoneError :
+              null
+            }
           </div>
         </div>
-        <div className="form-floating">
+        <div className="form-group">
+          <label htmlFor="floatingPassword">Пароль</label>
           <input
             required={true}
             type="password"
-            className={passwordInput}
             id="floatingPassword"
-            placeholder="password"
+            placeholder="Пароль"
             value={password}
             onChange={(e) => handlePassword(e)}
             minLength={6}
           />
-          <label className='opacity-75' for="floatingPassword">Пароль</label>
-          <div class="invalid-feedback">
-            Пароль должен содержать минимум 6 символов и состоять только из букв, цифр и специальных символов: + _ - * ) (
+          <div className="error" id="password-error">
+            {
+              passwordInput.isInvalid ?
+              'Пароль должен содержать минимум 6 символов и состоять только из букв, цифр и специальных символов: + _ - * ) (' :
+              null
+            }
           </div>
         </div>
-        <div className="form-floating">
+        <div className="form-group">
+          <label htmlFor="confirm-password">Повторите пароль</label>
           <input
             required={true}
             type="password"
-            className={repeatPasswordInput}
-            id="floatingRepeatPassword"
-            placeholder="repeat password"
+            id="confirm-password"
+            placeholder="Повторите пароль"
             value={repeatPassword}
             onChange={(e) => handleRepeatPassword(e)}
           />
-          <label className='opacity-75' for="floatingPassword">Повторите пароль</label>
-          <div class="invalid-feedback">
-            Пароли должны совпадать.
+          <div className="error" id="repeat-password-error">
+            {
+              repeatPasswordInput.isInvalid ?
+              'Пароли должны совпадать' :
+              null
+            }
           </div>
         </div>
-        <p class="mt-5 mb-3 text-body-secondary">
-          У вас уже есть учетная запись? <Link to='/login' className="text-reset">Войдите в систему!</Link>
-        </p>
-        <button disabled={isDisabled} className="btn btn-primary w-100 py-2" type="submit">
+        <div className="form-group">
           {
             isLoading ?
-            <>
-              <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-              <span role="status">Загрузка...</span>
-            </> :
-            'Зарегистрировать'
+            <input disabled={isDisabled} type="submit" value="Регистрация..."/> :
+            <input disabled={isDisabled} type="submit" value="Зарегистрироваться"/>
           }
-        </button>
+        </div>
       </form>
     </div>
-    </div>
+    <Footer/>
+    </>
   );
 };
 

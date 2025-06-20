@@ -1,13 +1,12 @@
-import Filter from '../components/Filter.jsx';
 import FilterObject from '../Filter.js';
 import Header from '../components/Header.jsx';
-import ProductCard from '../components/ProductCard.jsx';
 import Sort from '../components/Sort.jsx';
 import { useState, useEffect } from 'react';
 import { useGetProductsByFilterMutation, useGetProductsQuery } from '../slices/api/productsApi.js';
-import { useSelector } from 'react-redux';
 import { useSyncTab } from '../SyncTabHook.js';
-import '../assets/style/style.css';
+import style from '../assets/style/style.css?inline';
+import Catalog from '../components/Catalog.jsx';
+import Footer from '../components/Footer.jsx';
 
 const Main = () => {
   useSyncTab();
@@ -32,44 +31,13 @@ const Main = () => {
 
   return (
     <>
+      <style type='text/css'>{style}</style>
       <Header isMainPage={true}/>
       <Sort defaultSort={defaultSort} setSort={setSort}></Sort>
-      <Filter data={metadata} filter={filter} setFilter={setFilter}></Filter>
-      <Catalog products={processedProducts} limit={limit} setLimit={setLimit}/>
+      <Catalog data={metadata} filter={filter} setFilter={setFilter} products={processedProducts} limit={limit} setLimit={setLimit}/>
+      <Footer/>
     </>
   )
-};
-
-const Catalog = ({ products = [], limit, setLimit }) => {
-  const { favorites } = useSelector((state) => state.favorites);
-  const { products: productsInCart } = useSelector((state) => state.cart);
-
-  const syncedProducts = products.map(product => {
-    const isFavorite = product.isFavorite ? true : favorites.find(({ productId }) => productId == product.id) !== undefined;
-    const isInCart = product.isInCart ? true : productsInCart.find(({ productId }) => productId == product.id) !== undefined;
-    return { ...product, isFavorite, isInCart }
-  });
-  const btnIsHidden = products.length < limit;
-  return (
-    <main className='product-list'>
-        {syncedProducts.map(p =>  {
-          return (<ProductCard
-            key={p.id}
-            id={p.id}
-            title={p.title}
-            description={p.description}
-            price={p.price}
-            image={p.image}
-            isFavorite={p.isFavorite}
-            isInCart={p.isInCart}
-          />)
-        }
-        )}
-      <div className='d-flex justify-content-center row row-cols-3 py-5'>
-        <button hidden={btnIsHidden} className='btn btn-primary' onClick={() => setLimit(limit + 9)}>Показать больше</button>
-      </div>
-    </main>
-  );
 };
 
 const getMetadata = (data = []) => {

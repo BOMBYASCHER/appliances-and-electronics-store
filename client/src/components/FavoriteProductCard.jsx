@@ -13,10 +13,10 @@ const FavoriteCard = ({ productId, title, description, price, image, isInCart })
   const [addToCart] = useAddProductToCartMutation();
   const [deleteFromCart] = useDeleteProductFromCartMutation();
 
-  const btnFavorite = cn('btn', 'col-auto', 'btn-secondary', {
+  const btnFavorite = cn('remove-btn', {
     active: isAddedToFavorite
   });
-  const btnCart = cn('btn', 'col-auto', 'btn-outline-secondary', {
+  const btnCart = cn('add-to-cart', {
     active: isAddedToCart
   });
 
@@ -39,22 +39,18 @@ const FavoriteCard = ({ productId, title, description, price, image, isInCart })
   };
 
   return (
-    <div className="row-md-6">
-    <div className="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-      <div className="col p-4 d-flex flex-column position-static">
-        <h3 className="mb-0">{title}</h3>
-        <p className="card-text mb-auto">{description}</p>
-        <h2>{price}</h2>
-        <div className='row gap-2'>
-          <button className={btnFavorite} onClick={handleBtnFavorite}>В избранное</button>
-          <button className={btnCart} onClick={handleBtnCart}>В корзину</button>
-        </div>
-      </div>
-      <div className="col-auto d-none d-lg-block">
-        <img width={'auto'} height={250} src={image} alt="Product image" />
-      </div>
-    </div>
-    </div>
+    <tr>
+      <td>
+        <img src={image} alt="favorite product" className="product-image" />
+      </td>
+      <td>{title}</td>
+      <td>{description}</td>
+      <td>{price}</td>
+      <td>
+          <button className={btnFavorite} onClick={handleBtnFavorite}>❤️</button>
+          <button className={btnCart} onClick={handleBtnCart}>Добавить в корзину</button>
+      </td>
+    </tr>
   );
 };
 

@@ -1,6 +1,5 @@
 import Filter from '../Filter';
 import { useState } from 'react';
-import '../assets/style/style.css';
 
 const Search = ({ filter, setFilter }) => {
   const [searchString, setSearchString] = useState('');

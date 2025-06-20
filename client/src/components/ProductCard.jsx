@@ -1,7 +1,6 @@
 import { useAddFavoriteMutation, useDeleteFavoriteMutation } from '../slices/api/favoritesApi';
 import { useAddProductToCartMutation, useDeleteProductFromCartMutation } from '../slices/api/cartApi';
 import { NavLink } from 'react-router';
-import '../assets/style/style.css';
 
 const ProductCard = ({ id, title, description, price, image, isFavorite, isInCart }) => {
   const [addFavorite] = useAddFavoriteMutation();
