@@ -8,7 +8,7 @@ import {
 } from '../SortFunctions.js';
 import Search from './Search.jsx';
 
-const Sort = ({ setSort }) => {
+const Sort = ({ setSort, filter, setFilter }) => {
   const defaultSort = (products) => products;
 
   const handleSort = ({ target: { value } }) => {
@@ -23,7 +23,7 @@ const Sort = ({ setSort }) => {
 
   return (
     <div className='search-container'>
-      <Search/>
+      <Search filter={filter} setFilter={setFilter}/>
       <select defaultValue={0} onChange={e => handleSort(e)} className="sort-select">
         <option value={0} >По умолчанию</option>
         <option value={1} >Цена: от низкой к высокой</option>

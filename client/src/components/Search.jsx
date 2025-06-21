@@ -1,12 +1,12 @@
-import Filter from '../Filter';
+import FilterObject from '../Filter.js';
 import { useState } from 'react';
 
 const Search = ({ filter, setFilter }) => {
   const [searchString, setSearchString] = useState('');
 
-  const onEnterPress = ({ key }) => {
-    if (key === 'enter') {
-      const newFilter = new Filter(filter);
+  const onEnterPress = ({ key  }) => {
+    if (key  === 'Enter') {
+      const newFilter = new FilterObject(filter);
       newFilter.search = searchString;
       setFilter(newFilter);
     }
@@ -19,6 +19,7 @@ const Search = ({ filter, setFilter }) => {
       value={searchString}
       onChange={(e) => setSearchString(e.target.value)}
       placeholder='Поиск...'
+      onKeyDown={(e) => onEnterPress(e)}
       onKeyUp={(e) => onEnterPress(e)}
     />
   );

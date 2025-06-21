@@ -33,7 +33,7 @@ const Main = () => {
     <>
       <style type='text/css'>{style}</style>
       <Header isMainPage={true}/>
-      <Sort defaultSort={defaultSort} setSort={setSort}></Sort>
+      <Sort filter={filter} setFilter={setFilter} defaultSort={defaultSort} setSort={setSort}></Sort>
       <Catalog data={metadata} filter={filter} setFilter={setFilter} products={processedProducts} limit={limit} setLimit={setLimit}/>
       <Footer/>
     </>

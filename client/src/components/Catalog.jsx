@@ -204,49 +204,39 @@ const ReleaseYears = ({ years, filter, setFilter }) => {
 const PriceRange = ({ minPrice, maxPrice, filter, setFilter }) => {
   const [currentMinPrice, setCurrentMinPrice] = useState(minPrice);
   const [currentMaxPrice, setCurrentMaxPrice] = useState(maxPrice);
-  const [tempMinPrice, setTempMinPrice] = useState();
-  const [tempMaxPrice, setTempMaxPrice] = useState();
-  
+
   useEffect(() => {
-    const newFilter = new FilterObject(filter);
-    newFilter.minPrice = currentMinPrice;
-    newFilter.maxPrice = currentMaxPrice;
-    setFilter(newFilter);
-  }, [currentMinPrice, currentMaxPrice]);
-
-  const handleMinPrice = ({ target: { value } }) => {
-    setTempMinPrice(value);
-    setCurrentMinPrice(value);
-  };
-
-  const handleMaxPrice = ({ target: { value } }) => {
-    setTempMaxPrice(value);
-    setCurrentMaxPrice(value);
-  };
+    setCurrentMinPrice(minPrice)
+    setCurrentMaxPrice(maxPrice)
+  }, [minPrice, maxPrice]);
 
   const handleMinPriceRange = ({ target: { value } }) => {
+    console.log(minPrice)
+    console.log(maxPrice)
     if (value < minPrice) {
-      setTempMinPrice(minPrice);
+      setCurrentMinPrice(minPrice);
     } else if (value > currentMaxPrice) {
-      setTempMinPrice(tempMaxPrice);
+      setCurrentMinPrice(currentMaxPrice);
     } else {
-      setTempMinPrice(value);
+      setCurrentMinPrice(value);
     }
   };
 
   const handleMaxPriceRange = ({ target: { value } }) => {
     if (value > maxPrice) {
-      setTempMaxPrice(maxPrice);
+      setCurrentMaxPrice(maxPrice);
     } else if (value < currentMinPrice) {
-      setTempMaxPrice(tempMinPrice);
+      setCurrentMaxPrice(currentMinPrice);
     } else {
-      setTempMaxPrice(value);
+      setCurrentMaxPrice(value);
     }
   };
 
   const handleSliderRelease = () => {
-    setCurrentMinPrice(tempMinPrice);
-    setCurrentMaxPrice(tempMaxPrice);
+    const newFilter = new FilterObject(filter);
+    newFilter.minPrice = currentMinPrice;
+    newFilter.maxPrice = currentMaxPrice;
+    setFilter(newFilter);
   };
  
   return (
@@ -254,9 +244,10 @@ const PriceRange = ({ minPrice, maxPrice, filter, setFilter }) => {
     <h3>Стоимость от</h3>
     <input
       type="range"
+      step={100}
       id="priceRange"
       className="form-range min range-input"
-      value={tempMinPrice ? tempMinPrice : minPrice}
+      value={currentMinPrice}
       min={minPrice}
       max={maxPrice}
       onChange={e => handleMinPriceRange(e)}
@@ -268,9 +259,10 @@ const PriceRange = ({ minPrice, maxPrice, filter, setFilter }) => {
     </div>
     <input
         type="range"
+        step={100}
         id="priceRange"
         className="form-range max range-input"
-        value={tempMaxPrice ? tempMaxPrice : maxPrice}
+        value={currentMaxPrice}
         min={minPrice}
         max={maxPrice}
         onChange={e => handleMaxPriceRange(e)}
