@@ -4,7 +4,7 @@ import Sort from '../components/Sort.jsx';
 import { useState, useEffect } from 'react';
 import { useGetProductsByFilterMutation, useGetProductsQuery } from '../slices/api/productsApi.js';
 import { useSyncTab } from '../SyncTabHook.js';
-import style from '../assets/style/style.css?inline';
+import style from './style.css?inline';
 import Catalog from '../components/Catalog.jsx';
 import Footer from '../components/Footer.jsx';
 

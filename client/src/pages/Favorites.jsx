@@ -5,7 +5,7 @@ import { useGetFavoritesQuery } from '../slices/api/favoritesApi.js';
 import { getCart, getFavorites } from '../stateSelectors.js';
 import { useSyncTab } from '../SyncTabHook.js';
 import { Link } from 'react-router';
-import style from '../assets/style/Favorites.css?inline';
+import style from './Favorites.css?inline';
 import Footer from '../components/Footer.jsx';
 
 const Favorites = () => {
