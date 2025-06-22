@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router";
 import { useLazyGetFavoritesQuery } from "../slices/api/favoritesApi";
 import { useLazyGetCartQuery } from "../slices/api/cartApi";
 import { useLazyGetProductsQuery } from "../slices/api/productsApi";
+import Header from '../components/Header';
 import Footer from "../components/Footer";
 import style from '../assets/style/Login.css?inline';
 
@@ -52,6 +53,7 @@ const Login = () => {
   return (
     <>
     <style type='text/css'>{style}</style>
+    <Header/>
     <div className="container">
       <h2>Вход в аккаунт</h2>
       <form id="loginForm" onSubmit={(e) => handleForm(e)}>

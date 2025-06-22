@@ -5,6 +5,7 @@ import { useLazyGetFavoritesQuery } from "../slices/api/favoritesApi";
 import { useLazyGetCartQuery } from "../slices/api/cartApi";
 import { useLazyGetProductsQuery } from "../slices/api/productsApi";
 import style from '../assets/style/Registration.css?inline';
+import Header from '../components/Header';
 import Footer from '../components/Footer';
 
 const Registration = () => {
@@ -169,6 +170,7 @@ const Registration = () => {
   return (
     <>
     <style type='text/css'>{style}</style>
+    <Header/>
     <div className='registration-form'>
     <h2>Регистрация</h2>
       <form id="regForm" onSubmit={(e) => handleForm(e)}>
