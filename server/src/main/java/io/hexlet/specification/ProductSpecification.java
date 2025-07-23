@@ -3,6 +3,8 @@ package io.hexlet.specification;
 import io.hexlet.dto.ProductParamsDTO;
 import io.hexlet.model.entity.Product;
 import jakarta.persistence.criteria.Expression;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
@@ -10,6 +12,9 @@ import java.util.List;
 
 @Component
 public class ProductSpecification {
+    @Autowired
+    private Environment environment;
+
     public Specification<Product> build(ProductParamsDTO params) {
         return withSearch(params.getSearch())
                 .and(withPriceBetween(params.getMinPrice(), params.getMaxPrice()))
@@ -65,14 +70,19 @@ public class ProductSpecification {
             if (years == null || years.isEmpty()) {
                 return cb.conjunction();
             }
-
             Expression<Integer> yearExpr = cb.function(
+                "YEAR",
+                Integer.class,
+                root.get("releaseDate")
+            );
+            if (environment.getActiveProfiles()[0].equals("production")) {
+                yearExpr = cb.function(
                     "date_part",
                     Integer.class,
                     cb.literal("year"),
                     root.get("releaseDate")
-            );
-
+                );
+            }
             return yearExpr.in(years);
         };
     }
