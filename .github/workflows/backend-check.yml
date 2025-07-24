@@ -39,22 +39,12 @@ jobs:
           ./gradlew build
           ./gradlew test
           ./gradlew jacocoTestReport
-      - name: Check if file exists
-        id: check_file
-        run: |
-          if test -f "src/main/java/build/reports/jacoco/test/jacocoTestReport.xml"; then
-          echo "::set-output name=result::true"
-          else
-          echo "::set-output name=result::false"
-          fi
-      - name: Do something if file exists
-        if: steps.check_file.outputs.result == 'true'
-        run: |
-          echo "File exist!"
-      - name: Do something else if file does not exist
-        if: steps.check_file.outputs.result != 'true'
-        run: |
-          echo "File does not exist..."
+      - name: Files
+        run: ls -l
+      - name: Files build
+        run: ls -l /src/main/java/build
+      - name: Files jacoco
+        run: ls -l /src/main/java/build/reports/jacoco/test
       - name: Send code coverage report
         uses: qltysh/qlty-action/coverage@v1
         with:
