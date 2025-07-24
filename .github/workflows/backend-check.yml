@@ -41,7 +41,6 @@ jobs:
         with:
           token: ${{secrets.QLTY_COVERAGE_TOKEN}}
           files: src/main/java/build/reports/jacoco/test/jacocoTestReport.xml
-          format: jacoco
 defaults:
   run:
     working-directory: ./server
