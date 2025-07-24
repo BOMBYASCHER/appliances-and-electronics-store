@@ -4,9 +4,9 @@ on:
     paths:
       - 'server'
       - '.github/workflows/backend-check.yml'
-#permissions:
-#  actions: write
-#  contents: read
+permissions:
+  actions: write
+  contents: read
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -39,12 +39,6 @@ jobs:
           ./gradlew build
           ./gradlew test
           ./gradlew jacocoTestReport
-      - name: Files
-        run: ls -l
-      - name: Files build
-        run: ls -l build
-      - name: Files jacoco
-        run: ls -l build/reports/jacoco/test
       - name: Send code coverage report
         uses: qltysh/qlty-action/coverage@v1
         with:
