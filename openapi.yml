@@ -1,0 +1,678 @@
+openapi: 3.1.1
+info:
+  title: Maconi - appliances and electronics store
+  version: "1.0.0"
+  contact:
+    name: Repository on GitHub
+    url: https://github.com/BOMBYASCHER/appliances-and-electronics-store
+  summary: Internal API of a Maconi online store created for interaction between the client and the server.
+  description: The API provides the ability to view all the store's products with various optional query parameters for filtering, viewing a specific product by ID. You can view a list of favorite products, add and remove a product from favorites. You can view cart details, add a product to the cart, delete and change the quantity. You can place (create) an order and view a list of orders. You can issue a return of goods from an order and view a list of all returns. It is possible to register and log in to your account.
+servers:
+  - url: https://maconi-store-server.onrender.com/api/
+    description: Production server
+  - url: http://localhost:4040/api/
+    description: Development server
+tags:
+  - name: Products
+    description:
+      Get all products, filtering by parameters and pagination, get specific by id
+  - name: Favorites
+    description:
+      List of favorites and operations about
+  - name: Cart
+    description:
+      Operations about cart
+  - name: Orders
+    description:
+      Access to store orders
+  - name: Returns
+    description:
+      Viewing and creating return
+  - name: Authentication
+    description:
+      Login and registration
+components:
+  securitySchemes:
+    jwt_token:
+      type: http
+      scheme: bearer
+      name: Authorization
+      bearerFormat: JWT
+  schemas:
+    Product:
+      description: A representation of a product in the store.
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+          examples:
+            - 21
+        title:
+          type: string
+          examples:
+            - Jet 75 Pet
+        description:
+          type: string
+          examples:
+            - The Samsung Jet 75 Pet Cordless Stick Vacuum offers powerful cleaning...
+        price:
+          type: integer
+          examples:
+            - 360
+        image:
+          type: string
+          format: uri
+          description: URI of the image
+          examples:
+            - https://example.com/source/img.jpg
+        brand:
+          type: string
+          examples:
+            - Samsung
+        category:
+          type: string
+          examples:
+            - vacuum
+        color:
+          type: string
+          examples:
+            - blue
+        releaseDate:
+          type: string
+          format: date
+        isFavorite:
+          type: boolean
+          description: The product in favorites or not. Only when user is authorized.
+        isInCart:
+          type: boolean
+          description: The product in cart or not. Only when user is authorized.
+      required:
+        - id
+        - title
+        - description
+        - price
+        - image
+        - brand
+        - category
+        - color
+        - releaseDate
+    Favorite:
+      description: A representation of a favorite in the store.
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        productId:
+          type: integer
+          format: int32
+        title:
+          type: string
+        description:
+          type: string
+        price:
+          type: integer
+        image:
+          type: string
+          format: uri
+          description: URI of the image
+          examples:
+            - https://example.com/source/img.jpg
+        isInCart:
+          type: boolean
+          description: The product in cart or not. Only when user is authorized.
+    CartElement:
+      description: A representation of a product in the cart.
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        productId:
+          type: integer
+          format: int32
+        title:
+          type: string
+        price:
+          type: integer
+        image:
+          type: string
+          format: uri
+          description: URI of the image
+          examples:
+            - https://example.com/source/img.jpg
+        quantity:
+          type: integer
+    Cart:
+      description: A representation of a favorite in the store.
+      type: object
+      properties:
+        totalAmount:
+          type: integer
+          format: int32
+        elements:
+          $ref: '#/components/schemas/CartElement'
+    Purchase:
+      description: A representation of bougth product. Depend on Order.
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        productId:
+          type: integer
+          format: int32
+        title:
+          type: string
+        price:
+          type: integer
+        image:
+          type: string
+          format: uri
+          description: URI of the product image
+          examples:
+            - https://example.com/source/img.jpg
+        quantity:
+          type: integer
+          description: Product quantity
+        isReturned:
+          type: boolean
+    Order:
+      description: A representation of the order
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        totalAmount:
+          type: integer
+        date:
+          type: string
+          format: date-time
+        purchases:
+          type: array
+          items:
+            $ref: '#/components/schemas/Purchase'
+        status:
+          type: string
+          enum:
+            - created
+            - assembling
+            - in transit
+            - ready for pickup
+            - delivered
+    Return:
+      description: A representation of order return
+      type: object
+      properties:
+        id:
+          type: integer
+        orderId:
+          type: integer
+        productId:
+          type: integer
+        orderTitle:
+          type: string
+        productTitle:
+          type: string
+        image:
+          type: string
+          format: uri
+          description: Image of the product in the store
+        totalAmount:
+          type: integer
+          description: Total cost of the order
+        price:
+          type: integer
+          description: Cost of the one product
+        quantity:
+          type: integer
+        date:
+          type: string
+          format: date-time
+        reason:
+          type: string
+          enum:
+            - defect/damage
+            - does not fit
+            - does not match description
+        photo:
+          type: object
+          properties:
+            data:
+              type: string
+              format: byte
+              description: A photo of the returned order encoded in base64
+            type:
+              type: string
+              description: A type (format) of the photo
+paths:
+  /data/products:
+    get:
+      tags:
+        - Products
+      description: Returns all products from the store. If the request is made without authorization, there will be no fields 'isFavorite' and 'isInCart' fields.
+      parameters:
+        - name: search
+          in: query
+          description: String to search produt by title.
+          schema:
+            type: string
+        - name: min_price
+          in: query
+          description: Minimal price of product for filtering.
+          schema:
+            type: integer
+        - name: max_price
+          in: query
+          description: Maximum price of product for filtering.
+          schema:
+            type: integer
+        - name: brands
+          in: query
+          description: List of brands for filtering.
+          schema:
+            type: array
+            items:
+              type: string
+          example:
+            - Samsung
+            - Apple
+        - name: categories
+          in: query
+          description: List of categories for filtering.
+          schema:
+            type: array
+            items:
+              type: string
+          example:
+            - washing machine
+            - fridge
+        - name: colors
+          in: query
+          description: List of colors for filtering.
+          schema:
+            type: array
+            items:
+              type: string
+          example:
+            - white
+            - black
+        - name: release_years
+          in: query
+          description: List of release years for filtering.
+          schema:
+            type: array
+            items:
+              type: integer
+          example:
+            - 2018
+            - 2024
+        - name: limit
+          in: query
+          description: Quantity of products on the page.
+          schema:
+            type: integer
+        - name: page
+          in: query
+          description: Number of the page.
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A list of products.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+  /data/products/{id}:
+    get:
+      tags:
+        - Products
+      description: Returns single product from the store
+      parameters:
+        - name: id
+          in: path
+          description: ID of product to return
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A single product.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: Product not found.
+  /data/favorites:
+    get:
+      tags:
+        - Favorites
+      description: Returns all favorites
+      security:
+        - jwt_token: []
+      responses:
+        '200':
+          description: List of favorites.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Favorite'
+        '401':
+          description: User is unauthorized
+    post:
+      tags:
+        - Favorites
+      description: Add product to favorites
+      security:
+        - jwt_token: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                productId:
+                  type: integer
+      responses:
+        '201':
+          description: Product has been added successfully.
+        '401':
+          description: User is unauthorized
+        '404':
+          description: Product not found.
+  /data/favorites/{productId}:
+    delete:
+      tags:
+        - Favorites
+      description: Delete product from favorites
+      security:
+        - jwt_token: []
+      parameters:
+        - name: productId
+          required: true
+          in: path
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Product has been deleted successfully.
+        '401':
+          description: User is unauthorized
+        '404':
+          description: Product not found.
+  /data/cart:
+    get:
+      tags:
+        - Cart
+      description: Returns all cart data
+      security:
+        - jwt_token: []
+      responses:
+        '200':
+          description: Structure of a cart.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  totalAmount:
+                    type: integer
+                  elements:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CartElement'
+        '401':
+          description: User is unauthorized
+    post:
+      tags:
+        - Cart
+      description: Add product in cart
+      security:
+        - jwt_token: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                productId:
+                  type: integer
+      responses:
+        '201':
+          description: Product has been successfully added
+        '401':
+          description: User is unauthorized
+        '404':
+          description: Product not found
+    delete:
+      tags:
+        - Cart
+      description: Delete all products in cart
+      security:
+        - jwt_token: []
+      responses:
+        '204':
+          description: Product has been successfully deleted
+        '401':
+          description: User is unauthorized
+  /data/cart/{id}:
+    put:
+      tags:
+        - Cart
+      description: Change quantity of product in cart
+      security:
+        - jwt_token: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Id of the cart
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quantity:
+                  type: integer
+      responses:
+        '201':
+          description: Product quantity has been successfully changed
+        '401':
+          description: User is unauthorized
+        '403':
+          description: User trying to change product quantity of foreign cart
+        '404':
+          description: Product not found
+    delete:
+      tags:
+        - Cart
+      description: Delete product by id from cart
+      security:
+        - jwt_token: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Id of the cart
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Product has been successfully deleted from cart
+        '401':
+          description: User is unauthorized
+        '403':
+          description: User trying to delete product from foreign cart
+        '404':
+          description: Product not found
+  /data/orders:
+    get:
+      tags:
+        - Orders
+      description: Returns all orders of user
+      security:
+        - jwt_token: []
+      responses:
+        '200':
+          description: Returns all orders of user
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+        '401':
+          description: User is unauthorized
+    post:
+      tags:
+        - Orders
+      description: Create new order
+      security:
+        - jwt_token: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  productId:
+                    type: integer
+                  quantity:
+                    type: integer
+      responses:
+        '201':
+          description: Order has been successfully created
+        '400':
+          description: Data is invalid
+        '401':
+          description: User is unauthorized
+        '404':
+          description: Products not found
+  /data/returns:
+    get:
+      tags:
+        - Returns
+      description: Returns all returns of order
+      security:
+        - jwt_token: []
+      responses:
+        '200':
+          description: All returns has been returned successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Return'
+        '401':
+          description: User is unauthorized
+    post:
+      tags:
+        - Returns
+      description: Create new return of the order
+      security:
+        - jwt_token: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                orderId:
+                  type: integer
+                purchaseId:
+                  type: integer
+                reason:
+                  type: string
+                  enum:
+                    - defect/damage
+                    - does not fit
+                    - does not match description
+                photo:
+                  type: string
+                  format: base64
+                  examples:
+                    - QmFzZTY0IGVuY29kZWQgYnl0ZSBhcnJheQ==
+        required: true
+      responses:
+        '201':
+          description: Return has been created successfully
+        '400':
+          description: The request does not include required fields or the data is incorrect
+        '401':
+          description: User is unauthorized
+        '403':
+          description: User is trying to create a return from another user
+        '404':
+          description: Non-existent data specified
+  /auth/login:
+    post:
+      tags:
+        - Authentication
+      description: Path to get a authentication JWT token for the user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                phone:
+                  type: string
+                  examples:
+                    - '+1234567890'
+                password:
+                  type: string
+                  format: password
+      responses:
+        '200':
+          description: Login was successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+                    examples:
+                      - eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+                  fullName:
+                    type: string
+                    examples:
+                      - John Smith
+        '401':
+          description: User is unauthorized. Data is incorrect or not exist.
+  /auth/registration:
+    post:
+      tags:
+        - Authentication
+      description: Path to registration new user
+      requestBody:
+        description: User is registration by phone, full name and password
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                phone:
+                  type: string
+                  examples:
+                    - '+1234567890'
+                fullName:
+                  type: string
+                  examples:
+                    - John Smith
+                password:
+                  type: string
+                  format: password
