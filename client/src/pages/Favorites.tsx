@@ -1,6 +1,6 @@
-import FavoriteCard from '../components/FavoriteProductCard.jsx';
+import FavoriteCard from '../components/FavoriteProductCard.js';
 import { useSelector } from 'react-redux';
-import Header from '../components/Header.jsx';
+import Header from '../components/Header.js';
 import { useGetFavoritesQuery } from '../slices/api/favoritesApi.js';
 import { getCart, getFavorites } from '../stateSelectors.js';
 import { useSyncTab } from '../SyncTabHook.js';

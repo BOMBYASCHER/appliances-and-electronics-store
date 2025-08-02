@@ -1,22 +1,22 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from "react-router";
-import Main from './pages/Main.jsx'
-import Favorites from './pages/Favorites.jsx'
-import Cart from './pages/Cart.jsx'
+import Main from './pages/Main.js'
+import Favorites from './pages/Favorites.js'
+import Cart from './pages/Cart.js'
 
 import { Provider } from 'react-redux';
 import store, { persistor } from './slices/index.js';
-import AuthenticatedRoute from './AuthenticatedRoute.jsx';
-import Orders from './pages/Orders.jsx';
-import Returns from './pages/Returns.jsx';
-import Login from './pages/Login.jsx';
+import AuthenticatedRoute from './AuthenticatedRoute.js';
+import Orders from './pages/Orders.js';
+import Returns from './pages/Returns.js';
+import Login from './pages/Login.js';
 import { PersistGate } from 'redux-persist/integration/react';
-import Registration from './pages/Registration.jsx';
-import ReturnForm from './pages/ReturnForm.jsx';
+import Registration from './pages/Registration.js';
+import ReturnForm from './pages/ReturnForm.js';
 
 
-createRoot(document.getElementById('root')).render(
+createRoot(document.getElementById('root')!).render(
   <StrictMode>
   <BrowserRouter>
     <Provider store={store}>

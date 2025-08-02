@@ -1,9 +1,9 @@
-import Filter from '../components/Filter.jsx';
+import Filter from '../components/Filter.js';
 import FilterObject from '../Filter.js';
-import Header from '../components/Header.jsx';
+import Header from '../components/Header.js';
 import ProductCard from '../components/ProductCard.jsx';
-import Search from '../components/Search.jsx';
-import Sort from '../components/Sort.jsx';
+import Search from '../components/Search.js';
+import Sort from '../components/Sort.js';
 import { useState, useEffect } from 'react';
 import { useGetProductsByFilterMutation, useGetProductsQuery } from '../slices/api/productsApi.js';
 import { useSelector } from 'react-redux';

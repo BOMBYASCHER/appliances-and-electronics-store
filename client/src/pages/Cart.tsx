@@ -1,6 +1,6 @@
-import CartProductCard from "../components/CartProductCard";
+import CartProductCard from "../components/CartProductCard.js";
 import { useSelector } from "react-redux";
-import Header from '../components/Header.jsx';
+import Header from '../components/Header.js';
 import { useGetCartQuery } from '../slices/api/cartApi.js';
 import { useCreateOrderMutation } from "../slices/api/ordersApi.js";
 import { Link, useNavigate } from "react-router";
